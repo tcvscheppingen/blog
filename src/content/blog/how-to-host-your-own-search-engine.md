@@ -1,5 +1,5 @@
 ---
-title: 'How to host your own search engine with Docker'
+title: 'How to Host your own Search Engine with Docker'
 description: 'Search privately with SearXNG'
 pubDate: 'Jun 24 2026'
 heroImage: '../../assets/searxng-hero.jpg'
