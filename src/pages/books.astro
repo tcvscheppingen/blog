@@ -1,8 +1,11 @@
 ---
+import { Image } from "astro:assets";
 import BaseHead from "../components/BaseHead.astro";
+import BooksImage from "../assets/books.jpeg";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import HeroImage from "../components/HeroImage.astro";
 ---
 
 <!doctype html>
@@ -13,6 +16,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
     <body>
         <Header />
         <main>
+            <HeroImage imageSrc={BooksImage} altText="A bookcase" />
             <h1>Books</h1>
             <p>Here are some books I like:</p>
             <ul></ul>
@@ -76,6 +80,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
                 <li>Thomas Watson - The Art of Divine Contentment</li>
             </ul>
         </main>
+
         <Footer />
     </body>
 </html>
