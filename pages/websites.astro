@@ -1,0 +1,44 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <h1>Websites</h1>
+            <p>Here are some websites that I like:</p>
+            <ul>
+                <li>
+                    <a href="https://www.privacyguides.org/">Privacy Guides</a>
+                </li>
+                <li>
+                    <a href="https://european-alternatives.eu/"
+                        >European Alternatives</a
+                    >
+                </li>
+                <li>
+                    <a href="https://www.startpage.com/"
+                        >StartPage search engine</a
+                    >
+                </li>
+                <li>
+                    <a href="https://mullvad.net/en">Mullvad VPN</a>
+                </li>
+                <li>
+                    <a href="https://librewolf.net/">LibreWolf Browser</a>
+                </li>
+                <li>
+                    <a href="https://docs.searxng.org">SearXNG docs</a>
+                </li>
+            </ul>
+        </main></body
+    >
+</html>

@@ -1,0 +1,81 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <h1>Books</h1>
+            <p>Here are some books I like:</p>
+            <ul></ul>
+            <h3>Novels</h3>
+            <ul>
+                <li>Wilkie Collins - The Woman in White</li>
+                <li>Fyodor Dostoevsky - Crime and Punishment</li>
+                <li>Fyodor Dostoevsky - Notes from the Underground</li>
+                <li>Dave Eggers - The Circle</li>
+                <li>Dave Eggers - The Every</li>
+                <li>Aldous Huxley - Brave New World</li>
+                <li>C.S. Lewis - The Screwtape Letters</li>
+                <li>George Orwell - 1984</li>
+                <li>Leo Tolstoy - War and Peace</li>
+                <li>J.R.R. Tolkien - The Lord of the Rings</li>
+            </ul>
+            <h3>Technology skepticism</h3>
+            <ul>
+                <li>Nicolas Carr - The Shallows</li>
+                <li>Kyle Chayka - Filterworld</li>
+                <li>Jonathan Haidt - The Anxious Generation</li>
+                <li>Johann Hari - Stolen Focus</li>
+                <li>Paul Kingsnorth - Against the Machine</li>
+                <li>Evgeny Morozov - The Net Delusion</li>
+                <li>Evgeny Morozov - To Save Everything Click Here</li>
+                <li>Cal Newport - Digital Minimalism</li>
+                <li>Neil Postman - Amusing Ourselves to Death</li>
+                <li>Shoshana Zuboff - The Age of Surveillance Capitalism</li>
+            </ul>
+            <h3>Programming</h3>
+            <ul>
+                <li>Donald Knuth - The Art of Computer Programming</li>
+                <li>Robert Martin - Clean Code</li>
+                <li>David Thomas - The Pragmatic Programmer</li>
+            </ul>
+            <h3>Philosophy</h3>
+            <ul>
+                <li>Jacques Ellul - The Meaning of the City</li>
+                <li>Jacques Ellul - Presence in the Modern World</li>
+                <li>Jacques Ellul - The Technological Society</li>
+                <li>Hans Schnitzler - Het Digitale Proletariaat (Dutch)</li>
+                <li>
+                    Hans Schnitzler - Kleine filosofie van de digitale
+                    onthouding (Dutch)
+                </li>
+                <li>Henry David Thoreau - Walden</li>
+            </ul>
+            <h3>Theology</h3>
+            <ul>
+                <li>
+                    Aurelius Augustinus - The Confessions of Saint Augustine
+                </li>
+                <li>Thomas Boston - Human Nature in its Fourfold State</li>
+                <li>John Bunyan - Pilgrim's Progress</li>
+                <li>John Bunyan - Grace Abounding to the Chief of Sinners</li>
+                <li>John Calvin - Institutes of the Christian Religion</li>
+                <li>Stephen Charnock - The Necessity of Regeneration</li>
+                <li>
+                    Thomas Hooker - The Poor Doubting Christian Drawn to Christ
+                </li>
+                <li>Thomas Watson - The Art of Divine Contentment</li>
+            </ul>
+        </main>
+        <Footer />
+    </body>
+</html>
