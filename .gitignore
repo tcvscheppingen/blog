@@ -1,2 +1,13 @@
 .DS_Store
 node_modules
+.astro/content-assets.mjs
+.astro/content-modules.mjs
+.astro/content.d.ts
+.astro/data-store.json
+.astro/dev.json
+.astro/fonts.d.ts
+.astro/settings.json
+.astro/types.d.ts
+.astro/collections/blog.schema.json
+.astro/fonts/font-atkinson-400-normal-d5730f57e43715f9.woff
+.astro/fonts/font-atkinson-700-normal-604c4000375592f3.woff
