@@ -10,7 +10,7 @@ import HeaderLink from "./HeaderLink.astro";
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Posts</HeaderLink>
 			<HeaderLink href="/books">Books</HeaderLink>
-			<HeaderLink href="/websites">Websites</HeaderLink>
+			<HeaderLink href="/websites">Links</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 		</div>
 		<div></div>
@@ -43,6 +43,9 @@ import HeaderLink from "./HeaderLink.astro";
 		color: var(--black);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+	}
+	nav a:hover {
+		color: var(--orange);
 	}
 	nav a.active {
 		text-decoration: none;
