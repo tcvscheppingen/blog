@@ -11,6 +11,11 @@ import IndexImage from "../assets/index-image.jpeg";
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			ul {
+				list-style: none;
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
@@ -24,6 +29,23 @@ import IndexImage from "../assets/index-image.jpeg";
 				The website focuses on digital privacy, technology, and software
 				development.
 			</p>
+			<h4>Pages:</h4>
+			<ul>
+				<li>
+					<a href="/blog">Blog posts, reviews, tutorials</a>
+				</li>
+				<li>
+					<a href="/books">A list of books I like or want to read</a>
+				</li>
+				<li>
+					<a href="/websites"
+						>A list of websites, services and software I like</a
+					>
+				</li>
+				<li>
+					<a href="/about">Some information about me</a>
+				</li>
+			</ul>
 		</main>
 		<Footer />
 	</body>
