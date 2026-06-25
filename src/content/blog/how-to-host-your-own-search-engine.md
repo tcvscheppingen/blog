@@ -2,7 +2,7 @@
 title: 'How to Host your own Search Engine with Docker'
 description: 'Search privately with SearXNG'
 pubDate: 'Jun 24 2026'
-heroImage: '../../assets/searxng-hero.jpg'
+heroImage: '../../assets/hero-images/searxng-hero.jpg'
 ---
 
 If you don't want to use a search engine that is hosted by a big company like Google or Microsoft, you can host your own search engine with SearXNG.
