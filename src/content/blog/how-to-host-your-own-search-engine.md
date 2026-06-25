@@ -40,7 +40,6 @@ vim .env
 docker compose up -d
 ```
 
-4. Use SearXNG to search for something
-You can open SearXNG by navigating to `localhost:8080` (or whatever port you have configured)
+4. You can open SearXNG by navigating to `localhost:8080` (or whatever port you have configured):
 
 !['SearXNG screenshot'](../../assets/searxng-screenshot.jpg)
