@@ -1,0 +1,258 @@
+---
+// Frontmatter: Define your experience dataset in an array
+const experiences = [
+    {
+        company: "Intus",
+        role: "Java Developer - Full Time",
+        year: "Nov 01, 2025",
+        sha: "a8f29c1d",
+        status: "running",
+    },
+    {
+        company: "Intus",
+        role: "Software Tester - Full Time",
+        year: "Sep 01, 2024",
+        sha: "53ef68b7",
+        status: "success",
+    },
+    {
+        company: "Nederlanse Voedsel- en Warenautoriteit",
+        role: "Software Developer - Internship",
+        year: "Feb 01, 2024",
+        sha: "dfc12578",
+        status: "success",
+    },
+    {
+        company: "Intus",
+        role: "Software Developer - Internship",
+        year: "Sep 01, 2023",
+        sha: "e23e12e3",
+        status: "success",
+    },
+    {
+        company: "Q2-software",
+        role: "Laravel Developer - Part Time",
+        year: "Jul 01, 2022",
+        sha: "007b0a61",
+        status: "success",
+    },
+    {
+        company: "Cellro | CNC Automation",
+        role: "Software Developer - Internship",
+        year: "Mar 01, 2022",
+        sha: "19ecec61",
+        status: "success",
+    },
+    {
+        company: "Educator",
+        role: "Support Engineer - Part Time",
+        year: "Feb 03, 2021",
+        sha: "bb5204c8",
+        status: "success",
+    },
+];
+---
+
+<div class="commit-history-container">
+    {
+        experiences.map((exp) => (
+            <div class="commit-row">
+                <div class="commit-left">
+                    <div class="avatar-placeholder" />
+                    <div class="commit-info">
+                        <h3 class="commit-message">
+                            {exp.company} &gt; {exp.role}
+                        </h3>
+                        <p class="commit-meta">
+                            Thymen van Scheppingen{" "}
+                            <span class="action">authored</span> in {exp.year}
+                        </p>
+                    </div>
+                </div>
+                <div class="commit-right">
+                    {/* Dynamically assign the class depending on the status */}
+                    <span class={`status-icon status-${exp.status}`}>
+                        {exp.status === "success" ? "✓" : ""}
+                    </span>
+                    <div class="commit-sha-group">
+                        <span class="sha-text">{exp.sha}</span>
+                        <button class="sha-btn" title="Copy SHA">
+                            📋
+                        </button>
+                        <button class="sha-btn" title="Browse files">
+                            📂
+                        </button>
+                    </div>
+                </div>
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .commit-history-container {
+        max-width: 1100px;
+        margin: 40px auto;
+        font-family:
+            -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+            sans-serif;
+        background-color: #ffffff;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .commit-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid #d0d7de;
+        background-color: #ffffff;
+    }
+
+    .commit-row:last-child {
+        border-bottom: none;
+    }
+
+    .commit-row:hover {
+        background-color: #f6f8fa;
+    }
+
+    .commit-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar-placeholder {
+        width: 24px;
+        height: 24px;
+        background-color: #e1e4e8;
+        background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 16 16" fill="%23959da5" xmlns="http://www.w3.org/2000/svg"><path d="M8 8a3 3 0 100-6 3 3 0 000 6zm2.75 1h-5.5A2.75 2.75 0 002.5 11.75v1.75c0 .28.22.5.5.5h10s.5-.22.5-.5v-1.75A2.75 2.75 0 0010.75 9z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 50%;
+    }
+
+    .commit-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .commit-message {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1f2328;
+    }
+
+    .commit-meta {
+        margin: 0;
+        font-size: 12px;
+        color: #57606a;
+    }
+
+    .commit-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .status-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .status-success {
+        background-color: #2da44f;
+        color: white;
+    }
+
+    .status-running {
+        border: 2px solid #57606a;
+        background-color: transparent;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            opacity: 0.4;
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0.4;
+        }
+    }
+
+    .commit-sha-group {
+        display: inline-flex;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        overflow: hidden;
+        background-color: #f6f8fa;
+    }
+
+    .sha-text {
+        font-family:
+            ui-monospace,
+            SFMono-Regular,
+            SF Mono,
+            Menlo,
+            Consolas,
+            Liberation Mono,
+            monospace;
+        font-size: 12px;
+        color: #0969da;
+        padding: 4px 8px;
+        background-color: #ffffff;
+        border-right: 1px solid #d0d7de;
+    }
+
+    .sha-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 4px 8px;
+        font-size: 12px;
+        color: #57606a;
+        display: flex;
+        align-items: center;
+        border-right: 1px solid #d0d7de;
+    }
+
+    .sha-btn:last-child {
+        border-right: none;
+    }
+
+    .sha-btn:hover {
+        background-color: #eaeef2;
+        color: #1f2328;
+    }
+
+    @media screen and (max-width: 600px) {
+        .commit-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .commit-right {
+            width: 100%;
+            justify-content: space-between;
+            padding-left: 36px;
+        }
+    }
+</style>
