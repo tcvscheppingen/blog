@@ -1,8 +1,8 @@
 ---
-title: 'How to Host your own Search Engine with Docker'
-description: 'Search privately with SearXNG'
-pubDate: 'Jun 24 2026'
-heroImage: '../../assets/hero-images/searxng-hero.jpg'
+title: "How to Host your own Search Engine with Docker"
+description: "Search privately with SearXNG"
+pubDate: "Jun 24 2026"
+heroImage: "../../assets/hero-images/searxng-hero.jpg"
 ---
 
 If you don't want to use a search engine that is hosted by a big company like Google or Microsoft, you can host your own search engine with SearXNG.
@@ -10,7 +10,9 @@ SearXNG is a meta-search engine that aggregates results from different search en
 
 I use SearXNG just locally on my machine, but you can of course host this yourself. In fact, you can also use a publicly hosted instance of SearXNG. This tutorial is limited to just a simple localhost instance of SearXNG.
 
-To get started with hosting a local instance of SearXNG, you will need Docker installed on your machine. 
+To get started with hosting a local instance of SearXNG, you will need Docker installed on your machine.
+
+> In some cases your SearXNG instance might be blocked by an engine after having received too many requests from your server.
 
 ## Setup
 
