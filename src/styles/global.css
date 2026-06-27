@@ -82,7 +82,8 @@ a {
 
 a:hover {
 	text-decoration: underline;
-	color: var(--orange);
+	text-decoration-color: var(--orange);
+	text-decoration-thickness: 1.5pt;
 }
 
 p {
