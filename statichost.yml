@@ -1,3 +1,0 @@
-image: node:22
-command: pnpm install && pnpm run build
-public: dist

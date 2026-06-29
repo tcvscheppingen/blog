@@ -32,9 +32,9 @@ rm -rf ~/.config/nvim/.git
 nvim
 ```
 
-4. Install the Java LSP Open nvim and enter `:LspInstall java`
+4. Install the Java LSP. Open nvim and enter `:LspInstall java`
 
-5. Install the language parser. Enter `TSInstall java`
+5. Install the language parser. Enter `:TSInstall java`
 
 6. Download `lombok.jar` for lombok annotations support.
 
@@ -118,7 +118,7 @@ opts = {
 Now you should have code completetion for Java, as well as Lombok annotation recognition.
 
 If you are running a Java application in Docker, you can use remote debugging with NeoVim.
-I won't go in to the details about how to set up your application for Docker, but I will show you how to set up NeoVim.
+I won't go into the details about how to set up your application for Docker, but I will show you how to set up NeoVim.
 
 1. Open NeoVim and run `:MasonInstall java-debug-adapter`.
 2. Create or edit `~/.config/nvim/lua/plugins/astrodap.lua`:
