@@ -21,3 +21,5 @@ When was the last time you actually where in a situation the required immediate 
 We rarely find ourselvs in situations where immediate access to a phone is a matter of life and death.
 
 Leaving your devices at home will stop generating data to be harvested, even if just for a little while. It also might free up some mental resources if there is nothing to distract you.
+
+Here is a video by Luke Smith that goes more in-depth about this: [If you really care about Privacy, don't use the Internet!](https://videos.lukesmith.xyz/w/wuwwEBZiNhVJdeSt9i5M5U)
