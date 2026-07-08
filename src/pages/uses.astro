@@ -1,0 +1,57 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <h1>Uses</h1>
+            <p>Here are some products that I like to use:</p>
+            <h3>Hardware</h3>
+            <ul>
+                <li>HP Pavilion cx0670nd - Laptop</li>
+                <li>
+                    iPhone 13 Mini - I plan to replace this with a Google Pixel
+                    a10 with GrapheneOS
+                </li>
+                <li>Logitech MX Master 3s - Mouse</li>
+                <li>Logitech MX Mechanical Mini - Keyboard</li>
+                <li>Beyerdynamic DT990 Edition - Headphones</li>
+                <li>Topping DX1 - DAC/Amp combination</li>
+                <li>
+                    Samsung Galaxy Tab s6 Lite - I replaced Android with /e/os
+                </li>
+                <li>Snowsky Echo Mini - MP3 Player</li>
+            </ul>
+            <h3>Software</h3>
+            <ul>
+                <li>Artix Linux - OS on HP laptop</li>
+                <li>DWM - Window manager</li>
+                <li>LibreWolf - browser for daily use</li>
+                <li>NeoVim - Editor for personal projects</li>
+                <li>IntelliJ - IDE for work</li>
+            </ul>
+            <h3>Watches</h3>
+            <ul>
+                <li>G-Shock GW-M5610u</li>
+                <li>Casio f91w</li>
+                <li>Casio a168</li>
+                <li>Casio ae1000</li>
+                <li>Casio ae1200</li>
+                <li>Casio Protrek prj b01</li>
+                <li>Orient Bambino 38mm</li>
+                <li>Seiko SNK807</li>
+                <li>Seiko SSK003</li>
+            </ul>
+        </main>
+        <Footer />
+    </body>
+</html>

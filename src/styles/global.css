@@ -170,7 +170,7 @@ hr {
 	}
 
 	p {
-		text-align: justify;
+		line-break: normal;
 	}
 }
 

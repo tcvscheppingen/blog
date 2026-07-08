@@ -1,5 +1,5 @@
 ---
-title: "A few tools that will make MacOS less painful to use"
+title: "A few tools that will make MacOS more useful"
 description: "Make MacOS feel like Linux and make it less of a pain to use"
 pubDate: "Jul 7 2026"
 heroImage: "../../assets/hero-images/macos-like-linux.png"
