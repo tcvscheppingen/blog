@@ -36,54 +36,86 @@ const workExperienceInYears = Math.round(
 	<p>
 		Below is an overview of my {workExperienceInYears} years of work experience:
 	</p>
-	<table>
+	<table class="work-xp">
 		<tr>
 			<th>Company</th>
 			<th>Role</th>
-			<th>Employment type</th>
-			<th>Start date</th>
+			<th class="employment-type-column">Employment type</th>
+			<th class="start-date-column">Start date</th>
 		</tr>
 		<tr>
 			<td>Intus Workforce Solutions</td>
 			<td>Java Developer</td>
-			<td>Full Time</td>
-			<td>Nov 01, 2025</td>
+			<td class="employment-type-column">Full Time</td>
+			<td class="start-date-column">Nov 01, 2025</td>
 		</tr>
 		<tr>
 			<td>Intus Workforce Solutions</td>
 			<td>Software Tester</td>
-			<td>Full Time</td>
-			<td>Sep 01, 2024</td>
+			<td class="employment-type-column">Full Time</td>
+			<td class="start-date-column">Sep 01, 2024</td>
 		</tr>
 		<tr>
 			<td>Nederlandse Voedsel- en Warenautoriteit</td>
 			<td>Software Developer</td>
-			<td>Internship</td>
-			<td>Feb 01, 2024</td>
+			<td class="employment-type-column">Internship</td>
+			<td class="start-date-column">Feb 01, 2024</td>
 		</tr>
 		<tr>
 			<td>Intus Workforce Solutions</td>
 			<td>Software Developer</td>
-			<td>Internship</td>
-			<td>Sep 01, 2023</td>
+			<td class="employment-type-column">Internship</td>
+			<td class="start-date-column">Sep 01, 2023</td>
 		</tr>
 		<tr>
 			<td>Q2-software</td>
 			<td>Laravel Developer</td>
-			<td>Part Time</td>
-			<td>Jul 01, 2022</td>
+			<td class="employment-type-column">Part Time</td>
+			<td class="start-date-column">Jul 01, 2022</td>
 		</tr>
 		<tr>
 			<td>Cellro | CNC Automation</td>
 			<td>Software Developer</td>
-			<td>Internship</td>
-			<td>Mar 01, 2022</td>
+			<td class="employment-type-column">Internship</td>
+			<td class="start-date-column">Mar 01, 2022</td>
 		</tr>
 		<tr>
 			<td>Educator</td>
 			<td>Support Engineer</td>
-			<td>Part Time</td>
-			<td>Feb 03, 2021</td>
+			<td class="employment-type-column">Part Time</td>
+			<td class="start-date-column">Feb 03, 2021</td>
 		</tr>
 	</table>
 </Layout>
+<style>
+	table {
+		border-collapse: collapse;
+	}
+
+	tr {
+		border-bottom: 1px solid black;
+	}
+
+	@media (max-width: 720px) {
+		table {
+			border-collapse: separate;
+		}
+
+		th,
+		td {
+			box-shadow: 5px 2px 3px lightgray;
+			border-radius: 5px;
+			border: 2pt;
+			border-style: solid;
+			padding-left: 5pt;
+			border-color: gray;
+		}
+		.employment-type-column {
+			display: none;
+		}
+
+		.start-date-column {
+			display: none;
+		}
+	}
+</style>

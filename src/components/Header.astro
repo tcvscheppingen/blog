@@ -5,7 +5,7 @@ import HeaderLink from "./HeaderLink.astro";
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<h2><a href="/" class="site-title">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Posts</HeaderLink>
@@ -52,8 +52,12 @@ import HeaderLink from "./HeaderLink.astro";
 		border-bottom-color: var(--accent);
 	}
 	@media (max-width: 720px) {
-		.social-links {
+		.site-title {
 			display: none;
+		}
+
+		nav a {
+			font-size: medium;
 		}
 	}
 </style>

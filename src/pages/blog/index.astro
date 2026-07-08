@@ -110,10 +110,14 @@ const posts = (await getCollection("blog")).sort(
 					margin-bottom: 0;
 				}
 				ul li:first-child .title {
-					font-size: 1.563em;
+					font-size: 1em;
 				}
 				.tags {
-					justify-content: center;
+					display: none;
+				}
+
+				.title {
+					font-size: 1em;
 				}
 			}
 		</style>
@@ -146,6 +150,7 @@ const posts = (await getCollection("blog")).sort(
 											height={360}
 											src={post.data.heroImage}
 											alt=""
+											class="hero-image"
 										/>
 									)}
 									<h4 class="title">{post.data.title}</h4>

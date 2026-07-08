@@ -92,5 +92,11 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			</article>
 		</main>
 		<Footer />
-	</body>
+	</body><style>
+		@media (max-width: 720px) {
+			.hero-image {
+				display: none;
+			}
+		}
+	</style>
 </html>
