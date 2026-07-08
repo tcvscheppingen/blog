@@ -3,6 +3,7 @@ title: "How to setup NeoVim for Java with AstroVim and remote debugging"
 description: "Set up the NeoVim editor for developing Java applications"
 pubDate: "Jun 29 2026"
 heroImage: "../../assets/hero-images/java-nvim.jpg"
+tags: ["neovim", "java", "development", "tutorial"]
 ---
 
 This tutorial will show you how to quickly configure NeoVim for developing Java applications that are running in Docker.

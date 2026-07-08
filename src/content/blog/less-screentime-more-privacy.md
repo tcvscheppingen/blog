@@ -3,6 +3,7 @@ title: "Do you need to be online all the time?"
 description: "An obvious way to reduce data harvesting"
 pubDate: "Jun 25 2026"
 heroImage: "../../assets/hero-images/be-offline.jpg"
+tags: ["privacy", "digital-wellbeing", "opinion"]
 ---
 
 One of the principles of security is only storing data that actually needs to be stored. Data that is not stored cannot be lost or leaked to malicious parties. GDPR law states that only data that is absolutely necessary for legitimate purposes can be stored.

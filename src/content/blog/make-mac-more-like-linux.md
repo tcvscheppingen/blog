@@ -3,6 +3,7 @@ title: "A few tools that will make MacOS less painful to use"
 description: "Make MacOS feel like Linux and make it less of a pain to use"
 pubDate: "Jul 7 2026"
 heroImage: "../../assets/hero-images/macos-like-linux.png"
+tags: ["macos", "linux", "tools", "tutorial"]
 ---
 
 There are situations where you can not use your preferred operating system.
