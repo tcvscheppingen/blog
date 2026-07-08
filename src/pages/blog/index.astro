@@ -1,13 +1,13 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Header from "../../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
-const posts = (await getCollection('blog')).sort(
+const posts = (await getCollection("blog")).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
@@ -135,23 +135,35 @@ const posts = (await getCollection('blog')).sort(
 							<li
 								data-title={post.data.title.toLowerCase()}
 								data-description={post.data.description.toLowerCase()}
-								data-tags={(post.data.tags ?? []).join(' ').toLowerCase()}
+								data-tags={(post.data.tags ?? [])
+									.join(" ")
+									.toLowerCase()}
 							>
 								<a href={`/blog/${post.id}/`}>
 									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
+										<Image
+											width={720}
+											height={360}
+											src={post.data.heroImage}
+											alt=""
+										/>
 									)}
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
+										<FormattedDate
+											date={post.data.pubDate}
+										/>
 									</p>
-									{post.data.tags && post.data.tags.length > 0 && (
-										<div class="tags">
-											{post.data.tags.map((tag) => (
-												<span class="tag">{tag}</span>
-											))}
-										</div>
-									)}
+									{post.data.tags &&
+										post.data.tags.length > 0 && (
+											<div class="tags">
+												{post.data.tags.map((tag) => (
+													<span class="tag">
+														{tag}
+													</span>
+												))}
+											</div>
+										)}
 								</a>
 							</li>
 						))
@@ -161,24 +173,30 @@ const posts = (await getCollection('blog')).sort(
 		</main>
 		<Footer />
 		<script>
-			const input = document.getElementById('search') as HTMLInputElement;
-			const items = document.querySelectorAll<HTMLLIElement>('ul li');
-			const noResults = document.getElementById('no-results') as HTMLParagraphElement;
+			const input = document.getElementById("search") as HTMLInputElement;
+			const items = document.querySelectorAll<HTMLLIElement>("ul li");
+			const noResults = document.getElementById(
+				"no-results",
+			) as HTMLParagraphElement;
 
-			input.addEventListener('input', () => {
+			input.addEventListener("input", () => {
 				const query = input.value.toLowerCase().trim();
 				let visible = 0;
 
 				items.forEach((item) => {
-					const title = item.dataset.title ?? '';
-					const description = item.dataset.description ?? '';
-					const tags = item.dataset.tags ?? '';
-					const matches = !query || title.includes(query) || description.includes(query) || tags.includes(query);
-					item.style.display = matches ? '' : 'none';
+					const title = item.dataset.title ?? "";
+					const description = item.dataset.description ?? "";
+					const tags = item.dataset.tags ?? "";
+					const matches =
+						!query ||
+						title.includes(query) ||
+						description.includes(query) ||
+						tags.includes(query);
+					item.style.display = matches ? "" : "none";
 					if (matches) visible++;
 				});
 
-				noResults.style.display = visible === 0 ? 'block' : 'none';
+				noResults.style.display = visible === 0 ? "block" : "none";
 			});
 		</script>
 	</body>

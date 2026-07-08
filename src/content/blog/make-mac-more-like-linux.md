@@ -43,3 +43,4 @@ You can also download Rectangle through their website [here](https://rectangleap
 When Rectangle is installed you can use numerous hotkeys to move and resize windows.
 
 These are just a few tools that will make MacOS better to use. By no means is this post exhaustive, but it is a starting point.
+If you want a more in-depth tutorial on how to make MacOS feel like Linux, check out [this](https://sudoscience.blog/2024/11/27/make-macos-feel-more-like-linux/) blogpost.

@@ -3,7 +3,7 @@ title: "Use technology as tools not as toys"
 description: "Use technology to do useful things"
 pubDate: "Jun 27 2026"
 heroImage: "../../assets/hero-images/tools.jpg"
-tags: ["technology", "digital-wellbeing", "opinion"]
+tags: ["technology", "digital-wellbeing", "opinion", "minimalism"]
 ---
 
 One of the biggest faults of our modern technology, is that we use them as toys instead of tools.

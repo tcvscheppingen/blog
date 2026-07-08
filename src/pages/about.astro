@@ -5,8 +5,10 @@ import Layout from "../layouts/BlogPost.astro";
 
 const workExperienceStartingDate = new Date(2021, 1, 3);
 const currentDate = Date.now();
-const timeDiff = currentDate - workExperienceStartingDate;
-const workExperienceInYears = Math.round((timeDiff / ( 1000 * 60 * 60 * 24) / 365));
+const timeDiff = currentDate - workExperienceStartingDate.getTime();
+const workExperienceInYears = Math.round(
+	timeDiff / (1000 * 60 * 60 * 24) / 365,
+);
 ---
 
 <Layout
@@ -31,7 +33,9 @@ const workExperienceInYears = Math.round((timeDiff / ( 1000 * 60 * 60 * 24) / 36
 		developing workforce management software. Right now I work as a
 		full-stack Java/Vue developer for the same company.
 	</p>
-	<p>Below is an overview of my {workExperienceInYears} years of work experience:</p>
+	<p>
+		Below is an overview of my {workExperienceInYears} years of work experience:
+	</p>
 	<table>
 		<tr>
 			<th>Company</th>
@@ -56,7 +60,7 @@ const workExperienceInYears = Math.round((timeDiff / ( 1000 * 60 * 60 * 24) / 36
 			<td>Software Developer</td>
 			<td>Internship</td>
 			<td>Feb 01, 2024</td>
-		</tr>	
+		</tr>
 		<tr>
 			<td>Intus Workforce Solutions</td>
 			<td>Software Developer</td>
