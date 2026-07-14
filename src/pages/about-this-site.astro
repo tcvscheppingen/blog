@@ -1,0 +1,67 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import NavBar from "../components/NavBar.astro";
+---
+
+<!doctype html>
+<hmtl lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <NavBar />
+        <main>
+            <h1>About this site</h1>
+            <p>
+                I started this website as a hobby project to learn about
+                front-end development and CSS styling. My experience is mainly
+                in back-end development, so I want improve my front-end
+                development skills.
+            </p>
+            <p>
+                In my opinion using AI is a bad way to learn new things. When
+                you let AI write code, you don't gain any knowledge from it.
+                Even if you take time to read the code that AI writes, you will
+                learn less from it. I always try to limit my use of AI. It is a
+                smart tool that is great at many things, but can also keep us
+                from learning new things. This is especially the case in
+                development.
+            </p>
+            <p>
+                This is actually another reason why I made this page: I want to
+                learn more about development while using as little AI as
+                possible. We have been writing code for decades without LLMs, I
+                am sure we will be fine if we don't use it for everything.
+            </p>
+            <p>
+                A good general rule of thumb when it comes to using AI, is to
+                always try to do it yourself first. Never start by asking AI for
+                an answer. If you get stuck after a while, use the old fashioned
+                way of searching the internet and places like StackOverflow. If
+                you're still stuck after that, consider asking an AI.
+            </p>
+            <p>That being said, I did use AI for a few things on this page:</p>
+            <ul>
+                <li>Generating dark mode CSS styles.</li>
+                <li>Checking spelling and grammar on pages and blog posts.</li>
+                <li>Navigation bar and menu styling.</li>
+                <li>Search functionality in blog.</li>
+            </ul>
+            <p>
+                Another goal I have for this website is to make it as light as
+                possible, while still having it look nice. There are many
+                websites that are build with heavy frameworks, lots of scripts
+                and of course, ads.
+            </p>
+            <p>
+                I think many websites don't need to be reactive and for websites
+                like this one, a basic Static Site Generator is more than
+                enough. This website is build with AstroJS, but there are other
+                options like Hugo. JavaScript is definitely not a bad thing,
+                don't get me wrong. But for many websites a few simple scripts
+                and some HTML and CSS is enough.
+            </p>
+        </main>
+    </body>
+</hmtl>
