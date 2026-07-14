@@ -414,3 +414,9 @@ RemoteFileSigLevel = Never
 ```
 
 Then I was able to install the packages using basestrap
+
+### Sources
+
+- [Artix install video by Luke Smith](https://videos.lukesmith.xyz/w/n1cMQYYzwPoegM2oXfz2iC)
+- [artixlinux.org](https://artixlinux.org/)
+- [larbs.xyz](https://larbs.xyz/)
