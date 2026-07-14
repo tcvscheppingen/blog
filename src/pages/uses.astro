@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
+import NavBar from "../components/NavBar.astro";
 ---
 
 <!doctype html>
@@ -11,7 +11,7 @@ import Header from "../components/Header.astro";
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     </head>
     <body>
-        <Header />
+        <NavBar />
         <main>
             <h1>Uses</h1>
             <p>Here are some products that I like to use:</p>
