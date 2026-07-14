@@ -27,7 +27,7 @@
 	--gray: 148, 163, 184;
 	--gray-light: 45, 51, 66;
 	--gray-dark: 225, 228, 235;
-	--gray-gradient: rgba(var(--gray-light), 50%), var(--bg);
+	--gray-gradient: var(--bg), var(--bg);
 	--box-shadow:
 		0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 45%),
 		0 16px 32px rgba(0, 0, 0, 45%);
@@ -41,7 +41,7 @@
 		--gray: 148, 163, 184;
 		--gray-light: 45, 51, 66;
 		--gray-dark: 225, 228, 235;
-		--gray-gradient: rgba(var(--gray-light), 50%), var(--bg);
+		--gray-gradient: var(--bg), var(--bg);
 		--box-shadow:
 			0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 45%),
 			0 16px 32px rgba(0, 0, 0, 45%);
