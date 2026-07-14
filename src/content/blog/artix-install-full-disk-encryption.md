@@ -1,7 +1,7 @@
 ---
 title: "How to install Artix with full disk encryption"
 description: "A guide on how to install Artix Linux with full disk encryption"
-pubDate: "Jul 8 2026"
+pubDate: "Jul 14 2026"
 heroImage: "../../assets/hero-images/artix.jpg"
 tags: ["linux", "privacy", "artix", "tutorial", "installation"]
 ---
@@ -301,7 +301,7 @@ Edit that line by adding the UUIDs like so:
 
 ```bash
 # <existing items> is a placeholder, don't add it.
-GRUB_CMDLINE_LINUX_DEFAULT=<existing items> cryptdevice=UUID=<add UUID of encrypted partition>:<the name of your encrypted partition> root=UUID=<add UUID of decrypted partition>:
+GRUB_CMDLINE_LINUX_DEFAULT=<existing items> cryptdevice=UUID=<add UUID of encrypted partition>:<the name of your encrypted partition> root=UUID=<add UUID of decrypted partition>
 ```
 
 _Make sure to clean up any other output from `lsblk -f` as this will mess up your grub file_
