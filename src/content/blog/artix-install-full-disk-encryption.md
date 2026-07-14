@@ -1,5 +1,5 @@
 ---
-title: "How to install Artix with full disk encryption"
+title: "How to install Artix Linux with full disk encryption"
 description: "A guide on how to install Artix Linux with full disk encryption"
 pubDate: "Jul 14 2026"
 heroImage: "../../assets/hero-images/artix.jpg"
