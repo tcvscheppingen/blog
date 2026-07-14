@@ -9,7 +9,7 @@ tags: ["neovim", "java", "development", "tutorial"]
 This tutorial will show you how to quickly configure NeoVim for developing Java applications that are running in Docker.
 For more information please take a look at the official AstroVim [documentation](https://docs.astronvim.com/).
 
-_Note: this guide is aimed at MacOs users, but most things will apply to Linux._
+_Note: this guide is aimed at macOS users, but most things will apply to Linux._
 
 1. Make a backup of your current nvim config
 
@@ -116,7 +116,7 @@ opts = {
 }
 ```
 
-Now you should have code completetion for Java, as well as Lombok annotation recognition.
+Now you should have code completion for Java, as well as Lombok annotation recognition.
 
 If you are running a Java application in Docker, you can use remote debugging with NeoVim.
 I won't go into the details about how to set up your application for Docker, but I will show you how to set up NeoVim.

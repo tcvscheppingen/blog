@@ -17,7 +17,7 @@ To get started with hosting a local instance of SearXNG, you will need Docker in
 
 ## Setup
 
-1. Create the enviroment:
+1. Create the environment:
 
 ```bash
 # Create the environment and configuration directories

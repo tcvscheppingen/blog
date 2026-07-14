@@ -12,14 +12,14 @@ We could translate the principle of data minimization to online privacy as well.
 
 So what if instead we prevent the generation of data that can be linked to us, by simply spending less time online? Time spent offline is time not spent generating data.
 
-This seems like an obivious suggestion of course, but you are not generating data if you're offline, right? Yes, but there is a caveat. Most big tech companies are tracking you regardless of whether you are actively using their services or not. You might close down a browser window or app, but the tracking continues nevertheless.
+This seems like an obvious suggestion of course, but you are not generating data if you're offline, right? Yes, but there is a caveat. Most big tech companies are tracking you regardless of whether you are actively using their services or not. You might close down a browser window or app, but the tracking continues nevertheless.
 
-Another obivious suggestion: just leave your phone at home. You probably won't need it when going to the grocery store or to a birthday party. It might even improve your social interactions when you leave your phone at home.
+Another obvious suggestion: just leave your phone at home. You probably won't need it when going to the grocery store or to a birthday party. It might even improve your social interactions when you leave your phone at home.
 
 It might seem slightly uncomfortable at first, but you will be surprised how easy it is to leave your phone at home.
 You might say: "But I need my phone in case of an emergency".
-When was the last time you actually where in a situation the required immediate access to a phone?
-We rarely find ourselvs in situations where immediate access to a phone is a matter of life and death.
+When was the last time you actually were in a situation that required immediate access to a phone?
+We rarely find ourselves in situations where immediate access to a phone is a matter of life and death.
 
 Leaving your devices at home will stop generating data to be harvested, even if just for a little while. It also might free up some mental resources if there is nothing to distract you.
 
