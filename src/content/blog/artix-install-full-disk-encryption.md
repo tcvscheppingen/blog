@@ -7,7 +7,7 @@ tags: ["linux", "privacy", "artix", "tutorial", "installation"]
 ---
 
 I recently replaced Linux Mint with Artix and runit as my init system.
-The tutorial I followed was [this](https://videos.lukesmith.xyz/w/n1cMQYYzwPoegM2oXfz2iC) video by Luke Smith.
+The tutorial I followed was [this video by Luke Smith](https://videos.lukesmith.xyz/w/n1cMQYYzwPoegM2oXfz2iC).
 It shows how to install Artix with full disk encryption. This post is a written version of that tutorial,
 with some troubleshooting of problems that I personally ran into during the installation.
 

@@ -7,7 +7,7 @@ tags: ["neovim", "java", "development", "tutorial"]
 ---
 
 This tutorial will show you how to quickly configure NeoVim for developing Java applications that are running in Docker.
-For more information please take a look at the official AstroVim [documentation](https://docs.astronvim.com/).
+For more information please take a look at the [official AstroVim documentation](https://docs.astronvim.com/).
 
 _Note: this guide is aimed at macOS users, but most things will apply to Linux._
 

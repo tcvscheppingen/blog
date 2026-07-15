@@ -15,7 +15,7 @@ This post will give some tips on how to get some of that functionality on MacOS.
 
 The first thing you can do to make MacOS function a little bit more like a Linux distro, is to install a package manager.
 Brew is the most popular package manager for MacOS and while it is not as good as something like pacman for Arch or Artix,
-it still is far better than no package manager at all. More information on brew [here](https://brew.sh/)
+it still is far better than no package manager at all. [More information on brew](https://brew.sh/)
 
 You can install brew with the following command:
 
@@ -39,8 +39,8 @@ It is not a full tiling window manager like DWM, but it is still nice to be able
 
 You can use RayCast to manage brew applications to install new ones. Open RayCast and enable Brew in the settings.
 Then type `brew` into RayCast and use the Brew search function to search for Rectangle.
-You can also download Rectangle through their website [here](https://rectangleapp.com/).
+You can also [download Rectangle here](https://rectangleapp.com/).
 When Rectangle is installed you can use numerous hotkeys to move and resize windows.
 
 These are just a few tools that will make MacOS better to use. By no means is this post exhaustive, but it is a starting point.
-If you want a more in-depth tutorial on how to make MacOS feel like Linux, check out [this](https://sudoscience.blog/2024/11/27/make-macos-feel-more-like-linux/) blogpost.
+If you want a more in-depth tutorial on how to make MacOS feel like Linux, check out [this blogpost by Jack Allan Hyde](https://sudoscience.blog/2024/11/27/make-macos-feel-more-like-linux/) .
