@@ -3,12 +3,19 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
+import { unified } from '@astrojs/markdown-remark';
+import { remarkReadingTime } from './remark-reading-time.mjs';
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://example.com",
   integrations: [mdx(), sitemap()],
   prefetch: true,
+  markdown: {
+    processor: unified({
+      remarkPlugins: [remarkReadingTime]
+    })
+  },
   fonts: [
     {
       provider: fontProviders.local(),

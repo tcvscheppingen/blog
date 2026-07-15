@@ -1,6 +1,5 @@
 ---
 import AboutHeroImage from "../assets/me.jpeg";
-import CommitHistory from "../components/CommitHistory.astro";
 import Layout from "../layouts/BlogPost.astro";
 
 const workExperienceStartingDate = new Date(2021, 1, 3);
@@ -94,6 +93,12 @@ const workExperienceInYears = Math.round(
 
 	tr {
 		border-bottom: 1px solid rgb(var(--gray-dark));
+	}
+
+	object.email {
+		height: 2em;
+		margin: -1em 0;
+		vertical-align: middle;
 	}
 
 	@media (max-width: 720px) {
