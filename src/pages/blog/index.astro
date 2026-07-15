@@ -143,7 +143,10 @@ const posts = (await getCollection("blog")).sort(
 									.join(" ")
 									.toLowerCase()}
 							>
-								<a href={`/blog/${post.id}/`}>
+								<a
+									href={`/blog/${post.id}/`}
+									data-astro-prefetch="tap"
+								>
 									{post.data.heroImage && (
 										<Image
 											width={720}

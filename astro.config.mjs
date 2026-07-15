@@ -8,7 +8,7 @@ import { defineConfig, fontProviders } from "astro/config";
 export default defineConfig({
   site: "https://example.com",
   integrations: [mdx(), sitemap()],
-
+  prefetch: true,
   fonts: [
     {
       provider: fontProviders.local(),

@@ -40,27 +40,36 @@ import NavBar from "../components/NavBar.astro";
 				books or just sharing some thoughts about a topic.
 			</p>
 			<p>
-				You can find more information on why and how I made this website
-				on <a href="/about-this-site">this</a> page
+				<a href="/about-this-site" data-astro-prefetch
+					>More information on how and why I made this website.</a
+				>
 			</p>
 			<h3>Pages:</h3>
 			<ul>
 				<li>
-					<a href="/blog">Blog posts, reviews, tutorials</a>
-				</li>
-				<li>
-					<a href="/books">A list of books I like or want to read</a>
-				</li>
-				<li>
-					<a href="/websites"
-						>A list of websites, services and software I like</a
+					<a href="/blog" data-astro-prefetch
+						>Blog posts, reviews, tutorials</a
 					>
 				</li>
 				<li>
-					<a href="/uses">A list of things I use</a>
+					<a href="/books" data-astro-prefetch>
+						A list of books I like or want to read
+					</a>
 				</li>
 				<li>
-					<a href="/about">Some information about me</a>
+					<a href="/websites" data-astro-prefetch>
+						A list of websites, services and software I like
+					</a>
+				</li>
+				<li>
+					<a href="/uses" data-astro-prefetch>
+						A list of things I use
+					</a>
+				</li>
+				<li>
+					<a href="/about" data-astro-prefetch
+						>Some information about me</a
+					>
 				</li>
 			</ul>
 		</main>
