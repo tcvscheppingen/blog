@@ -1,5 +1,5 @@
 ---
-title: "Use technology as tools not as toys"
+title: "Use technology as tools, not as toys"
 description: "Use technology to do useful things"
 pubDate: "Jun 27 2026"
 heroImage: "../../assets/hero-images/tools.jpg"
