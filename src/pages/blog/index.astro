@@ -7,9 +7,10 @@ import FormattedDate from "../../components/FormattedDate.astro";
 import NavBar from "../../components/NavBar.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
-const posts = (await getCollection("blog")).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+// Retrieve only blogposts that are on or before the current date.
+const posts = (await getCollection("blog"))
+	.filter((post) => post.data.pubDate.valueOf() <= Date.now())
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
