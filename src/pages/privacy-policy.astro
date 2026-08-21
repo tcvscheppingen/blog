@@ -1,0 +1,26 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
+---
+<!doctype html>
+<hmtl lang="en">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body>
+        <NavBar />
+        <main>
+            <h1>Privacy Policy</h1>
+            <p>This website does not sell or otherwise distribute any information to third-parties. This website is hosted by 
+            <a href="statichost.eu"> statichost.eu</a> please refer to their privacy policy for additional information.</p>
+            <p>This website uses a cookie for the following functionality:</p>
+            <ul>
+                <li>To store the user theme preference (light or dark)</li>
+            </ul>
+        </main>
+        <Footer />
+    </body>
+</hmtl>
+            
