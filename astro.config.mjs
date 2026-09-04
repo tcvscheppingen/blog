@@ -10,7 +10,9 @@ import { remarkReadingTime } from './remark-reading-time.mjs';
 export default defineConfig({
   site: "https://example.com",
   integrations: [mdx(), sitemap()],
-  prefetch: true,
+  prefetch: {
+    defaultStrategy: 'load'
+  },
   markdown: {
     processor: unified({
       remarkPlugins: [remarkReadingTime]
