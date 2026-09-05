@@ -21,6 +21,17 @@
 }
 
 :root[data-theme="dark"] {
+	a {
+		color: var(--orange);
+		text-decoration: none;
+		text-decoration-color: var(--accent);
+	}
+
+	a:hover {
+		color: var(--accent);
+		text-decoration-thickness: 1.5pt;
+	}
+
 	color-scheme: dark;
 	--bg: #14161c;
 	--black: 235, 238, 245;
