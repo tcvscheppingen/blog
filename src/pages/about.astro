@@ -1,6 +1,12 @@
 ---
 import AboutHeroImage from "../assets/me.jpeg";
 import Layout from "../layouts/BlogPost.astro";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import NavBar from "../components/NavBar.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import HeroImage from "../components/HeroImage.astro";
+import { Image } from "astro:assets";
 
 const workExperienceStartingDate = new Date(2021, 1, 3);
 const currentDate = Date.now();
@@ -10,89 +16,116 @@ const workExperienceInYears = Math.round(
 );
 ---
 
-<Layout
-	title="About Me"
-	description="Just some information about me"
-	pubDate={new Date("July 25 2026")}
-	heroImage={AboutHeroImage}
->
-	<p>
-		I am a developer who enjoys running, programming, reading and good
-		coffee. Topics I am interested in are: privacy, security and
-		programming. I graduated in 2024 with a bachelor's degree in Information and
-		Communication Technology from the Ede Christian University of Applied
-		Sciences.
-	</p>
-	<p>
-		My journey as a developer started in elementary school when I took a
-		course in plain HTML. Later I taught myself Python by downloading public
-		domain datasets and analyzing them with Pandas and Numpy. I worked at a
-		startup as a full-stack Laravel developer with a focus on back-end and
-		quality control. After that I worked as a software tester for a company
-		developing workforce management software. Right now I work as a
-		full-stack Java/Vue developer for the same company.
-	</p>
-	<p>
-		Below is an overview of my ~{workExperienceInYears} years of work experience:<br />
-		<i>(Please note that part time positions are concurrent with internships)</i>
-	</p>
-	<div class="experience-table">
-	<table class="work-xp">
-		<tr>
-			<th>Company</th>
-			<th>Role</th>
-			<th class="employment-type-column">Employment type</th>
-			<th class="start-date-column">Start date</th>
-		</tr>
-		<tr>
-			<td>Intus Workforce Solutions</td>
-			<td>Software Developer</td>
-			<td class="employment-type-column">Full Time</td>
-			<td class="start-date-column">Nov 01, 2025</td>
-		</tr>
-		<tr>
-			<td>Intus Workforce Solutions</td>
-			<td>Software Tester</td>
-			<td class="employment-type-column">Full Time</td>
-			<td class="start-date-column">Sep 01, 2024</td>
-		</tr>
-		<tr>
-			<td>Nederlandse Voedsel- en Warenautoriteit</td>
-			<td>Software Developer</td>
-			<td class="employment-type-column">Internship</td>
-			<td class="start-date-column">Feb 01, 2024</td>
-		</tr>
-		<tr>
-			<td>Intus Workforce Solutions</td>
-			<td>Software Developer</td>
-			<td class="employment-type-column">Internship</td>
-			<td class="start-date-column">Sep 01, 2023</td>
-		</tr>
-		<tr>
-			<td>Q2-software</td>
-			<td>Laravel Developer</td>
-			<td class="employment-type-column">Part Time</td>
-			<td class="start-date-column">Jul 01, 2022</td>
-		</tr>
-		<tr>
-			<td>Cellro | CNC Automation</td>
-			<td>Software Developer</td>
-			<td class="employment-type-column">Internship</td>
-			<td class="start-date-column">Mar 01, 2022</td>
-		</tr>
-		<tr>
-			<td>Educator</td>
-			<td>Support Engineer</td>
-			<td class="employment-type-column">Part Time</td>
-			<td class="start-date-column">Feb 03, 2021</td>
-		</tr>
-	</table>
-	</div>
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<NavBar />
+		<main>
+			<div>
+				<Image
+					src={AboutHeroImage}
+					alt="A picture of me"
+					class="about-image"
+				/>
+			</div>
+			<div>
+				<p>
+					I am a developer who enjoys running, programming, reading
+					and good coffee. Topics I am interested in are: privacy,
+					security and programming. I graduated in 2024 with a
+					bachelor's degree in Information and Communication
+					Technology from the Ede Christian University of Applied
+					Sciences.
+				</p>
+				<p>
+					My journey as a developer started in elementary school when
+					I took a course in plain HTML. Later I taught myself Python
+					by downloading public domain datasets and analyzing them
+					with Pandas and Numpy. I worked at a startup as a full-stack
+					Laravel developer with a focus on back-end and quality
+					control. After that I worked as a software tester for a
+					company developing workforce management software. Right now
+					I work as a full-stack Java/Vue developer for the same
+					company.
+				</p>
+			</div>
+			<p>
+				Below is an overview of my ~{workExperienceInYears} years of work
+				experience:<br />
+				<i
+					>(Please note that part time positions are concurrent with
+					internships)</i
+				>
+			</p>
+			<div class="experience-table">
+				<table class="work-xp">
+					<tr>
+						<th>Company</th>
+						<th>Role</th>
+						<th class="employment-type-column">Employment type</th>
+						<th class="start-date-column">Start date</th>
+					</tr>
+					<tr>
+						<td>Intus Workforce Solutions</td>
+						<td>Software Developer</td>
+						<td class="employment-type-column">Full Time</td>
+						<td class="start-date-column">Nov 01, 2025</td>
+					</tr>
+					<tr>
+						<td>Intus Workforce Solutions</td>
+						<td>Software Tester</td>
+						<td class="employment-type-column">Full Time</td>
+						<td class="start-date-column">Sep 01, 2024</td>
+					</tr>
+					<tr>
+						<td>Nederlandse Voedsel- en Warenautoriteit</td>
+						<td>Software Developer</td>
+						<td class="employment-type-column">Internship</td>
+						<td class="start-date-column">Feb 01, 2024</td>
+					</tr>
+					<tr>
+						<td>Intus Workforce Solutions</td>
+						<td>Software Developer</td>
+						<td class="employment-type-column">Internship</td>
+						<td class="start-date-column">Sep 01, 2023</td>
+					</tr>
+					<tr>
+						<td>Q2-software</td>
+						<td>Laravel Developer</td>
+						<td class="employment-type-column">Part Time</td>
+						<td class="start-date-column">Jul 01, 2022</td>
+					</tr>
+					<tr>
+						<td>Cellro | CNC Automation</td>
+						<td>Software Developer</td>
+						<td class="employment-type-column">Internship</td>
+						<td class="start-date-column">Mar 01, 2022</td>
+					</tr>
+					<tr>
+						<td>Educator</td>
+						<td>Support Engineer</td>
+						<td class="employment-type-column">Part Time</td>
+						<td class="start-date-column">Feb 03, 2021</td>
+					</tr>
+				</table>
+			</div>
+		</main>
+	</body>
+</html>
 <style>
+	.about-image {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+		width: 50%;
+		height: auto;
+	}
 
 	.experience-table {
-					overflow-x: auto;
+		overflow-x: auto;
 	}
 
 	table {
@@ -124,6 +157,5 @@ const workExperienceInYears = Math.round(
 			padding-left: 2pt;
 			border-color: gray;
 		}
-
 	}
 </style>
