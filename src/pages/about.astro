@@ -36,6 +36,7 @@ const workExperienceInYears = Math.round(
 		Below is an overview of my ~{workExperienceInYears} years of work experience:<br />
 		<i>(Please note that part time positions are concurrent with internships)</i>
 	</p>
+	<div class="experience-table">
 	<table class="work-xp">
 		<tr>
 			<th>Company</th>
@@ -45,7 +46,7 @@ const workExperienceInYears = Math.round(
 		</tr>
 		<tr>
 			<td>Intus Workforce Solutions</td>
-			<td>Java Developer</td>
+			<td>Software Developer</td>
 			<td class="employment-type-column">Full Time</td>
 			<td class="start-date-column">Nov 01, 2025</td>
 		</tr>
@@ -86,8 +87,14 @@ const workExperienceInYears = Math.round(
 			<td class="start-date-column">Feb 03, 2021</td>
 		</tr>
 	</table>
+	</div>
 </Layout>
 <style>
+
+	.experience-table {
+					overflow-x: auto;
+	}
+
 	table {
 		border-collapse: collapse;
 	}
@@ -109,19 +116,14 @@ const workExperienceInYears = Math.round(
 
 		th,
 		td {
-			box-shadow: 5px 2px 3px lightgray;
+			font-size: 16px;
+			box-shadow: 2px 2px 3px lightgray;
 			border-radius: 5px;
-			border: 2pt;
+			border: 1pt;
 			border-style: solid;
-			padding-left: 5pt;
+			padding-left: 2pt;
 			border-color: gray;
 		}
-		.employment-type-column {
-			display: none;
-		}
 
-		.start-date-column {
-			display: none;
-		}
 	}
 </style>
