@@ -1,64 +1,37 @@
-# Astro Starter Kit: Blog
+# About this blog
 
-```sh
-pnpm create astro@latest -- --template blog
-```
+I started this website as a hobby project to learn about
+front-end development and CSS styling. My experience is mainly
+in back-end development, so I want improve my front-end
+development skills.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+In my opinion using AI is a bad way to learn new things. When
+you let AI write code, you don't gain any knowledge from it.
+Even if you take time to read the code that AI writes, you will
+learn less from it. I always try to limit my use of AI. It is a
+smart tool that is great at many things, but can also keep us
+from learning new things. This is especially the case in
+development.
 
-Features:
+This is actually another reason why I made this page: I want to
+learn more about development while using as little AI as
+possible. We have been writing code for decades without LLMs, I
+am sure we will be fine if we don't use it for everything.
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+A good general rule of thumb when it comes to using AI, is to
+always try to do it yourself first. Never start by asking AI for
+an answer. If you get stuck after a while, use the old fashioned
+way of searching the internet and places like StackOverflow. If
+you're still stuck after that, consider asking an AI.
 
-## 🚀 Project Structure
+Another goal I have for this website is to make it as light as
+possible, while still having it look nice. There are many
+websites that are build with heavy frameworks, lots of scripts
+and of course, ads.
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-| `node ./dist/server/entry.mjs` | Run build with node                      | 
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+I think many websites don't need to be reactive and for websites
+like this one, a basic Static Site Generator is more than
+enough. This website is build with AstroJS, but there are other
+options like Hugo. JavaScript is definitely not a bad thing,
+don't get me wrong. But for many websites a few simple scripts
+and some HTML and CSS is enough.
