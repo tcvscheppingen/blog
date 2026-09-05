@@ -5,14 +5,14 @@ import HeaderLink from "./HeaderLink.astro";
 
 <header>
 	<nav role="navigation">
-		<h2><a href="/" class="site-title">{SITE_TITLE}</a></h2>
+		<h2><a href="/" class="site-title nav-link">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Posts</HeaderLink>
-			<HeaderLink href="/books">Books</HeaderLink>
-			<HeaderLink href="/websites">Links</HeaderLink>
-			<HeaderLink href="/uses">Uses</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			<HeaderLink class="nav-link" href="/">Home</HeaderLink>
+			<HeaderLink class="nav-link" href="/blog">Posts</HeaderLink>
+			<HeaderLink class="nav-link" href="/books">Books</HeaderLink>
+			<HeaderLink class="nav-link" href="/websites">Links</HeaderLink>
+			<HeaderLink class="nav-link" href="/uses">Uses</HeaderLink>
+			<HeaderLink class="nav-link" href="/about">About</HeaderLink>
 		</div>
 		<label id="menuToggle" for="menu-checkbox" aria-label="Toggle menu">
 			<input id="menu-checkbox" type="checkbox" />
@@ -21,12 +21,12 @@ import HeaderLink from "./HeaderLink.astro";
 			<span></span>
 		</label>
 		<ul id="menu">
-			<li><HeaderLink href="/">Home</HeaderLink></li>
-			<li><HeaderLink href="/blog">Posts</HeaderLink></li>
-			<li><HeaderLink href="/books">Books</HeaderLink></li>
-			<li><HeaderLink href="/websites">Links</HeaderLink></li>
-			<li><HeaderLink href="/uses">Uses</HeaderLink></li>
-			<li><HeaderLink href="/about">About</HeaderLink></li>
+			<li><HeaderLink class="nav-link" href="/">Home</HeaderLink></li>
+			<li><HeaderLink class="nav-link" href="/blog">Posts</HeaderLink></li>
+			<li><HeaderLink class="nav-link" href="/books">Books</HeaderLink></li>
+			<li><HeaderLink class="nav-link" href="/websites">Links</HeaderLink></li>
+			<li><HeaderLink class="nav-link" href="/uses">Uses</HeaderLink></li>
+			<li><HeaderLink class="nav-link" href="/about">About</HeaderLink></li>
 		</ul>
 		<button id="theme-toggle" type="button" aria-label="Toggle dark mode">
 			<svg
@@ -140,6 +140,11 @@ import HeaderLink from "./HeaderLink.astro";
 	}
 	:global(:root[data-theme="dark"]) #theme-toggle .icon-moon {
 		display: none;
+	}
+	:root[data-theme="dark"] {
+		.nav-link {
+			color: white;
+		}
 	}
 
 	@media (max-width: 720px) {
