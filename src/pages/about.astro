@@ -23,15 +23,16 @@ const workExperienceInYears = Math.round(
 	</head>
 	<body>
 		<NavBar />
+		<h2>About me</h2>
+		<div>
+			<Image
+				src={AboutHeroImage}
+				alt="A picture of me"
+				class="about-image"
+			/>
+		</div>
 		<main>
-			<div>
-				<Image
-					src={AboutHeroImage}
-					alt="A picture of me"
-					class="about-image"
-				/>
-			</div>
-			<div>
+			<div class="about-text">
 				<p>
 					I am a developer who enjoys running, programming, reading
 					and good coffee. Topics I am interested in are: privacy,
@@ -118,10 +119,19 @@ const workExperienceInYears = Math.round(
 <style>
 	.about-image {
 		display: block;
+		padding-top: 20px;
 		margin-left: auto;
 		margin-right: auto;
-		width: 50%;
+		width: 20%;
 		height: auto;
+		border-radius: 5px;
+	}
+
+	h2 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding-top: 20px;
 	}
 
 	.experience-table {
@@ -140,6 +150,9 @@ const workExperienceInYears = Math.round(
 		height: 2em;
 		margin: -1em 0;
 		vertical-align: middle;
+	}
+	main {
+		width: 50%;
 	}
 
 	@media (max-width: 720px) {
