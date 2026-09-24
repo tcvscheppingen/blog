@@ -16,7 +16,7 @@ Currently hosted at `https://thymenvscheppingen.statichost.page/` — a subdomai
 | `thymenvs.dev` | Short alternative using initials. |
 
 **Steps:**
-- [ ] Check availability (e.g. via Porkbun, Namecheap, or a Dutch registrar like TransIP for `.nl`)
+- [x] Check availability (e.g. via Porkbun, Namecheap, or a Dutch registrar like TransIP for `.nl`)
 - [ ] Register the domain (~€10-15/yr for `.dev`, similar for `.nl`)
 - [ ] Point DNS at statichost.eu (check their docs for the required CNAME/A records) or configure the custom domain in the statichost.eu dashboard
 - [ ] Update `site` in `astro.config.mjs` to the new domain
