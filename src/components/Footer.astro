@@ -1,10 +1,18 @@
 ---
+import GithubIcon from "../assets/icons/github.svg";
+import RssIcon from "../assets/icons/rss.svg";
 const today = new Date();
 ---
 
 <footer>
 	&copy; {today.getFullYear()} Thymen van Scheppingen <br />
-	<a href="/privacy-policy">Privacy Policy</a> - <a href="https://github.com/tcvscheppingen">GitHub</a>
+	<a href="/privacy-policy">Privacy Policy</a> - <a
+		href="https://github.com/tcvscheppingen"
+		class="icon-link"
+		><GithubIcon width={16} height={16} aria-hidden="true" /> GitHub</a
+	> - <a href="/rss.xml" class="icon-link"
+		><RssIcon width={16} height={16} aria-hidden="true" /> RSS</a
+	>
 </footer>
 
 <style>
@@ -13,5 +21,11 @@ const today = new Date();
 		background: linear-gradient(var(--gray-gradient)) no-repeat;
 		color: rgb(var(--gray));
 		text-align: center;
+	}
+	.icon-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3em;
+		vertical-align: middle;
 	}
 </style>
