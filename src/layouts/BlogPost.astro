@@ -5,15 +5,39 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import NavBar from "../components/NavBar.astro";
+import { AUTHOR_NAME } from "../consts";
 
 type Props = CollectionEntry<"blog">["data"];
 const { title, description, pubDate, updatedDate, heroImage, minutesRead } =
 	Astro.props;
+
+const schema = {
+	"@context": "https://schema.org",
+	"@type": "BlogPosting",
+	headline: title,
+	description,
+	datePublished: pubDate.toISOString(),
+	dateModified: (updatedDate ?? pubDate).toISOString(),
+	author: {
+		"@type": "Person",
+		name: AUTHOR_NAME,
+	},
+	...(heroImage && { image: new URL(heroImage.src, Astro.site).toString() }),
+	mainEntityOfPage: {
+		"@type": "WebPage",
+		"@id": new URL(Astro.url.pathname, Astro.site).toString(),
+	},
+};
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} image={heroImage} />
+		<BaseHead
+				title={title}
+				description={description}
+				image={heroImage}
+				schema={schema}
+			/>
 		<style>
 			.reading-time {
 				max-width: 5em;

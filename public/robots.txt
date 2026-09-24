@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thymenvscheppingen.statichost.page/sitemap-index.xml
