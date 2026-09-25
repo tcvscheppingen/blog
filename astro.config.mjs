@@ -20,7 +20,15 @@ export default defineConfig({
     syntaxHighlight: "prism",
   },
   security: {
-    csp: true,
+    csp: {
+      directives: [
+        "default-src 'none'",
+        "object-src 'none'",
+        "img-src 'self' https://i.ytimg.com",
+        "frame-src https://www.youtube-nocookie.com",
+        "connect-src 'self'",
+      ],
+    },
   },
   build: {
     inlineStylesheets: "never",
