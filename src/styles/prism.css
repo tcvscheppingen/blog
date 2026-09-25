@@ -1,0 +1,84 @@
+/* GitHub Dark-inspired Prism theme (replaces Shiki, which relies on
+   inline styles incompatible with a strict Content-Security-Policy) */
+
+pre[class*="language-"],
+code[class*="language-"] {
+	color: #c9d1d9;
+	background: none;
+}
+
+pre[class*="language-"] {
+	background-color: #24292e;
+}
+
+.token.comment {
+	color: #6a737d;
+	font-style: italic;
+}
+
+.token.punctuation,
+.token.operator,
+.token.assign-left {
+	color: #c9d1d9;
+}
+
+.token.keyword,
+.token.important,
+.token.atrule {
+	color: #f97583;
+}
+
+.token.function,
+.token.class-name {
+	color: #b392f0;
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex {
+	color: #9ecbff;
+}
+
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol {
+	color: #79b8ff;
+}
+
+.token.builtin,
+.token.tag,
+.token.selector {
+	color: #85e89d;
+}
+
+.token.variable,
+.token.parameter,
+.token.environment,
+.token.property,
+.token.attr-name {
+	color: #ffab70;
+}
+
+.token.deleted {
+	color: #f97583;
+}
+
+.token.inserted {
+	color: #85e89d;
+}
+
+.token.entity,
+.token.url {
+	color: #9ecbff;
+	text-decoration: underline;
+}
+
+.token.bold {
+	font-weight: bold;
+}
+
+.token.italic {
+	font-style: italic;
+}

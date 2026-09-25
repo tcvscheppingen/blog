@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@astro-community/astro-embed-youtube':
-        specifier: ^0.5.10
-        version: 0.5.10
       '@astrojs/markdown-remark':
         specifier: ^7.3.1
         version: 7.3.1
@@ -29,6 +26,9 @@ importers:
       astro:
         specifier: ^7.3.2
         version: 7.3.2(@astrojs/markdown-remark@7.3.1)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.5)
+      lite-youtube-embed:
+        specifier: ^0.3.4
+        version: 0.3.4
       mdast-util-to-string:
         specifier: ^4.0.0
         version: 4.0.0
@@ -38,11 +38,12 @@ importers:
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
+    devDependencies:
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
 
 packages:
-
-  '@astro-community/astro-embed-youtube@0.5.10':
-    resolution: {integrity: sha512-hVlx77KQLjKzElVQnrU5znQ5/E60keVSAPrhuWvQQHuqva5auJtt8YBpOThkwDMuEKXjQybEF1/3C07RZ8MAOQ==}
 
   '@astrojs/compiler-binding-android-arm64@0.4.1':
     resolution: {integrity: sha512-Wtx2DZORuNTLASLLZ8hlrjFaJe1LUloatcCn9EPq7knBhRpjMGXeJANIJMeBZG4igvz7x+3nyAJM2iwCSW9xog==}
@@ -2085,10 +2086,6 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
-
-  '@astro-community/astro-embed-youtube@0.5.10':
-    dependencies:
-      lite-youtube-embed: 0.3.4
 
   '@astrojs/compiler-binding-android-arm64@0.4.1':
     optional: true

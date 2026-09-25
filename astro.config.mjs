@@ -16,7 +16,8 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkReadingTime]
-    })
+    }),
+    syntaxHighlight: "prism",
   },
   security: {
     csp: true,
