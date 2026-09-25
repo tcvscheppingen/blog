@@ -18,6 +18,12 @@ export default defineConfig({
       remarkPlugins: [remarkReadingTime]
     })
   },
+  security: {
+    csp: true,
+  },
+  build: {
+    inlineStylesheets: "never",
+  },
   fonts: [
     {
       provider: fontProviders.local(),
