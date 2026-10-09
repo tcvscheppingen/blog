@@ -30,9 +30,6 @@ We will create a modprobe configuration rule to force the kernel to bypass the b
 2. Adding the following lines to the file solved it for me, but it might be different for you depending on the output of the command in step 1.
    ```text
    options snd-intel-dspcfg dsp_driver=1
-   options snd-hda-intel dmic_detect=0
-   blacklist snd_soc_skl
-   blacklist snd_sof_pci_intel_cnl
    ```
 
 3. Save and exit the editor.

@@ -14,7 +14,7 @@ In this post I will share some great (and free) alternatives to commonly used pr
 All of these replacements can be used for free, but some of them have a paid version that offers more functionality like increased storage.
 Where possible I have found European alternatives to replace their American counterparts.
 
-### Level 1 - Browser & Search Engine
+### Level 1 - Browser
 
 We all access the internet through a web browser, so this is a great tool for corporations to harvest your data.
 It gets to see every page you visit and some browsers like Google Chrome and Microsoft Edge harvest that data to make a profit.
@@ -42,6 +42,8 @@ If you want to use this browser, I would recommend using it with a password mana
 All three recommendations are open-source projects, which means the source code can be audited and inspected for security and privacy flaws.
 I personally prefer LibreWolf for most daily browsing, as it is a nice middle ground between the other two recommendations.
 
+### Level 2 - Search engine
+
 Replacing your browser won't do much if you're still going to use Google Search or Bing. Replacing them is quite easy,
 although it might take some getting used to.
 
@@ -62,7 +64,7 @@ If you use a public instance you still share data with the host of the instance,
 You can configure which engines are used by SearXNG in the configuration. I disable most search engines and this gives me pretty good results for most queries.
 I still sometimes fall back to StartPage or DuckDuckGo, but SearXNG is my default engine.
 
-### Level 2 - Operating Systems
+### Level 3 - Operating Systems
 
 If you already have replaced your browser and search engine and are ready for replacements that require a bit more set up,
 I recommend replacing your operating system. There are so many options to choose from and almost all of them are better than Windows (or MacOS).
