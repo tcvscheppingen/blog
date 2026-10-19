@@ -5,11 +5,26 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
 import { unified } from '@astrojs/markdown-remark';
 import { remarkReadingTime } from './remark-reading-time.mjs';
+import { readFile, appendFile } from 'node:fs/promises';
+
+function cspHeader() {
+  return {
+    name: 'csp-header',
+    hooks: {
+      'astro:build:done': async ({ dir }) => {
+        const html = await readFile(new URL('index.html', dir), 'utf8');
+        const match = html.match(/<meta http-equiv="content-security-policy" content="([^"]*)">/);
+        if (!match) throw new Error('csp-header: no CSP meta tag found in index.html');
+        await appendFile(new URL('_headers', dir), `    Content-Security-Policy: ${match[1]}\n`);
+      },
+    },
+  };
+}
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://thymenvscheppingen.statichost.page",
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), cspHeader()],
   prefetch: {
     defaultStrategy: 'load'
   },
