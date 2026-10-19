@@ -17,10 +17,10 @@ Currently hosted at `https://thymenvscheppingen.statichost.page/` — a subdomai
 
 **Steps:**
 - [x] Check availability (e.g. via Porkbun, Namecheap, or a Dutch registrar like TransIP for `.nl`)
-- [ ] Register the domain (~€10-15/yr for `.dev`, similar for `.nl`)
-- [ ] Point DNS at statichost.eu (check their docs for the required CNAME/A records) or configure the custom domain in the statichost.eu dashboard
-- [ ] Update `site` in `astro.config.mjs` to the new domain
-- [ ] Update `public/robots.txt` sitemap URL to match
+- [x] Register the domain (~€10-15/yr for `.dev`, similar for `.nl`)
+- [x] Point DNS at statichost.eu (check their docs for the required CNAME/A records) or configure the custom domain in the statichost.eu dashboard
+- [x] Update `site` in `astro.config.mjs` to the new domain
+- [x] Update `public/robots.txt` sitemap URL to match
 - [ ] Rebuild and redeploy
 - [ ] Verify `og:image`, canonical URLs, and RSS feed all resolve to the new domain
 
@@ -51,8 +51,8 @@ Already done:
 
 Remaining ideas, roughly in priority order:
 
-- [ ] **Per-page `<title>` branding** — post titles currently render as just the post title; suffixing with `| Thymen van Scheppingen` (in `BaseHead.astro`) reinforces brand recognition in search results and browser tabs.
-- [ ] **`og:type` for posts** — `BaseHead.astro` always sets `og:type` to `"website"`; blog posts should use `"article"` (with `article:published_time`) for richer social previews.
+- [x] **Per-page `<title>` branding** — post titles currently render as just the post title; suffixing with `| Thymen van Scheppingen` (in `BaseHead.astro`) reinforces brand recognition in search results and browser tabs.
+- [x] **`og:type` for posts** — `BaseHead.astro` always sets `og:type` to `"website"`; blog posts should use `"article"` (with `article:published_time`) for richer social previews.
 - [ ] **Backlinks / distribution** — for a personal blog, sharing new posts on Hacker News, Lobsters, relevant subreddits, or Mastodon/Bluesky tends to move rankings more than on-page tweaks alone.
 - [ ] **Internal linking** — link related posts to each other where relevant (e.g. the privacy/security-themed posts); helps both crawlers and readers discover more content.
 - [ ] **Alt text audit** — confirm all images (hero images especially) have descriptive `alt` text, not just decorative empty strings, where the image conveys meaning.

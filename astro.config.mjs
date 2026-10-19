@@ -24,7 +24,7 @@ function cspHeader() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://thymenvscheppingen.statichost.page",
+  site: "https://thymen.dev",
   integrations: [mdx(), sitemap(), cspHeader()],
   prefetch: {
     defaultStrategy: 'load'

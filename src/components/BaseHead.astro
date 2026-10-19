@@ -39,6 +39,10 @@ const ogImage = await getImage({
 	format: "jpg",
 });
 const ogImageURL = new URL(ogImage.src, Astro.site);
+
+// Brand page titles in search results and browser tabs. Social previews keep the
+// bare title, since og:site_name already carries the brand there.
+const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 ---
 
 <script is:inline src="/theme-init.js"></script>
@@ -62,8 +66,8 @@ const ogImageURL = new URL(ogImage.src, Astro.site);
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title}</title>
-<meta name="title" content={title} />
+<title>{pageTitle}</title>
+<meta name="title" content={pageTitle} />
 <meta name="description" content={description} />
 {author && <meta name="author" content={author} />}
 
