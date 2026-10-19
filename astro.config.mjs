@@ -5,6 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
 import { unified } from '@astrojs/markdown-remark';
 import { remarkReadingTime } from './remark-reading-time.mjs';
+import { remarkModifiedTime } from './remark-modified-time.mjs';
 import { readFile, appendFile } from 'node:fs/promises';
 
 function cspHeader() {
@@ -30,7 +31,7 @@ export default defineConfig({
   },
   markdown: {
     processor: unified({
-      remarkPlugins: [remarkReadingTime]
+      remarkPlugins: [remarkReadingTime, remarkModifiedTime]
     }),
     syntaxHighlight: "prism",
   },

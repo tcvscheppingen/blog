@@ -7,9 +7,26 @@ import FormattedDate from "../components/FormattedDate.astro";
 import NavBar from "../components/NavBar.astro";
 import { AUTHOR_NAME } from "../consts";
 
-type Props = CollectionEntry<"blog">["data"];
-const { title, description, pubDate, updatedDate, heroImage, minutesRead } =
-	Astro.props;
+type Props = CollectionEntry<"blog">["data"] & {
+	minutesRead?: string;
+	lastModified?: string;
+};
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	minutesRead,
+	lastModified,
+} = Astro.props;
+
+// An explicit updatedDate wins; otherwise fall back to the last git commit,
+// but never report a modification before the post was published.
+const gitModified = lastModified ? new Date(lastModified) : undefined;
+const modifiedTime =
+	updatedDate ??
+	(gitModified && gitModified > pubDate ? gitModified : undefined);
 
 const schema = {
 	"@context": "https://schema.org",
@@ -17,7 +34,7 @@ const schema = {
 	headline: title,
 	description,
 	datePublished: pubDate.toISOString(),
-	dateModified: (updatedDate ?? pubDate).toISOString(),
+	dateModified: (modifiedTime ?? pubDate).toISOString(),
 	author: {
 		"@type": "Person",
 		name: AUTHOR_NAME,
@@ -38,6 +55,8 @@ const schema = {
 			image={heroImage}
 			schema={schema}
 			author={AUTHOR_NAME}
+			publishedTime={pubDate}
+			modifiedTime={modifiedTime}
 		/>
 		<style>
 			.reading-time {

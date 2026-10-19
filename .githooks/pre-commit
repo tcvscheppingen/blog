@@ -1,0 +1,3 @@
+#!/bin/sh
+# Keep the committed blog post modified times in sync with git history.
+node scripts/update-modified-times.mjs && git add src/content/modified-times.json
