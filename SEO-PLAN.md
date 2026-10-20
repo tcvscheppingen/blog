@@ -21,8 +21,8 @@ Currently hosted at `https://thymenvscheppingen.statichost.page/` — a subdomai
 - [x] Point DNS at statichost.eu (check their docs for the required CNAME/A records) or configure the custom domain in the statichost.eu dashboard
 - [x] Update `site` in `astro.config.mjs` to the new domain
 - [x] Update `public/robots.txt` sitemap URL to match
-- [ ] Rebuild and redeploy
-- [ ] Verify `og:image`, canonical URLs, and RSS feed all resolve to the new domain
+- [x] Rebuild and redeploy
+- [x] Verify `og:image`, canonical URLs, and RSS feed all resolve to the new domain
 
 ## 2. Register with Google & Bing
 
