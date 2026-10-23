@@ -101,6 +101,10 @@ const schema = {
 				margin-bottom: 0.5em;
 				color: rgb(var(--gray));
 			}
+			.author {
+				margin-bottom: 0.5em;
+				color: rgb(var(--gray));
+			}
 			.last-updated-on {
 				font-style: italic;
 			}
@@ -137,6 +141,7 @@ const schema = {
 							}
 						</div>
 						<h1>{title}</h1>
+						<div class="author">{AUTHOR_NAME}</div>
 						<hr />
 						<div class="reading-time">{minutesRead}</div>
 					</div>
