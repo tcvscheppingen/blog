@@ -1,5 +1,6 @@
 ---
 import { SITE_TITLE } from "../consts";
+import GithubIcon from "../assets/icons/github.svg";
 import HeaderLink from "./HeaderLink.astro";
 
 const pages = [
@@ -12,8 +13,6 @@ const pages = [
 ];
 ---
 
-<!-- Styled after the dwm bar in DARBS: tags on the left, the layout symbol,
-     the title, and a status text on the right -->
 <header>
 	<nav role="navigation">
 		<label id="menuToggle" for="menu-checkbox" aria-label="Toggle menu">
@@ -23,35 +22,65 @@ const pages = [
 			<span></span>
 		</label>
 		<div class="tags">
-			{pages.map((page) => <HeaderLink href={page.href}>{page.label}</HeaderLink>)}
+			{
+				pages.map((page) => (
+					<HeaderLink href={page.href}>{page.label}</HeaderLink>
+				))
+			}
 		</div>
-		<!-- Easter egg: like in standard dwm (not DARBS, which doesn't bind it),
-		     clicking the layout symbol changes the layout -->
-		<button type="button" class="layout" id="layout-toggle" title="Change layout" aria-label="Change layout">[]=</button>
-		<h2>
-			<a href="/" class="site-title">
-				<!-- The favicon (public/favicon.svg), inline so it needs no request -->
-				<svg class="site-icon" aria-hidden="true" viewBox="0 0 64 64" width="22" height="22">
-					<rect width="64" height="64" rx="14" fill="#151515" />
-					<path
-						d="M13 17h26M26 17v31"
-						fill="none"
-						stroke="#e8e8e8"
-						stroke-width="8"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					/>
-					<rect x="40" y="41" width="14" height="8" rx="2" fill="#5b8fc7" />
-				</svg>
-				{SITE_TITLE}
-			</a>
-		</h2>
+		<button
+			type="button"
+			class="layout"
+			id="layout-toggle"
+			title="Change layout"
+			aria-label="Change layout">[]=</button
+		>
+		<div class="dwm-active-window">
+			<h2>
+				<a href="/" class="site-title">
+					<svg
+						class="site-icon"
+						aria-hidden="true"
+						viewBox="0 0 64 64"
+						width="22"
+						height="22"
+					>
+						<rect width="64" height="64" rx="14" fill="#151515"
+						></rect>
+						<path
+							d="M13 17h26M26 17v31"
+							fill="none"
+							stroke="#e8e8e8"
+							stroke-width="8"
+							stroke-linecap="round"
+							stroke-linejoin="round"></path>
+						<rect
+							x="40"
+							y="41"
+							width="14"
+							height="8"
+							rx="2"
+							fill="#5b8fc7"></rect>
+					</svg>
+					{SITE_TITLE}
+				</a>
+			</h2>
+		</div>
 		<div class="status">
-			<a href="/rss.xml" class="rss">rss</a>
+			<a href="/rss.xml" class="rss">rss |</a>
+			<a href="https://github.com/tcvscheppingen" class="icon-link">
+				GitHub
+			</a>
 		</div>
 		<!-- On small screens the tags move into this dropdown, like a dmenu list -->
 		<ul id="menu">
-			{pages.map((page) => <li><HeaderLink href={page.href}>{page.label}</HeaderLink></li>)}
+			{
+				pages.map((page) => (
+					<li>
+						<HeaderLink href={page.href}>{page.label}</HeaderLink>
+					</li>
+				))
+			}
 		</ul>
 	</nav>
 	<!-- The layout notification, styled after dunst in DARBS -->
@@ -67,7 +96,9 @@ const pages = [
 		margin: 0;
 		background: var(--bar-bg);
 		border-bottom: 1px solid var(--bar-line);
-		font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+		font-family:
+			ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas,
+			monospace;
 		font-size: 15px;
 		line-height: 1;
 	}
@@ -169,6 +200,17 @@ const pages = [
 	}
 	.site-icon {
 		flex: none;
+	}
+
+	.dwm-active-window {
+		display: flex;
+		flex: 1;
+		min-width: 0;
+		margin: 0;
+		font-size: 1em;
+		font-weight: normal;
+		background: var(--sel-bg);
+		padding-left: 0.9em;
 	}
 
 	/* Status text, like dwmblocks */
@@ -283,10 +325,26 @@ const pages = [
 	// dwm layouts from DARBS. With one window open most of them look the same,
 	// so these four change the page window in a way you can see.
 	const layouts = [
-		{ symbol: "[]=", name: "tile", body: "Master and stack. With one window, that's just the master." },
-		{ symbol: "[M]", name: "monocle", body: "One window, full screen. Nothing else to look at." },
-		{ symbol: "|M|", name: "centeredmaster", body: "The master in the middle, with room for a stack on both sides." },
-		{ symbol: "><>", name: "floating", body: "Floating like in a desktop environment. Very un-dwm." },
+		{
+			symbol: "[]=",
+			name: "tile",
+			body: "Master and stack. With one window, that's just the master.",
+		},
+		{
+			symbol: "[M]",
+			name: "monocle",
+			body: "One window, full screen. Nothing else to look at.",
+		},
+		{
+			symbol: "|M|",
+			name: "centeredmaster",
+			body: "The master in the middle, with room for a stack on both sides.",
+		},
+		{
+			symbol: "><>",
+			name: "floating",
+			body: "Floating like in a desktop environment. Very un-dwm.",
+		},
 	];
 	const toggle = document.getElementById("layout-toggle");
 	const notice = document.getElementById("layout-notice");
