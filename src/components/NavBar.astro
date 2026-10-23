@@ -67,10 +67,10 @@ const pages = [
 			</h2>
 		</div>
 		<div class="status">
-			<a href="/rss.xml" class="rss">rss |</a>
-			<a href="https://github.com/tcvscheppingen" class="icon-link">
-				GitHub
-			</a>
+			<a href="/rss.xml" class="rss">rss</a><span class="status-separator"
+				>|
+			</span>
+			<a href="https://github.com/tcvscheppingen" class="rss"> GitHub </a>
 		</div>
 		<!-- On small screens the tags move into this dropdown, like a dmenu list -->
 		<ul id="menu">
@@ -217,6 +217,10 @@ const pages = [
 	.status {
 		display: flex;
 		align-items: stretch;
+	}
+	.status-separator {
+		display: flex;
+		align-items: center;
 	}
 	.rss {
 		padding: 0 0.9em;
