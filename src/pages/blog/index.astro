@@ -65,7 +65,7 @@ const posts = (await getCollection("blog"))
 			}
 			ul li a:hover h4,
 			ul li a:hover .date {
-				color: rgb(var(--accent));
+				color: var(--accent);
 			}
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
@@ -92,7 +92,7 @@ const posts = (await getCollection("blog"))
 				padding: 0.15rem 0.5rem;
 				border-radius: 999px;
 				background: rgb(var(--gray-light));
-				color: rgb(var(--gray-dark));
+				color: var(--cyan);
 			}
 			#no-results {
 				display: none;
@@ -136,7 +136,7 @@ const posts = (await getCollection("blog"))
 				<p id="no-results">No posts match your search.</p>
 				<ul>
 					{
-						posts.map((post) => (
+						posts.map((post, index) => (
 							<li
 								data-title={post.data.title.toLowerCase()}
 								data-description={post.data.description.toLowerCase()}
@@ -152,6 +152,13 @@ const posts = (await getCollection("blog"))
 										<Image
 											width={720}
 											height={360}
+											widths={[480, 720, 960, 1440, 1920]}
+											sizes={
+												// The newest post's card spans the full width (928px)
+												index === 0
+													? "(max-width: 720px) 100vw, 928px"
+													: "(max-width: 720px) 100vw, 448px"
+											}
 											src={post.data.heroImage}
 											alt=""
 											class="hero-image"

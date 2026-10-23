@@ -1,78 +1,85 @@
-/* GitHub Dark-inspired Prism theme (replaces Shiki, which relies on
-   inline styles incompatible with a strict Content-Security-Policy) */
+/* Steel Prism theme, with the colors of the DARBS Helix theme: blue keywords,
+   cyan types, mint strings, violet constants; red and yellow for deleted
+   lines and warnings. The colors come from the theme tokens in global.css, so
+   code follows light and dark mode. (Prism replaces Shiki, which relies on
+   inline styles incompatible with a strict Content-Security-Policy.) */
 
 pre[class*="language-"],
 code[class*="language-"] {
-	color: #c9d1d9;
+	color: rgb(var(--gray-dark));
 	background: none;
 }
 
 pre[class*="language-"] {
-	background-color: #24292e;
+	background-color: var(--code-bg);
 }
 
+/* fg_dim instead of Steel's comment grey, which is too faint on code-bg */
 .token.comment {
-	color: #6a737d;
+	color: rgb(var(--gray));
 	font-style: italic;
 }
 
 .token.punctuation,
 .token.operator,
 .token.assign-left {
-	color: #c9d1d9;
+	color: rgb(var(--gray));
 }
 
 .token.keyword,
-.token.important,
-.token.atrule {
-	color: #f97583;
+.token.atrule,
+.token.tag {
+	color: var(--accent);
 }
 
-.token.function,
-.token.class-name {
-	color: #b392f0;
+.token.important {
+	color: var(--yellow);
+}
+
+.token.function {
+	color: rgb(var(--black));
+}
+
+.token.class-name,
+.token.builtin,
+.token.selector,
+.token.regex {
+	color: var(--cyan);
 }
 
 .token.string,
 .token.char,
 .token.attr-value,
-.token.regex {
-	color: #9ecbff;
+.token.inserted {
+	color: var(--green);
 }
 
 .token.number,
 .token.boolean,
 .token.constant,
 .token.symbol {
-	color: #79b8ff;
-}
-
-.token.builtin,
-.token.tag,
-.token.selector {
-	color: #85e89d;
+	color: var(--violet);
 }
 
 .token.variable,
 .token.parameter,
 .token.environment,
-.token.property,
-.token.attr-name {
-	color: #ffab70;
+.token.property {
+	color: rgb(var(--gray-dark));
+}
+
+.token.attr-name,
+.token.entity,
+.token.url {
+	color: var(--accent-hover);
+}
+
+.token.url {
+	text-decoration: underline;
 }
 
 .token.deleted {
-	color: #f97583;
-}
-
-.token.inserted {
-	color: #85e89d;
-}
-
-.token.entity,
-.token.url {
-	color: #9ecbff;
-	text-decoration: underline;
+	color: var(--red);
 }
 
 .token.bold {

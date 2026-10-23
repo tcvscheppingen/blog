@@ -4,15 +4,28 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
+/* Steel, the DARBS palette: neutral greys with one steel-blue accent, plus
+   the syntax colors of its Helix theme. Blue for links and navigation, cyan
+   for tags, mint for code, violet for quotes; red and yellow only for errors
+   and warnings in code. The accent #3d7ab8 is for lines and borders: it is
+   too dark for text on the dark background, so links use Steel's lighter
+   blues there, and darker blues in light mode. */
 :root {
-	--accent: #428b8a;
-	--orange: #f69838;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--bg: #ffffff;
+	--accent: #2c659f;
+	--accent-hover: #1f5288;
+	--accent-line: #3d7ab8;
+	--cyan: #1d6672;
+	--green: #2b6753;
+	--violet: #5f4fa0;
+	--red: #a83f3f;
+	--yellow: #7a5e22;
+	--selection: #c9dbee;
+	--code-bg: #ebebeb;
+	--black: 21, 21, 21;
+	--gray: 95, 95, 95;
+	--gray-light: 226, 226, 226;
+	--gray-dark: 42, 42, 42;
+	--bg: #f5f5f5;
 	--gray-gradient: rgba(var(--gray-light), 50%), var(--bg);
 	--box-shadow:
 		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
@@ -21,42 +34,56 @@
 }
 
 :root[data-theme="dark"] {
-	a {
-		color: var(--orange);
-		text-decoration: none;
-		text-decoration-color: var(--accent);
-	}
-
-	a:hover {
-		color: var(--accent);
-		text-decoration-thickness: 1.5pt;
-	}
-
 	color-scheme: dark;
-	--bg: #14161c;
-	--black: 235, 238, 245;
-	--gray: 148, 163, 184;
-	--gray-light: 45, 51, 66;
-	--gray-dark: 225, 228, 235;
+	--accent: #5b8fc7;
+	--accent-hover: #74a5da;
+	--accent-line: #3d7ab8;
+	--cyan: #5ea7b5;
+	--green: #6fa392;
+	--violet: #8f7fc2;
+	--red: #c25d5d;
+	--yellow: #c4a35e;
+	--selection: #263547;
+	--code-bg: #1f1f1f;
+	--bg: #151515;
+	--black: 232, 232, 232;
+	--gray: 138, 138, 138;
+	--gray-light: 42, 42, 42;
+	--gray-dark: 198, 198, 198;
 	--gray-gradient: var(--bg), var(--bg);
 	--box-shadow:
 		0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 45%),
 		0 16px 32px rgba(0, 0, 0, 45%);
 }
 
+/* Without JavaScript, theme-init.js doesn't set data-theme */
 @media (prefers-color-scheme: dark) {
 	:root:not([data-theme="light"]) {
 		color-scheme: dark;
-		--bg: #14161c;
-		--black: 235, 238, 245;
-		--gray: 148, 163, 184;
-		--gray-light: 45, 51, 66;
-		--gray-dark: 225, 228, 235;
+		--accent: #5b8fc7;
+		--accent-hover: #74a5da;
+		--accent-line: #3d7ab8;
+		--cyan: #5ea7b5;
+		--green: #6fa392;
+		--violet: #8f7fc2;
+		--red: #c25d5d;
+		--yellow: #c4a35e;
+		--selection: #263547;
+		--code-bg: #1f1f1f;
+		--bg: #151515;
+		--black: 232, 232, 232;
+		--gray: 138, 138, 138;
+		--gray-light: 42, 42, 42;
+		--gray-dark: 198, 198, 198;
 		--gray-gradient: var(--bg), var(--bg);
 		--box-shadow:
 			0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 45%),
 			0 16px 32px rgba(0, 0, 0, 45%);
 	}
+}
+
+::selection {
+	background: var(--selection);
 }
 
 body {
@@ -124,8 +151,9 @@ a {
 }
 
 a:hover {
+	color: var(--accent-hover);
 	text-decoration: underline;
-	text-decoration-color: var(--orange);
+	text-decoration-color: var(--accent-line);
 	text-decoration-thickness: 1.5pt;
 }
 
@@ -135,6 +163,10 @@ p {
 
 .prose p {
 	margin-bottom: 2em;
+}
+
+.prose li::marker {
+	color: var(--accent);
 }
 
 .prose img {
@@ -163,6 +195,7 @@ img {
 
 code {
 	padding: 2px 5px;
+	color: var(--green);
 	background-color: rgb(var(--gray-light));
 	border-radius: 2px;
 }
@@ -179,7 +212,7 @@ pre>code {
 }
 
 blockquote {
-	border-left: 4px solid var(--accent);
+	border-left: 4px solid var(--violet);
 	padding: 0 0 0 20px;
 	margin: 0;
 	font-size: 1.333em;
