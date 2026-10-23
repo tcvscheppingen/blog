@@ -8,9 +8,9 @@ tags: ["privacy", "digital-wellbeing", "opinion", "minimalism"]
 
 One of the principles of security is only storing data that actually needs to be stored. Data that is not stored cannot be lost or leaked to malicious parties. GDPR law states that only data that is absolutely necessary for legitimate purposes can be stored.
 
-We could translate the principle of data minimization to online privacy as well. Everybody knows that using the internet generates a lot of personal data that is collected by big tech companies and governments.
+We could translate the principle of data minimization to online privacy as well. Everybody knows that using the internet generates a lot of personal data that is [collected by big tech companies](/blog/how-to-leave-big-tech/) and governments.
 
-So what if instead we prevent the generation of data that can be linked to us, by simply spending less time online? Time spent offline is time not spent generating data.
+So what if instead we prevent the generation of data that can be linked to us, by simply [spending less time online](/blog/how-to-spend-less-time-online/)? Time spent offline is time not spent generating data.
 
 This seems like an obvious suggestion of course, but you are not generating data if you're offline, right? Yes, but there is a caveat. Most big tech companies are tracking you regardless of whether you are actively using their services or not. You might close down a browser window or app, but the tracking continues nevertheless.
 

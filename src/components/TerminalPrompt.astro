@@ -1,0 +1,56 @@
+---
+// The first line of the terminal window: the command that "shows" this page,
+// optionally followed by a line of output (like a message of the day)
+interface Props {
+	output?: string;
+}
+const { output } = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, "");
+let command: string;
+if (path === "") {
+	command = "cat index.md";
+} else if (path === "/blog") {
+	command = "ls blog/";
+} else if (path.startsWith("/blog/")) {
+	command = `cat blog/${path.slice("/blog/".length)}.md`;
+} else {
+	command = `cat ${path.slice(1)}.md`;
+}
+---
+
+<div class="prompt">
+	<p aria-hidden="true">
+		<span class="user">[thymen@thymen.dev ~]</span><span class="sign">$</span>{" "}
+		{command}
+	</p>
+	{output && <p class="output">{output}</p>}
+</div>
+
+<style>
+	.prompt {
+		margin: 0 0 1.5em;
+		font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+		font-size: 15px;
+		line-height: 1.5;
+		overflow-wrap: anywhere;
+	}
+	p {
+		margin: 0;
+	}
+	.user {
+		color: var(--green);
+	}
+	.sign {
+		color: var(--accent);
+	}
+	.output {
+		color: rgb(var(--gray));
+	}
+	/* The output so far is the []= tip, and phones don't show []= */
+	@media (max-width: 720px) {
+		.output {
+			display: none;
+		}
+	}
+</style>

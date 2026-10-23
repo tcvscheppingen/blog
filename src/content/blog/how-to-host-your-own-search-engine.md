@@ -6,7 +6,7 @@ heroImage: "../../assets/hero-images/searxng-hero.jpg"
 tags: ["docker", "privacy", "self-hosting", "tutorial"]
 ---
 
-If you don't want to use a search engine that is hosted by a big company like Google or Microsoft, you can host your own search engine with SearXNG.
+If you don't want to use a search engine that is hosted by [a big company like Google or Microsoft](/blog/how-to-leave-big-tech/), you can host your own search engine with SearXNG.
 SearXNG is a meta-search engine that aggregates results from different search engines. This is better in terms of privacy compared to using those search engines directly.
 
 I use SearXNG just locally on my machine, but you can of course host this yourself. In fact, you can also use a publicly hosted instance of SearXNG. This tutorial is limited to just a simple localhost instance of SearXNG.

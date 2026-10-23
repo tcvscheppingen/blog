@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 ---
 
@@ -13,6 +14,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
     <body>
         <NavBar />
         <main>
+            <TerminalPrompt />
             <h1>Websites</h1>
             <p>Here are some websites that I like:</p>
             <h3>Interesting websites</h3>
@@ -37,7 +39,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
                 </li>
                 <li>
                     <a href="https://calnewport.com/">Cal Newport Blog</a> author
-                    of <i>Digital Minimalism</i> and other books.
+                    of <a href="/blog/tools-not-toys/"><i>Digital Minimalism</i></a> and other books.
                 </li>
                 <li>
                     <a href="https://selfh.st/apps/">Self Hosting Services</a> list
@@ -82,7 +84,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
                     alternative to Android.
                 </li>
                 <li>
-                    <a href="https://artixlinux.org/">Artix Linux</a> alternative
+                    <a href="/blog/artix-auto-installer/">Artix Linux</a> alternative
                     to Arch Linux without systemd.
                 </li>
             </ul>
@@ -120,7 +122,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
                 </li>
 
                 <li>
-                    <a href="https://docs.searxng.org">SearXNG</a> meta-search engine
+                    <a href="https://docs.searxng.org">SearXNG</a> <a href="/blog/how-to-host-your-own-search-engine/">meta-search engine</a>
                 </li>
                 <li>
                     <a href="https://forgejo.org/">ForgeJo</a> GitHub alternative.

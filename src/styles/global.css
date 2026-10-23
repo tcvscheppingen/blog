@@ -4,36 +4,15 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
-/* Steel, the DARBS palette: neutral greys with one steel-blue accent, plus
-   the syntax colors of its Helix theme. Blue for links and navigation, cyan
-   for tags, mint for code, violet for quotes; red and yellow only for errors
-   and warnings in code. The accent #3d7ab8 is for lines and borders: it is
-   too dark for text on the dark background, so links use Steel's lighter
-   blues there, and darker blues in light mode. */
+/* The site looks like a DARBS desktop: the dwm bar on top, the DARBS
+   wallpaper behind it, and every page in one terminal window, like a single
+   window in dwm.
+   Colors: Steel, the DARBS palette. Neutral greys with one steel-blue accent,
+   plus the syntax colors of its Helix theme: blue for links and navigation,
+   cyan for tags, mint for code, violet for quotes; red and yellow only for
+   errors and warnings in code. The accent #3d7ab8 is for lines and borders:
+   it is too dark for text, so links use Steel's lighter blues. */
 :root {
-	--accent: #2c659f;
-	--accent-hover: #1f5288;
-	--accent-line: #3d7ab8;
-	--cyan: #1d6672;
-	--green: #2b6753;
-	--violet: #5f4fa0;
-	--red: #a83f3f;
-	--yellow: #7a5e22;
-	--selection: #c9dbee;
-	--code-bg: #ebebeb;
-	--black: 21, 21, 21;
-	--gray: 95, 95, 95;
-	--gray-light: 226, 226, 226;
-	--gray-dark: 42, 42, 42;
-	--bg: #f5f5f5;
-	--gray-gradient: rgba(var(--gray-light), 50%), var(--bg);
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-	color-scheme: light;
-}
-
-:root[data-theme="dark"] {
 	color-scheme: dark;
 	--accent: #5b8fc7;
 	--accent-hover: #74a5da;
@@ -45,41 +24,28 @@
 	--yellow: #c4a35e;
 	--selection: #263547;
 	--code-bg: #1f1f1f;
+	/* The navbar, styled after the dwm bar; the selected tag is a little
+	   deeper than the accent so white text on it stays readable */
+	--bar-bg: #111111;
+	--bar-fg: #c6c6c6;
+	--bar-line: #2a2a2a;
+	--bar-height: 40px;
+	--sel-bg: #3672ad;
+	--sel-fg: #ffffff;
+	/* The terminal window: st at 85% opacity over the wallpaper */
+	--term-bg: rgba(21, 21, 21, 0.85);
+	--term-border: 3px;
+	/* dwm's gaps in DARBS: 10px top and bottom, 30px at the sides */
+	--gap-y: 10px;
+	--gap-x: 30px;
 	--bg: #151515;
 	--black: 232, 232, 232;
 	--gray: 138, 138, 138;
 	--gray-light: 42, 42, 42;
 	--gray-dark: 198, 198, 198;
-	--gray-gradient: var(--bg), var(--bg);
 	--box-shadow:
 		0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 45%),
 		0 16px 32px rgba(0, 0, 0, 45%);
-}
-
-/* Without JavaScript, theme-init.js doesn't set data-theme */
-@media (prefers-color-scheme: dark) {
-	:root:not([data-theme="light"]) {
-		color-scheme: dark;
-		--accent: #5b8fc7;
-		--accent-hover: #74a5da;
-		--accent-line: #3d7ab8;
-		--cyan: #5ea7b5;
-		--green: #6fa392;
-		--violet: #8f7fc2;
-		--red: #c25d5d;
-		--yellow: #c4a35e;
-		--selection: #263547;
-		--code-bg: #1f1f1f;
-		--bg: #151515;
-		--black: 232, 232, 232;
-		--gray: 138, 138, 138;
-		--gray-light: 42, 42, 42;
-		--gray-dark: 198, 198, 198;
-		--gray-gradient: var(--bg), var(--bg);
-		--box-shadow:
-			0 2px 6px rgba(0, 0, 0, 40%), 0 8px 24px rgba(0, 0, 0, 45%),
-			0 16px 32px rgba(0, 0, 0, 45%);
-	}
 }
 
 ::selection {
@@ -92,9 +58,6 @@ body {
 	padding: 0;
 	text-align: left;
 	background-color: var(--bg);
-	background-image: linear-gradient(var(--gray-gradient));
-	background-repeat: no-repeat;
-	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	color: rgb(var(--gray-dark));
@@ -102,11 +65,78 @@ body {
 	line-height: 1.7;
 }
 
+/* The wallpaper stays put while the page scrolls. "Cosmic Cliffs" in the
+   Carina Nebula by NASA, ESA, CSA and STScI (public domain); smaller on
+   small screens */
+body::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: -1;
+	background: var(--bg) url("/wallpaper.jpg") center / cover no-repeat;
+	pointer-events: none;
+}
+
+@media (max-width: 720px) {
+	body::before {
+		background-image: url("/wallpaper-small.jpg");
+	}
+}
+
+/* Every page is one terminal window filling the screen. The window spans the
+   full width; its content keeps a readable width (--content-width, which a
+   page can change). The prompt line stays at the top left. */
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+	--content-width: 720px;
+	min-height: calc(100vh - var(--bar-height) - 2 * var(--gap-y));
+	box-sizing: border-box;
+	margin: var(--gap-y) var(--gap-x);
+	padding: 1em 1.4em 3em;
+	background: var(--term-bg);
+	border: var(--term-border) solid var(--accent-line);
+}
+
+main > :not(.prompt) {
+	max-width: var(--content-width);
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Images directly in the window (the home page's) are centered too */
+main > img {
+	display: block;
+}
+
+/* The easter egg: clicking []= in the navbar switches dwm layouts */
+main {
+	transition: margin 0.25s ease, max-width 0.25s ease, border-width 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	main {
+		transition: none;
+	}
+}
+
+/* [M] monocle: fullscreen, no gaps or border */
+:root[data-layout="monocle"] main {
+	margin: 0;
+	border-width: 0;
+	min-height: calc(100vh - var(--bar-height));
+}
+
+/* |M| centered master: a narrower window in the middle */
+:root[data-layout="centeredmaster"] main {
+	margin-left: max(var(--gap-x), calc((100% - 1100px) / 2));
+	margin-right: max(var(--gap-x), calc((100% - 1100px) / 2));
+}
+
+/* ><> floating: a smaller window with a shadow */
+:root[data-layout="floating"] main {
+	max-width: 1000px;
+	min-height: 0;
+	margin: 60px auto;
+	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
 }
 
 h1,
@@ -228,8 +258,12 @@ hr {
 		font-size: 18px;
 	}
 
+	:root {
+		--gap-x: 10px;
+	}
+
 	main {
-		padding: 1em;
+		padding: 0.8em 1em 2em;
 	}
 
 	h1 {

@@ -25,8 +25,9 @@ I would recommend installing Arch or Artix by hand before using this script, bec
 
 The script asks you a few questions about your preferences like language, keyboard layout and time zone. 
 It also encrypts your files so they can't be accessed if your device gets stolen. When your device is booting, it will prompt you for the disk password.
+On some laptops the sound only shows _dummy output_. The script can switch to the older sound driver, which is the same fix as in [my post about fixing dummy output](/blog/fix-dummy-output-linux/).
 
-The script can also set up a desktop environment or window manager. You can choose between KDE Plasma, Cinnamon, XFCE and LXQt, or you can use my configuration of [sway](https://github.com/tcvscheppingen/SARBS) or [dwm](https://github.com/tcvscheppingen/DARBS). 
+The script can also set up a [desktop environment or window manager](/blog/what-window-managers-taught-me-about-screen-addiction/). You can choose between KDE Plasma, Cinnamon, XFCE and LXQt, or you can use my configuration of [sway](https://github.com/tcvscheppingen/SARBS) or [dwm](https://github.com/tcvscheppingen/DARBS). 
 
 If you want to test the installation script before running it on a physical device, you can use the test scripts to simulate the installation with Docker.
 The tests will generate a report with all the test cases and screenshots of the finished installation if it was successful.

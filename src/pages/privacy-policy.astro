@@ -2,25 +2,21 @@
 import BaseHead from "../components/BaseHead.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
-<hmtl lang="en">
+<html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     </head>
     <body>
         <NavBar />
         <main>
+            <TerminalPrompt />
             <h1>Privacy Policy</h1>
-            <p>This website does not use cookies.</p>
-            <p>
-                This website uses local storage for the following functionality:
-            </p>
-            <ul>
-                <li>To store the user theme preference (light or dark)</li>
-            </ul>
+            <p>This website does not use cookies or local storage.</p>
             <p>
                 This website does not sell or otherwise distribute any
                 information to third-parties. Nor does it collect any
@@ -92,4 +88,4 @@ import Footer from "../components/Footer.astro";
         </main>
         <Footer />
     </body>
-</hmtl>
+</html>

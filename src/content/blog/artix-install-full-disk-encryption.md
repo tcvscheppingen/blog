@@ -10,6 +10,7 @@ I recently replaced Linux Mint with Artix and runit as my init system.
 The tutorial I followed was [this video by Luke Smith](https://videos.lukesmith.xyz/w/n1cMQYYzwPoegM2oXfz2iC).
 It shows how to install Artix with full disk encryption. This post is a written version of that tutorial,
 with some troubleshooting of problems that I personally ran into during the installation.
+If you don't want to do all of this by hand, I have also written [a script that automates the installation](/blog/artix-auto-installer/).
 
 This guide is aimed at installing Artix on a UEFI system. If you are using legacy boot you can follow along with the video.
 

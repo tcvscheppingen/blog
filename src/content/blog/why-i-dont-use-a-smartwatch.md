@@ -21,7 +21,7 @@ To me running is a sport that is best enjoyed with as little technology as possi
 The first reason I wear a Casio instead of a Garmin or Apple Watch, is the fact that smartwatches track a large amount of data.
 Heartrate, sleep, steps, and activity are all tracked by even the cheapest of smartwatches.
 All that data is collected by the manufacturer and possibly sold to others.
-I don't want to share all that data with a company, especially not my location data.
+I don't want to [share all that data with a company](/blog/how-to-leave-big-tech/), especially not my location data.
 
 The second reason I don't wear a smartwatch is an extension of the first reason: it tracks everything and makes recommendations based on that data.
 I am somewhat of a perfectionist, so when a smartwatch says that I am not active enough, I will start running more.
@@ -36,7 +36,7 @@ When I start my workout I simply start the stopwatch or timer and start running.
 just start and go. There are a few well-known athletes who don't always use a smartwatch.
 Courtney Dauwalter mostly trains with a simple Timex, although she is sponsored by Suunto.
 
-A regular watch also does not distract me with unwanted notifications.
+A regular watch also does not distract me with [unwanted notifications](/blog/tools-not-toys/).
 Of course you can turn on Do-Not-Disturb, but even the possibility of checking notifications is a source of background distraction.
 My Casio can notify me with an hourly chime. This can be used as a reminder to get up and take a few steps during a workday.
 

@@ -3,21 +3,18 @@ import AboutHeroImage from "../assets/me.jpeg";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import { Image } from "astro:assets";
-
-const options: Intl.DateTimeFormatOptions = {
-	year: "numeric",
-	month: "long",
-};
 
 function getDurationInYears(startDate: Date, endDate: Date) {
 	let timeDifference = endDate.getTime() - startDate.getTime();
 	return timeDifference / (1000 * 60 * 60 * 24) / 365;
 }
 
+// "Oct 2025"
 function formatDate(date: Date) {
-	return date.toLocaleDateString("en-GB", options);
+	return date.toLocaleDateString("en-GB", { year: "numeric", month: "short" });
 }
 
 const workExperienceStartingDate = new Date(2021, 1, 3);
@@ -26,17 +23,15 @@ const workExperienceInYears = Math.round(
 	getDurationInYears(workExperienceStartingDate, currentDate),
 );
 
-const intusDeveloperStartDate = formatDate(new Date(2025, 9, 1));
-const intusTesterStartDate = formatDate(new Date(2024, 8, 1));
-const intusTesterEndate = formatDate(new Date(2025, 9, 30));
-const nvwaStartDate = formatDate(new Date(2024, 1, 1));
-const nvwaEndDate = formatDate(new Date(2024, 5, 30));
-const intusInternshipStartDate = formatDate(new Date(2023, 8, 1));
-const intusIntershipEndDate = formatDate(new Date(2024, 0, 31));
-const q2SoftwareStartDate = formatDate(new Date(2022, 6, 1));
-const q2SoftwareEndDate = formatDate(new Date(2024, 7, 31));
-const cellroStartDate = formatDate(new Date(2022, 2, 1));
-const cellroEndDate = formatDate(new Date(2022, 6, 31));
+// Newest first; no end date means the current job
+const experience = [
+	{ company: "Intus Workforce Solutions", role: "Software Developer", type: "Full time", start: new Date(2025, 9, 1) },
+	{ company: "Intus Workforce Solutions", role: "Software Tester", type: "Full time", start: new Date(2024, 8, 1), end: new Date(2025, 9, 30) },
+	{ company: "Nederlandse Voedsel- en Warenautoriteit", role: "Software Developer", type: "Internship", start: new Date(2024, 1, 1), end: new Date(2024, 5, 30) },
+	{ company: "Intus Workforce Solutions", role: "Software Developer", type: "Internship", start: new Date(2023, 8, 1), end: new Date(2024, 0, 31) },
+	{ company: "Q2-software", role: "Laravel Developer", type: "Part time", start: new Date(2022, 6, 1), end: new Date(2024, 7, 31) },
+	{ company: "Cellro | CNC Automation", role: "Software Developer", type: "Internship", start: new Date(2022, 2, 1), end: new Date(2022, 6, 31) },
+];
 ---
 
 <!doctype html>
@@ -50,15 +45,16 @@ const cellroEndDate = formatDate(new Date(2022, 6, 31));
 	</head>
 	<body>
 		<NavBar />
-		<h2>About me</h2>
-		<div>
-			<Image
-				src={AboutHeroImage}
-				alt="A picture of me"
-				class="about-image"
-			/>
-		</div>
 		<main>
+			<TerminalPrompt />
+			<h2>About me</h2>
+			<div>
+				<Image
+					src={AboutHeroImage}
+					alt="A picture of me"
+					class="about-image"
+				/>
+			</div>
 			<div class="about-text">
 				<p>
 					I am a developer who enjoys running, programming, reading
@@ -82,63 +78,24 @@ const cellroEndDate = formatDate(new Date(2022, 6, 31));
 			</div>
 			<p>
 				Below is an overview of my ~{workExperienceInYears} years of work
-				experience, including internships while studying:<br />
+				experience, including internships while studying:
 			</p>
+			<ol class="experience">
+				{
+					experience.map((job) => (
+						<li class:list={{ current: !job.end }}>
+							<span class="period">
+								{formatDate(job.start)} – {job.end ? formatDate(job.end) : "now"}
+							</span>
+							<span class="role">{job.role}</span>
+							<span class="company">
+								{job.company} · {job.type}
+							</span>
+						</li>
+					))
+				}
+			</ol>
 		</main>
-		<div class="experience-table">
-			<table class="work-xp">
-				<tr>
-					<th>Company</th>
-					<th>Role</th>
-					<th class="employment-type-column">Employment type</th>
-					<th class="start-date-column">Start date</th>
-					<th class="end-date-column">End date</th>
-				</tr>
-				<tr>
-					<td>Intus Workforce Solutions</td>
-					<td>Software Developer</td>
-					<td class="employment-type-column">Full Time</td>
-					<td class="start-date-column">{intusDeveloperStartDate}</td>
-					<td class="end-date-column">--</td>
-				</tr>
-				<tr>
-					<td>Intus Workforce Solutions</td>
-					<td>Software Tester</td>
-					<td class="employment-type-column">Full Time</td>
-					<td class="start-date-column">{intusTesterStartDate}</td>
-					<td class="end-date-column">{intusTesterEndate}</td>
-				</tr>
-				<tr>
-					<td>Nederlandse Voedsel- en Warenautoriteit</td>
-					<td>Software Developer</td>
-					<td class="employment-type-column">Internship</td>
-					<td class="start-date-column">{nvwaStartDate}</td>
-					<td class="end-date-column">{nvwaEndDate}</td>
-				</tr>
-				<tr>
-					<td>Intus Workforce Solutions</td>
-					<td>Software Developer</td>
-					<td class="employment-type-column">Internship</td>
-					<td class="start-date-column">{intusInternshipStartDate}</td
-					>
-					<td class="end-date-column">{intusIntershipEndDate}</td>
-				</tr>
-				<tr>
-					<td>Q2-software</td>
-					<td>Laravel Developer</td>
-					<td class="employment-type-column">Part Time</td>
-					<td class="start-date-column">{q2SoftwareStartDate}</td>
-					<td class="end-date-column">{q2SoftwareEndDate}</td>
-				</tr>
-				<tr>
-					<td>Cellro | CNC Automation</td>
-					<td>Software Developer</td>
-					<td class="employment-type-column">Internship</td>
-					<td class="start-date-column">{cellroStartDate}</td>
-					<td class="end-date-column">{cellroEndDate}</td>
-				</tr>
-			</table>
-		</div>
 		<Footer />
 	</body>
 </html>
@@ -148,7 +105,7 @@ const cellroEndDate = formatDate(new Date(2022, 6, 31));
 		padding-top: 20px;
 		margin-left: auto;
 		margin-right: auto;
-		width: 20%;
+		width: 30%;
 		height: auto;
 		border-radius: 5px;
 	}
@@ -160,30 +117,59 @@ const cellroEndDate = formatDate(new Date(2022, 6, 31));
 		padding-top: 20px;
 	}
 
-	.experience-table {
-		width: 80%;
-		display: block;
-		margin-left: auto;
-		margin-right: auto;
-		overflow-x: auto;
-		padding-bottom: 20pt;
+	/* Work experience as a timeline: a steel-blue line with a dot per job,
+	   filled for the current one */
+	.experience {
+		list-style: none;
+		margin: 1em auto 0;
+		padding: 0;
 	}
-
-	table {
-		border-collapse: collapse;
+	.experience li {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: 0 0 1.4em 1.6em;
+		border-left: 2px solid var(--accent-line);
+		margin-left: 6px;
 	}
-
-	tr {
-		border-bottom: 1px solid rgb(var(--gray-dark));
+	.experience li:last-child {
+		border-left-color: transparent;
+		padding-bottom: 0;
+	}
+	.experience li::before {
+		content: "";
+		position: absolute;
+		left: -8px;
+		top: 0.35em;
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		border: 2px solid var(--accent-line);
+		background: var(--bg);
+	}
+	.experience li.current::before {
+		background: var(--accent);
+	}
+	.period {
+		font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+		font-size: 0.75em;
+		line-height: 1.6;
+		color: rgb(var(--gray));
+	}
+	.role {
+		color: rgb(var(--black));
+		font-weight: 700;
+		line-height: 1.4;
+	}
+	.company {
+		font-size: 0.9em;
+		color: rgb(var(--gray));
 	}
 
 	object.email {
 		height: 2em;
 		margin: -1em 0;
 		vertical-align: middle;
-	}
-	main {
-		width: 50%;
 	}
 
 	@media (max-width: 720px) {
@@ -195,25 +181,6 @@ const cellroEndDate = formatDate(new Date(2022, 6, 31));
 			width: 60%;
 			height: auto;
 			border-radius: 5px;
-		}
-
-		main {
-			width: 80%;
-		}
-
-		/* table {
-			border-collapse: separate;
-		} */
-
-		th,
-		td {
-			font-size: 16px;
-			box-shadow: 2px 2px 3px lightgray;
-			border-radius: 5px;
-			border: 1pt;
-			border-style: solid;
-			padding-left: 5pt;
-			border-color: gray;
 		}
 	}
 </style>

@@ -4,6 +4,7 @@ import BaseHead from "../components/BaseHead.astro";
 import BooksImage from "../assets/books.jpeg";
 import Footer from "../components/Footer.astro";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import HeroImage from "../components/HeroImage.astro";
 ---
@@ -20,13 +21,14 @@ import HeroImage from "../components/HeroImage.astro";
     <body>
         <NavBar />
         <main>
+            <TerminalPrompt />
             <HeroImage imageSrc={BooksImage} altText="A bookcase" />
             <h1>Books</h1>
             <p>Here are some books I like or want to read:</p>
             <h3>Novels</h3>
             <ul>
                 <li>Wilkie Collins - The Woman in White</li>
-                <li>Fyodor Dostoevsky - Crime and Punishment</li>
+                <li>Fyodor Dostoevsky - <a href="/blog/how-to-spend-less-time-online/">Crime and Punishment</a></li>
                 <li>Fyodor Dostoevsky - Notes from the Underground</li>
                 <li>Dave Eggers - The Circle</li>
                 <li>Dave Eggers - The Every</li>
@@ -43,7 +45,7 @@ import HeroImage from "../components/HeroImage.astro";
                 <li>Paul Kingsnorth - Against the Machine</li>
                 <li>Evgeny Morozov - The Net Delusion</li>
                 <li>Evgeny Morozov - To Save Everything Click Here</li>
-                <li>Cal Newport - Digital Minimalism</li>
+                <li>Cal Newport - <a href="/blog/tools-not-toys/">Digital Minimalism</a></li>
                 <li>Neil Postman - Amusing Ourselves to Death</li>
                 <li>Shoshana Zuboff - The Age of Surveillance Capitalism</li>
             </ul>

@@ -5,6 +5,7 @@ import BaseHead from "../../components/BaseHead.astro";
 import Footer from "../../components/Footer.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import NavBar from "../../components/NavBar.astro";
+import TerminalPrompt from "../../components/TerminalPrompt.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
 // Retrieve only blogposts that are on or before the current date.
@@ -19,7 +20,7 @@ const posts = (await getCollection("blog"))
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
 			main {
-				width: 960px;
+				--content-width: 960px;
 			}
 			ul {
 				display: flex;
@@ -70,16 +71,71 @@ const posts = (await getCollection("blog"))
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
 			}
-			#search {
-				width: 100%;
-				padding: 0.6rem 0.8rem;
+			/* The search, styled after dmenu in DARBS: the prompt in a blue block,
+			   the input, then the matching posts side by side with the selected
+			   one highlighted */
+			.dmenu {
+				display: flex;
+				align-items: stretch;
+				height: 40px;
 				margin-bottom: 1.5rem;
-				font-size: 1rem;
-				border: 1px solid rgb(var(--gray));
-				border-radius: 6px;
-				background: transparent;
-				color: rgb(var(--black));
-				box-sizing: border-box;
+				background: var(--bg);
+				border: 1px solid var(--bar-line);
+				color: var(--bar-fg);
+				font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+				font-size: 15px;
+				line-height: 1;
+			}
+			.dmenu:focus-within {
+				border-color: var(--accent-line);
+			}
+			.dmenu-prompt {
+				display: flex;
+				align-items: center;
+				padding: 0 0.9em;
+				background: var(--sel-bg);
+				color: var(--sel-fg);
+			}
+			#search {
+				flex: 0 1 18em;
+				min-width: 8em;
+				padding: 0 0.9em;
+				border: none;
+				outline: none;
+				background: none;
+				color: inherit;
+				font: inherit;
+				appearance: none;
+			}
+			#search::placeholder {
+				color: rgb(var(--gray));
+			}
+			.dmenu-items {
+				display: flex;
+				flex: 1;
+				min-width: 0;
+				overflow: hidden;
+			}
+			/* The items are created by the script, so the scoped styles need :global */
+			/* Post titles are long; cut them off so several fit side by side */
+			.dmenu-items :global(a) {
+				display: block;
+				flex: none;
+				max-width: 24ch;
+				padding: 0 0.9em;
+				line-height: 38px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				color: var(--bar-fg);
+				text-decoration: none;
+			}
+			.dmenu-items :global(a:hover) {
+				background: rgba(var(--gray), 20%);
+			}
+			.dmenu-items :global(a.selected) {
+				background: var(--sel-bg);
+				color: var(--sel-fg);
 			}
 			.tags {
 				display: flex;
@@ -116,6 +172,12 @@ const posts = (await getCollection("blog"))
 				.tags {
 					display: none;
 				}
+				.dmenu-items {
+					display: none;
+				}
+				#search {
+					flex: 1;
+				}
 
 				.title {
 					font-size: 1em;
@@ -126,15 +188,21 @@ const posts = (await getCollection("blog"))
 	<body>
 		<NavBar />
 		<main>
+			<TerminalPrompt />
 			<section>
-				<input
-					id="search"
-					type="search"
-					placeholder="Search posts by title, description or tag..."
-					aria-label="Search posts"
-				/>
+				<div class="dmenu">
+					<label for="search" class="dmenu-prompt">search</label>
+					<input
+						id="search"
+						type="search"
+						placeholder="title, description or tag"
+						autocomplete="off"
+						spellcheck="false"
+					/>
+					<div class="dmenu-items" id="dmenu-items" aria-label="Matching posts"></div>
+				</div>
 				<p id="no-results">No posts match your search.</p>
-				<ul>
+				<ul class="posts">
 					{
 						posts.map((post, index) => (
 							<li
@@ -190,29 +258,70 @@ const posts = (await getCollection("blog"))
 		<Footer />
 		<script>
 			const input = document.getElementById("search") as HTMLInputElement;
-			const items = document.querySelectorAll<HTMLLIElement>("ul li");
+			const menu = document.getElementById("dmenu-items") as HTMLDivElement;
+			// Only the posts: "ul li" would also match the phone menu in the navbar
+			const items = document.querySelectorAll<HTMLLIElement>("ul.posts > li");
 			const noResults = document.getElementById(
 				"no-results",
 			) as HTMLParagraphElement;
+			let matches: HTMLLIElement[] = [];
+			let selected = 0;
+
+			// Like dmenu: the matching posts side by side, the selected one highlighted
+			function renderMenu() {
+				menu.replaceChildren(
+					...matches.map((item, index) => {
+						const link = item.querySelector("a") as HTMLAnchorElement;
+						const option = document.createElement("a");
+						option.href = link.href;
+						option.textContent = item.querySelector(".title")?.textContent ?? "";
+						option.title = option.textContent;
+						if (index === selected) option.className = "selected";
+						return option;
+					}),
+				);
+				menu.querySelector(".selected")?.scrollIntoView({ block: "nearest", inline: "nearest" });
+			}
 
 			input.addEventListener("input", () => {
 				const query = input.value.toLowerCase().trim();
-				let visible = 0;
+				matches = [];
 
 				items.forEach((item) => {
 					const title = item.dataset.title ?? "";
 					const description = item.dataset.description ?? "";
 					const tags = item.dataset.tags ?? "";
-					const matches =
+					const isMatch =
 						!query ||
 						title.includes(query) ||
 						description.includes(query) ||
 						tags.includes(query);
-					item.style.display = matches ? "" : "none";
-					if (matches) visible++;
+					item.style.display = isMatch ? "" : "none";
+					if (isMatch) matches.push(item);
 				});
 
-				noResults.style.display = visible === 0 ? "block" : "none";
+				noResults.style.display = matches.length === 0 ? "block" : "none";
+				// No items while the input is empty, so the bar stays calm
+				if (!query) matches = [];
+				selected = 0;
+				renderMenu();
+			});
+
+			// dmenu keys: left/right (and up/down) to select, Enter to open
+			input.addEventListener("keydown", (event) => {
+				if (matches.length === 0) return;
+				if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+					selected = (selected + 1) % matches.length;
+				} else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+					selected = (selected - 1 + matches.length) % matches.length;
+				} else if (event.key === "Enter") {
+					const link = matches[selected].querySelector("a");
+					if (link) window.location.href = link.href;
+				} else {
+					return;
+				}
+				event.preventDefault();
+				renderMenu();
 			});
 		</script>
 	</body>

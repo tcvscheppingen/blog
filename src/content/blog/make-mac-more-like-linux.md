@@ -14,7 +14,7 @@ You still might want some of the tools and functionality that Linux-based operat
 This post will give some tips on how to get some of that functionality on MacOS.
 
 The first thing you can do to make MacOS function a little bit more like a Linux distro, is to install a package manager.
-Brew is the most popular package manager for MacOS and while it is not as good as something like pacman for Arch or Artix,
+Brew is the most popular package manager for MacOS and while it is not as good as something like pacman for Arch or [Artix](/blog/artix-install-full-disk-encryption/),
 it still is far better than no package manager at all. [More information on brew](https://brew.sh/)
 
 You can install brew with the following command:
@@ -35,7 +35,7 @@ then go to the settings for extensions and disable the window management extensi
 While you are in the settings you can also change the default hotkey for RayCast to `cmd + space` to replace the default MacOS launcher.
 
 The next application I like to install in MacOS is called Rectangle. This enables window management with hotkeys and easier window tiling.
-It is not a full tiling window manager like DWM, but it is still nice to be able to use shortcuts to organize windows.
+It is not a full [tiling window manager](/blog/what-window-managers-taught-me-about-screen-addiction/) like DWM, but it is still nice to be able to use shortcuts to organize windows.
 
 You can use RayCast to manage brew applications to install new ones. Open RayCast and enable Brew in the settings.
 Then type `brew` into RayCast and use the Brew search function to search for Rectangle.

@@ -2,17 +2,19 @@
 import BaseHead from "../components/BaseHead.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
-<hmtl lang="en">
+<html lang="en">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     </head>
     <body>
         <NavBar />
         <main>
+            <TerminalPrompt />
             <h1>About this site</h1>
             <p>
                 I started this website as a hobby project to learn about
@@ -56,7 +58,21 @@ import Footer from "../components/Footer.astro";
                 don't get me wrong. But for many websites a few simple scripts
                 and some HTML and CSS is enough.
             </p>
+            <p>
+                The design of this website is based on my
+                <a href="https://github.com/tcvscheppingen/DARBS">DARBS</a>
+                dotfiles for dwm. The wallpaper is
+                <a
+                    href="https://science.nasa.gov/asset/webb/cosmic-cliffs-in-the-carina-nebula-nircam-and-miri-composite-image/"
+                    >"Cosmic Cliffs" in the Carina Nebula</a
+                > by NASA, ESA, CSA and STScI (James Webb Space Telescope, public
+                domain).
+            </p>
+            <p>
+                Try clicking <code>[]=</code> in the bar at the top. Like the
+                layout symbol in a standard dwm build, it changes the layout.
+            </p>
         </main>
         <Footer />
     </body>
-</hmtl>
+</html>

@@ -1,115 +1,183 @@
 ---
 import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
+
+const pages = [
+	{ href: "/", label: "home" },
+	{ href: "/blog", label: "posts" },
+	{ href: "/books", label: "books" },
+	{ href: "/websites", label: "links" },
+	{ href: "/uses", label: "uses" },
+	{ href: "/about", label: "about" },
+];
 ---
 
+<!-- Styled after the dwm bar in DARBS: tags on the left, the layout symbol,
+     the title, and a status text on the right -->
 <header>
 	<nav role="navigation">
-		<h2><a href="/" class="site-title nav-link">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink class="nav-link" href="/">Home</HeaderLink>
-			<HeaderLink class="nav-link" href="/blog">Posts</HeaderLink>
-			<HeaderLink class="nav-link" href="/books">Books</HeaderLink>
-			<HeaderLink class="nav-link" href="/websites">Links</HeaderLink>
-			<HeaderLink class="nav-link" href="/uses">Uses</HeaderLink>
-			<HeaderLink class="nav-link" href="/about">About</HeaderLink>
-		</div>
 		<label id="menuToggle" for="menu-checkbox" aria-label="Toggle menu">
 			<input id="menu-checkbox" type="checkbox" />
 			<span></span>
 			<span></span>
 			<span></span>
 		</label>
+		<div class="tags">
+			{pages.map((page) => <HeaderLink href={page.href}>{page.label}</HeaderLink>)}
+		</div>
+		<!-- Easter egg: like in standard dwm (not DARBS, which doesn't bind it),
+		     clicking the layout symbol changes the layout -->
+		<button type="button" class="layout" id="layout-toggle" title="Change layout" aria-label="Change layout">[]=</button>
+		<h2>
+			<a href="/" class="site-title">
+				<!-- The favicon (public/favicon.svg), inline so it needs no request -->
+				<svg class="site-icon" aria-hidden="true" viewBox="0 0 64 64" width="22" height="22">
+					<rect width="64" height="64" rx="14" fill="#151515" />
+					<path
+						d="M13 17h26M26 17v31"
+						fill="none"
+						stroke="#e8e8e8"
+						stroke-width="8"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					/>
+					<rect x="40" y="41" width="14" height="8" rx="2" fill="#5b8fc7" />
+				</svg>
+				{SITE_TITLE}
+			</a>
+		</h2>
+		<div class="status">
+			<a href="/rss.xml" class="rss">rss</a>
+		</div>
+		<!-- On small screens the tags move into this dropdown, like a dmenu list -->
 		<ul id="menu">
-			<li><HeaderLink class="nav-link" href="/">Home</HeaderLink></li>
-			<li><HeaderLink class="nav-link" href="/blog">Posts</HeaderLink></li>
-			<li><HeaderLink class="nav-link" href="/books">Books</HeaderLink></li>
-			<li><HeaderLink class="nav-link" href="/websites">Links</HeaderLink></li>
-			<li><HeaderLink class="nav-link" href="/uses">Uses</HeaderLink></li>
-			<li><HeaderLink class="nav-link" href="/about">About</HeaderLink></li>
+			{pages.map((page) => <li><HeaderLink href={page.href}>{page.label}</HeaderLink></li>)}
 		</ul>
-		<button id="theme-toggle" type="button" aria-label="Toggle dark mode">
-			<svg
-				class="icon-moon"
-				aria-hidden="true"
-				viewBox="0 0 24 24"
-				width="20"
-				height="20"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-			</svg>
-			<svg
-				class="icon-sun"
-				aria-hidden="true"
-				viewBox="0 0 24 24"
-				width="20"
-				height="20"
-				fill="none"
-				stroke="currentColor"
-				stroke-width="2"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-			>
-				<circle cx="12" cy="12" r="5" />
-				<line x1="12" y1="1" x2="12" y2="3" />
-				<line x1="12" y1="21" x2="12" y2="23" />
-				<line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-				<line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-				<line x1="1" y1="12" x2="3" y2="12" />
-				<line x1="21" y1="12" x2="23" y2="12" />
-				<line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-				<line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-			</svg>
-		</button>
 	</nav>
+	<!-- The layout notification, styled after dunst in DARBS -->
+	<div id="layout-notice" class="notice" role="status" hidden>
+		<strong id="layout-notice-title"></strong>
+		<span id="layout-notice-body"></span>
+	</div>
 </header>
 
 <style>
 	header {
+		--bar-height: 40px;
 		margin: 0;
-		padding: 0 1em;
-		background: var(--bg);
-		box-shadow: 0 2px 10px rgba(var(--black), 15%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-		grid-column: 1;
-		justify-self: start;
-	}
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+		background: var(--bar-bg);
+		border-bottom: 1px solid var(--bar-line);
+		font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+		font-size: 15px;
+		line-height: 1;
 	}
 	nav {
 		position: relative;
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		align-items: center;
+		display: flex;
+		align-items: stretch;
+		height: var(--bar-height);
+		color: var(--bar-fg);
 	}
 	nav :global(a) {
-		padding: 1em 0.5em;
-		color: rgb(var(--black));
-		border-bottom: 4px solid transparent;
+		display: flex;
+		align-items: center;
+		color: var(--bar-fg);
 		text-decoration: none;
 	}
 	nav :global(a:hover) {
-		color: var(--cyan);
-	}
-	nav :global(a.active) {
 		text-decoration: none;
-		border-bottom-color: var(--accent-line);
+		color: var(--bar-fg);
+		background: rgba(var(--gray), 20%);
 	}
 
-	.internal-links {
+	/* Tags: the current page is the selected tag */
+	.tags {
 		display: flex;
-		grid-column: 2;
-		justify-self: center;
+	}
+	.tags :global(a),
+	#menu :global(a) {
+		padding: 0 0.9em;
+	}
+	.tags :global(a.active),
+	#menu :global(a.active),
+	.tags :global(a.active:hover),
+	#menu :global(a.active:hover) {
+		background: var(--sel-bg);
+		color: var(--sel-fg);
+		font-weight: normal;
+		text-decoration: none;
+	}
+
+	.layout {
+		display: flex;
+		align-items: center;
+		padding: 0 0.9em;
+		white-space: pre;
+		background: none;
+		border: none;
+		color: var(--bar-fg);
+		font: inherit;
+		cursor: pointer;
+	}
+	.layout:hover {
+		background: rgba(var(--gray), 20%);
+	}
+	.layout:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
+	}
+
+	/* dunst in DARBS: top right, 10px from the edges, 350px wide, a 3px
+	   steel-blue frame, square corners */
+	.notice {
+		position: fixed;
+		top: calc(var(--bar-height) + 10px);
+		right: 10px;
+		z-index: 20;
+		display: grid;
+		gap: 0.2em;
+		width: 350px;
+		max-width: calc(100vw - 20px);
+		box-sizing: border-box;
+		padding: 10px;
+		background: var(--bg);
+		border: 3px solid var(--accent-line);
+		color: var(--bar-fg);
+		font-size: 14px;
+		line-height: 1.5;
+	}
+	.notice[hidden] {
+		display: none;
+	}
+
+	h2 {
+		display: flex;
+		flex: 1;
+		min-width: 0;
+		margin: 0;
+		font-size: 1em;
+		font-weight: normal;
+	}
+	.site-title {
+		gap: 0.6em;
+		min-width: 0;
+		padding: 0 0.9em 0 0;
+		white-space: nowrap;
+	}
+	.site-title:hover {
+		background: none;
+	}
+	.site-icon {
+		flex: none;
+	}
+
+	/* Status text, like dwmblocks */
+	.status {
+		display: flex;
+		align-items: stretch;
+	}
+	.rss {
+		padding: 0 0.9em;
 	}
 
 	/* Hamburger button and dropdown, hidden until small screens */
@@ -120,67 +188,35 @@ import HeaderLink from "./HeaderLink.astro";
 		display: none;
 	}
 
-	#theme-toggle {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		grid-column: 3;
-		justify-self: end;
-		background: none;
-		border: none;
-		cursor: pointer;
-		padding: 0.25em;
-		color: rgb(var(--black));
-	}
-	#theme-toggle .icon-sun {
-		display: none;
-	}
-	:global(:root[data-theme="dark"]) #theme-toggle .icon-sun {
-		display: inline;
-	}
-	:global(:root[data-theme="dark"]) #theme-toggle .icon-moon {
-		display: none;
-	}
-	:root[data-theme="dark"] {
-		.nav-link {
-			color: white;
-		}
-	}
-
 	@media (max-width: 720px) {
-		header {
-			padding: 1em;
-		}
-
-		nav {
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			gap: 0.75em;
-		}
-
-		.internal-links {
+		.tags,
+		.layout,
+		.rss {
 			display: none;
 		}
 
-		#theme-toggle {
-			grid-column: unset;
-			justify-self: unset;
-			margin-left: auto;
+		.site-title {
+			padding-left: 0;
+		}
+
+		/* Too narrow for the icon and the name on one line */
+		@media (max-width: 380px) {
+			.site-title {
+				white-space: normal;
+				line-height: 1.1;
+			}
 		}
 
 		#menuToggle {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			order: -1;
+			gap: 4px;
 			position: relative;
-			width: 30px;
-			height: 30px;
+			width: var(--bar-height);
+			padding: 0 11px;
+			box-sizing: border-box;
 			cursor: pointer;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
 			user-select: none;
 		}
 
@@ -196,37 +232,34 @@ import HeaderLink from "./HeaderLink.astro";
 		/* Hamburger bars */
 		#menuToggle span {
 			display: block;
-			width: 100%;
 			height: 2px;
-			margin-bottom: 6px;
-			background: rgb(var(--black));
-			border-radius: 3px;
-			transition: background 0.3s ease;
-		}
-		#menuToggle span:last-child {
-			margin-bottom: 0;
+			background: var(--bar-fg);
 		}
 
-		/* Change the color of the hamburger when toggled */
+		/* An open menu marks the button like a selected tag */
+		#menuToggle:has(input:checked) {
+			background: var(--sel-bg);
+		}
 		#menuToggle:has(input:checked) span {
-			background: var(--accent);
+			background: var(--sel-fg);
 		}
 
-		/* Menu panel, a dropdown spanning the full header width */
+		/* The dropdown: a vertical list like dmenu -l */
 		#menu {
 			display: block;
 			position: absolute;
 			top: 100%;
-			left: -1em;
-			right: -1em;
+			left: 0;
+			right: 0;
+			z-index: 10;
 			margin: 0;
 			padding: 0;
 			list-style-type: none;
-			background: var(--bg);
-			box-shadow: 0 2px 10px rgba(var(--black), 15%);
+			background: var(--bar-bg);
+			border-bottom: 1px solid var(--bar-line);
 			max-height: 0;
 			overflow: hidden;
-			transition: max-height 0.3s ease;
+			visibility: hidden;
 		}
 
 		#menu li {
@@ -234,28 +267,45 @@ import HeaderLink from "./HeaderLink.astro";
 		}
 
 		#menu :global(a) {
-			display: block;
-			padding: 0.75em 1.5em;
-			border-bottom: 4px solid transparent;
+			height: var(--bar-height);
 		}
 
 		/* Reveal the menu when the checkbox is checked */
 		#menuToggle:has(input:checked) ~ #menu {
 			max-height: 60vh;
 			overflow-y: auto;
+			visibility: visible;
 		}
 	}
 </style>
 
 <script>
-	const STORAGE_KEY = "theme";
-	const toggle = document.getElementById("theme-toggle");
+	// dwm layouts from DARBS. With one window open most of them look the same,
+	// so these four change the page window in a way you can see.
+	const layouts = [
+		{ symbol: "[]=", name: "tile", body: "Master and stack. With one window, that's just the master." },
+		{ symbol: "[M]", name: "monocle", body: "One window, full screen. Nothing else to look at." },
+		{ symbol: "|M|", name: "centeredmaster", body: "The master in the middle, with room for a stack on both sides." },
+		{ symbol: "><>", name: "floating", body: "Floating like in a desktop environment. Very un-dwm." },
+	];
+	const toggle = document.getElementById("layout-toggle");
+	const notice = document.getElementById("layout-notice");
+	const noticeTitle = document.getElementById("layout-notice-title");
+	const noticeBody = document.getElementById("layout-notice-body");
+	let current = 0;
+	let hideTimer: ReturnType<typeof setTimeout> | undefined;
+
 	toggle?.addEventListener("click", () => {
-		const next =
-			document.documentElement.getAttribute("data-theme") === "dark"
-				? "light"
-				: "dark";
-		document.documentElement.setAttribute("data-theme", next);
-		localStorage.setItem(STORAGE_KEY, next);
+		current = (current + 1) % layouts.length;
+		const layout = layouts[current];
+		toggle.textContent = layout.symbol;
+		document.documentElement.dataset.layout = layout.name;
+		if (notice && noticeTitle && noticeBody) {
+			noticeTitle.textContent = `dwm: ${layout.symbol} ${layout.name}`;
+			noticeBody.textContent = layout.body;
+			notice.hidden = false;
+			clearTimeout(hideTimer);
+			hideTimer = setTimeout(() => (notice.hidden = true), 4000);
+		}
 	});
 </script>

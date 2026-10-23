@@ -16,10 +16,15 @@ const today = new Date();
 </footer>
 
 <style>
+	/* A strip in the colors of the dwm bar */
 	footer {
-		padding: 1.5em 1em 1.5em 1em;
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
+		padding: 0.8em var(--gap-x);
+		background: var(--bar-bg);
+		border-top: 1px solid var(--bar-line);
 		color: rgb(var(--gray));
+		font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+		font-size: 14px;
+		line-height: 1.7;
 		text-align: center;
 	}
 	.icon-link {

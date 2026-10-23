@@ -25,7 +25,7 @@ You should invest some time in finding things to do besides anything that is on 
 
 For me reading is the best way to spend less time online. It still satisfies my hunger for information, without frying my brain with overstimulation.
 
-When getting started (or starting again) with a habit of reading, I would recommend to read books that you actually _want_ to read. Don't force yourself to read so-called 'important' books because you feel like you should, just focus on reading things you like. Those great books like _Crime and Punishment_ will still be there when you are more comfortable with reading.
+When getting started (or starting again) with a habit of reading, I would recommend to read books that you actually _want_ to read. Don't force yourself to read so-called 'important' books because you feel like you should, just focus on reading things you like. Those great books like [_Crime and Punishment_](/books/) will still be there when you are more comfortable with reading.
 
 Another great alternative to spending time online is walking. Like reading, walking is easy to get started with. You don't need to walk 10km a day, but 15 to 30 minutes every few days is a great start. 
 
@@ -36,7 +36,7 @@ Reading and walking are great activities to get started with when trying to spen
 1. **Baking** can be quite fun and there are many tasty recipes. You can bake cakes, bread and other snacks.
 2. **Woodworking** is a bit more difficult to get started with, as it is not easy and you will need some tools. It is very rewarding to create something beautiful.
 3. **Leatherworking** is also somewhat difficult to get started with, but also rewarding once you get the hang of it.
-4. **Running** is something I personally enjoy. It is easy to get started with. Seeing progression in your running speed or distance is really enjoyable and you can keep setting new goals.
+4. **[Running](/blog/why-i-dont-use-a-smartwatch/)** is something I personally enjoy. It is easy to get started with. Seeing progression in your running speed or distance is really enjoyable and you can keep setting new goals.
 5. **Writing** can be enjoyed in many different ways: essays, poems, diary entries, journalling.
 6. **Hiking**. Basically walking but more intense and in a prettier environment.
 

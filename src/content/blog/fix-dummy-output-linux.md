@@ -6,7 +6,7 @@ heroImage: "../../assets/hero-images/muted-sound.jpg"
 tags: ["linux", "sound", "arch", "tutorial", "troubleshooting"]
 ---
 
-My laptop is a slightly older HP laptop from 2018 that works great, apart from the battery not holding any charge. I recently switched from Artix to CachyOS and had some problems with my sound. The installation only detected an NVIDIA device for sound output and otherwise showed the infamous _dummy output_.
+My laptop is a slightly older HP laptop from 2018 that works great, apart from the battery not holding any charge. I recently switched from [Artix](/blog/artix-install-full-disk-encryption/) to CachyOS and had some problems with my sound. The installation only detected an NVIDIA device for sound output and otherwise showed the infamous _dummy output_.
 
 After some searching I found a solution that worked for me. There were a lot of forum posts that helped solve the problem for many users, but not for me. 
 I wanted to document my solution so I can easily reproduce it in case I need to fix my sound again after re-installing Linux. It might help you too.

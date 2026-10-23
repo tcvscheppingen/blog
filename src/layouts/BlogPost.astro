@@ -5,6 +5,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 import { AUTHOR_NAME } from "../consts";
 
 type Props = CollectionEntry<"blog">["data"] & {
@@ -68,9 +69,7 @@ const schema = {
 				color: rgb(var(--gray-dark));
 			}
 			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
+				--content-width: 1020px;
 			}
 			.hero-image {
 				width: 100%;
@@ -114,6 +113,7 @@ const schema = {
 	<body>
 		<NavBar />
 		<main>
+			<TerminalPrompt />
 			<article>
 				<div class="hero-image">
 					{

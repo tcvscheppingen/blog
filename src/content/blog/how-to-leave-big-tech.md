@@ -40,7 +40,7 @@ site data and cookies when closed. This makes it less viable to use as a daily b
 If you want to use this browser, I would recommend using it with a password manager to easily log in to your accounts after reopening the browser.
 
 All three recommendations are open-source projects, which means the source code can be audited and inspected for security and privacy flaws.
-I personally prefer LibreWolf for most daily browsing, as it is a nice middle ground between the other two recommendations.
+I personally prefer [LibreWolf](/uses/) for most daily browsing, as it is a nice middle ground between the other two recommendations.
 
 ### Level 2 - Search engine
 
@@ -59,7 +59,7 @@ This means that all their ads are based on what you are actually looking for and
 
 The search engine I use requires some technical ability to set up. It is called [SearXNG](https://docs.searxng.org/) and is actually a meta-search engine.
 It queries other search engines and returns the results in their own interface. That way your data is not tracked by the search engines themselves.
-There are public instances of SearXNG, but I recommend [hosting your own instance locally](/blog/how-to-host-your-own-search-engine).
+There are public instances of SearXNG, but I recommend [hosting your own instance locally](/blog/how-to-host-your-own-search-engine/).
 If you use a public instance you still share data with the host of the instance, who might not be trustworthy.
 You can configure which engines are used by SearXNG in the configuration. I disable most search engines and this gives me pretty good results for most queries.
 I still sometimes fall back to StartPage or DuckDuckGo, but SearXNG is my default engine.
@@ -89,6 +89,7 @@ My third recommendation for operating system is either [Artix](https://artixlinu
 Both of these Linux distributions are based on Arch Linux. This means that you are in complete control of your system, which is both good and bad.
 On the one hand it means that you decide what is installed and what not. You get to configure the system however you like it.
 On the other hand this means that you need to know what you are doing, otherwise things will break.
+If you want to try Artix, you can follow [my tutorial](/blog/artix-install-full-disk-encryption/) or use [my installation script](/blog/artix-auto-installer/).
 
 I don't recommend Arch based distributions for novices. One of the reasons for not recommending it, is the AUR, or Arch User Repository.
 The AUR is a large repository of packages/software that are maintained by the community. This means that both good and bad actors can create packages.
@@ -103,7 +104,7 @@ There are different versions of Fedora and I recommend the version with KDE as a
 If you have completed both levels, you are on your way to reclaiming a large portion of your privacy.
 This bonus level consists of some recommendations for replacing commonly used software and services like ChatGPT.
 
-While I [recommend using as little AI as possible](/about-this-site), I still think AI can be useful in some cases.
+While I [recommend using as little AI as possible](/about-this-site/), I still think AI can be useful in some cases.
 Companies like OpenAI and Anthropic use your conversations with their chatbots to train their models.
 In general these companies have proven themselves to be untrustworthy and unethical.
 
@@ -117,4 +118,4 @@ They encrypt all your pictures before uploading them to their servers and don't 
 Ente also has automatic facial recognition and that data also remains on your own devices.
 
 If you want more recommendations for replacing Big Tech, check out [Privacy Tools](https://privacytools.io/) and use the _Break Up_ function to automatically suggest alternatives.
-I also have some [more recommendations](/websites) on the website you are currently visiting.
+I also have some [more recommendations](/websites/) on the website you are currently visiting.

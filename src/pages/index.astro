@@ -5,6 +5,7 @@ import HeroImage from "../components/HeroImage.astro";
 import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 import IndexImage from "../assets/index-image.jpeg";
 import NavBar from "../components/NavBar.astro";
+import TerminalPrompt from "../components/TerminalPrompt.astro";
 
 const schema = {
 	"@context": "https://schema.org",
@@ -33,6 +34,7 @@ const schema = {
 	<body>
 		<NavBar />
 		<main>
+			<TerminalPrompt output="tip: click []= in the bar to change the layout" />
 			<HeroImage
 				imageSrc={IndexImage}
 				altText="Computer screens showing code"
