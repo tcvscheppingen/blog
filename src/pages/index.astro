@@ -34,7 +34,9 @@ const schema = {
 	<body>
 		<NavBar />
 		<main>
-			<TerminalPrompt output="tip: click []= in the bar to change the layout" />
+			<TerminalPrompt
+				output="tip: click []= in the bar to change the layout"
+			/>
 			<HeroImage
 				imageSrc={IndexImage}
 				altText="Computer screens showing code"
@@ -53,6 +55,14 @@ const schema = {
 				This webpage is not just about technology. I will also write
 				posts about other things I like. Some examples: coffee, running,
 				books or just sharing some thoughts about a topic.
+			</p>
+			<p>
+				Fun fact about this website: I styled it like the window manager
+				I use on my pc, which is a custom build of dwm called <a
+					href="https://github.com/tcvscheppingen/DARBS"
+				>
+					DARBS</a
+				>.
 			</p>
 			<p>
 				<a href="/about-this-site" data-astro-prefetch
