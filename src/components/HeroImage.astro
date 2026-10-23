@@ -4,7 +4,13 @@ import { Image } from "astro:assets";
 const { imageSrc, altText, width = 1020, height = 510 } = Astro.props;
 ---
 
-<Image src={imageSrc} alt={altText} width={width} height={height} />
+<Image
+    src={imageSrc}
+    alt={altText}
+    width={width}
+    height={height}
+    class="hero-image"
+/>
 <style>
     .hero-image {
         width: 100%;
