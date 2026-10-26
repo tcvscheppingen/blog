@@ -355,8 +355,9 @@ const shortDate = (date: Date) =>
 							lastG = event.timeStamp;
 							break;
 						case "Enter":
-							// A link focused with Tab opens itself
-							if (event.target !== document.body) return;
+							// A link or button focused with Tab opens itself. Otherwise the
+							// focus is on the page or the window (Keybinds.astro focuses it)
+							if (event.target instanceof Element && event.target.closest("a, button")) return;
 							visible[focused]?.querySelector("a")?.click();
 							break;
 						case "/":
