@@ -51,6 +51,13 @@
 	.dmenu::backdrop {
 		background: rgba(0, 0, 0, 0.35);
 	}
+	/* On a phone the page below the results is what you tap to close the
+	   search, so it is dimmed more */
+	@media (max-width: 720px) {
+		.dmenu::backdrop {
+			background: rgba(0, 0, 0, 0.6);
+		}
+	}
 
 	.dmenu-bar {
 		display: flex;
@@ -190,22 +197,35 @@
 	}
 
 	@media (max-width: 720px) {
+		/* At most half the screen, and never behind the on-screen keyboard
+		   (--room, the height above it, is set by the script): the dimmed page
+		   stays in sight below, and tapping it closes the search */
 		.dmenu-list {
-			max-height: calc(100dvh - var(--bar-height));
+			max-height: min(50dvh, calc(var(--room, 100dvh) - var(--bar-height) - 3em));
 		}
-		/* Too narrow for a snippet next to the title; it goes underneath */
+		/* Too narrow for a snippet next to the title; it goes underneath, in
+		   smaller text */
 		.dmenu-list :global(li) {
 			flex-wrap: wrap;
 			gap: 0 0.8em;
-			padding: 0.5em 0.9em;
+			padding: 0.4em 0.9em;
+			border-bottom: 1px solid var(--bar-line);
 			line-height: 1.5;
+		}
+		.dmenu-list :global(li:last-child) {
+			border-bottom: none;
 		}
 		.dmenu-list :global(a) {
 			flex: 1;
 			max-width: none;
 		}
+		/* Only as wide as "post", so the title gets the room */
+		.dmenu-list :global(.path) {
+			width: auto;
+		}
 		.dmenu-list :global(.snippet) {
 			flex-basis: 100%;
+			font-size: 13px;
 		}
 	}
 </style>
@@ -371,9 +391,19 @@
 		render();
 	}
 
+	// The height above the on-screen keyboard, for the list (see the styles).
+	// iOS doesn't make dvh smaller for the keyboard, the visual viewport is
+	function measureRoom() {
+		if (window.visualViewport) {
+			dialog.style.setProperty("--room", `${window.visualViewport.height}px`);
+		}
+	}
+	window.visualViewport?.addEventListener("resize", () => dialog.open && measureRoom());
+
 	async function open() {
 		if (dialog.open) return;
 		input.value = "";
+		measureRoom();
 		dialog.showModal();
 		render();
 		await loadIndex();

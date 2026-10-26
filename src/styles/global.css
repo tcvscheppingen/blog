@@ -146,57 +146,172 @@ main {
 	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
 }
 
-/* A second window: pressing ? opens the keybinds in a new terminal (#keybinds,
-   in Keybinds.astro). Like in dwm the focused window gets the blue border */
+/* More windows: ? opens the keybinds and f fastfetch, each in a new terminal
+   (Keybinds.astro, Fastfetch.astro). They go in the stack, #stack. Like in
+   dwm the focused window gets the blue border */
 :root[data-stack][data-focus="stack"] main,
-:root[data-stack][data-focus="master"] #keybinds {
+#stack > :not(.focused) {
 	border-color: var(--term-border-unfocused);
 }
 
-/* The new window floats on phones and in ><>, where there is no room or no
-   tiling */
-#keybinds {
+#stack[hidden] {
+	display: none;
+}
+
+/* The windows float on phones and in ><>, where there is no room or no
+   tiling; more than one go under each other */
+#stack {
 	position: fixed;
-	top: 50%;
+	top: calc(50% + var(--bar-height) / 2);
 	left: 50%;
 	z-index: 15;
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap-y);
 	width: min(640px, calc(100vw - 2 * var(--gap-x)));
-	max-height: calc(100dvh - 2 * var(--bar-height));
+	max-height: calc(100dvh - var(--bar-height) - 4 * var(--gap-y));
 	transform: translate(-50%, -50%);
+}
+
+#stack > * {
+	flex: 0 1 auto;
+	min-height: 0;
 	/* Opaque, or the page shows through the text */
 	background: var(--bg);
 	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
 }
 
+/* Windows get focus with h, l and clicks (Keybinds.astro), so the arrow keys
+   and space scroll them; dwm shows that with the border, not an outline */
+main:focus {
+	outline: none;
+}
+
 @media (min-width: 721px) {
-	/* []= tile and |M| centered master (which with a single stack window is
-	   the same as tile): the page is the master on the left, taking 55% of
-	   the screen (dwm's mfact), the new window is the stack on the right */
-	:root[data-stack]:not([data-layout="floating"]) body {
+	/* The page doesn't scroll, like a screen in dwm: the bar on top, the
+	   footer as a second bar at the bottom, and the windows in between, each
+	   scrolling on its own. Phones scroll the page, as nothing tiles there */
+	body {
 		display: grid;
-		grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+		grid-template-rows: auto minmax(0, 1fr) auto;
+		grid-template-columns: minmax(0, 1fr);
+		height: 100vh;
+		height: 100dvh;
+		overflow: hidden;
 	}
-	:root[data-stack]:not([data-layout="floating"]) body > :is(header, footer) {
+	body > :is(header, footer) {
 		grid-column: 1 / -1;
+	}
+	main,
+	#stack-area {
+		grid-row: 2;
+	}
+	/* Or in ><> the page window would go next to the floating windows */
+	main {
+		grid-column: 1;
+	}
+	/* The same specificity as the layouts' min-height, so this wins */
+	main,
+	:root[data-layout] main {
+		min-height: 0;
+	}
+	main,
+	#stack > * {
+		overflow-y: auto;
+		scrollbar-width: thin;
+		scrollbar-color: rgb(var(--gray)) transparent;
+	}
+
+	/* ><> floating: the window is as tall as its text, up to the screen. The
+	   width is needed, as with auto margins a grid item shrinks to fit its
+	   content, and main's container query hides that */
+	:root[data-layout="floating"] main {
+		width: 100%;
+		align-self: start;
+		max-height: calc(100% - 120px);
+	}
+
+	/* Without windows in the stack there is nothing to tile */
+	:root:not([data-stack]) #stack-area {
+		display: none;
+	}
+	/* In ><> the windows float over the page window, between the two bars */
+	:root[data-layout="floating"] #stack-area {
+		grid-area: 2 / 1;
+		z-index: 15;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 0;
+		pointer-events: none;
+	}
+	:root[data-layout="floating"] #stack {
+		position: static;
+		max-height: calc(100% - 4 * var(--gap-y));
+		transform: none;
+		pointer-events: auto;
+	}
+
+	/* []= tile and |M| centered master (which with only a stack on one side
+	   is the same as tile): the page is the master on the left, taking 55% of
+	   the screen (dwm's mfact), the stack is on the right. Its windows share
+	   its height equally */
+	:root[data-stack]:not([data-layout="floating"]) body {
+		grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
 	}
 	:root[data-stack]:not([data-layout="floating"]) main {
 		margin-left: var(--gap-x);
 		margin-right: 0;
 	}
-	/* The stack stays on screen while the page scrolls */
-	:root[data-stack]:not([data-layout="floating"]) #keybinds {
-		position: sticky;
-		top: var(--gap-y);
-		left: auto;
-		z-index: auto;
-		align-self: start;
+	:root[data-stack]:not([data-layout="floating"]) #stack-area {
+		display: flex;
+		flex-direction: column;
+		min-height: 0;
+	}
+	:root[data-stack]:not([data-layout="floating"]) #stack {
+		position: static;
+		flex: 1;
 		width: auto;
-		height: calc(100vh - var(--bar-height) - 2 * var(--gap-y));
+		min-height: 0;
 		max-height: none;
 		margin: var(--gap-y) var(--gap-x) var(--gap-y) var(--gap-y);
 		transform: none;
+	}
+	:root[data-stack]:not([data-layout="floating"]) #stack > * {
+		flex: 1 1 0;
 		background: var(--term-bg);
 		box-shadow: none;
+	}
+
+	/* |M| centered master with two windows in the stack: the master in the
+	   middle, the top of the stack on the right and the next one on the left,
+	   like dwm's centeredmaster. Only on wide screens: on smaller ones the
+	   side windows would be too narrow, so it stays like tile */
+	@media (min-width: 1200px) {
+		:root[data-layout="centeredmaster"][data-stack="2"] body {
+			grid-template-columns: minmax(0, 22.5fr) minmax(0, 55fr) minmax(0, 22.5fr);
+		}
+		:root[data-layout="centeredmaster"][data-stack="2"] main {
+			grid-column: 2;
+			margin-left: 0;
+			margin-right: 0;
+		}
+		/* The windows become grid cells themselves */
+		:root[data-layout="centeredmaster"][data-stack="2"] :is(#stack-area, #stack) {
+			display: contents;
+		}
+		:root[data-layout="centeredmaster"][data-stack="2"] #stack > * {
+			grid-row: 2;
+			margin: var(--gap-y);
+		}
+		:root[data-layout="centeredmaster"][data-stack="2"] #stack > [data-slot="0"] {
+			grid-column: 3;
+			margin-right: var(--gap-x);
+		}
+		:root[data-layout="centeredmaster"][data-stack="2"] #stack > [data-slot="1"] {
+			grid-column: 1;
+			margin-left: var(--gap-x);
+		}
 	}
 
 	/* [M] monocle: only the focused window is shown, fullscreen */
@@ -204,15 +319,17 @@ main {
 		grid-template-columns: minmax(0, 1fr);
 	}
 	:root[data-layout="monocle"][data-stack][data-focus="stack"] main,
-	:root[data-layout="monocle"][data-stack][data-focus="master"] #keybinds {
+	:root[data-layout="monocle"][data-stack][data-focus="master"] #stack-area,
+	:root[data-layout="monocle"] #stack > :not(.focused) {
 		display: none;
 	}
 	:root[data-layout="monocle"][data-stack] main {
 		margin: 0;
 	}
-	:root[data-layout="monocle"][data-stack] #keybinds {
-		height: calc(100vh - var(--bar-height));
+	:root[data-layout="monocle"][data-stack] #stack {
 		margin: 0;
+	}
+	:root[data-layout="monocle"][data-stack] #stack > * {
 		border-width: 0;
 	}
 }

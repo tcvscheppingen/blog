@@ -1,7 +1,11 @@
 ---
-// The site's keybinds, and a second terminal window that lists them. Like a
-// new window in dwm it tiles next to the page (the layout rules for that are
-// in global.css). Opens with ? or the "?" button in the bar.
+// The site's keybinds, and the windows that open next to the page: one that
+// lists the keybinds (? or the "?" button in the bar) and fastfetch (f, in
+// Fastfetch.astro). Like new windows in dwm with attachaside, they go on top
+// of the stack and tile next to the page (the layout rules for that are in
+// global.css). Open windows stay open on the next page, until you close them.
+import Fastfetch from "./Fastfetch.astro";
+
 const binds = [
 	{
 		section: "SEARCH",
@@ -36,14 +40,20 @@ const binds = [
 			{ keys: ["t"], action: "next layout: tile, monocle, centered master, floating" },
 			{ keys: ["s"], action: "show the keys you press (like screenkey)" },
 			{ keys: ["?"], action: "show or hide this window" },
-			{ keys: ["q", "esc"], action: "close this window" },
-			{ keys: ["h", "l"], action: "focus the page, this window" },
+			{ keys: ["f"], action: "show or hide fastfetch" },
+			{ keys: ["q", "esc"], action: "close the focused window" },
+			{ keys: ["h", "l"], action: "focus the page, the next window" },
 			{ keys: ["click"], action: "focus a window; j and k scroll the focused one" },
 		],
 	},
 ];
 ---
 
+<!-- The stack: the windows next to the page. Moved next to <main> by the
+     script below, and hidden until then. #stack-area is as tall as the page
+     window, so the stack sticks to the screen but never goes past the page -->
+<div id="stack-area">
+<div id="stack" hidden>
 <section
 	id="keybinds"
 	class="keybinds"
@@ -85,10 +95,13 @@ const binds = [
 		</p>
 	</div>
 	<!-- The prompt of less, which man pages open in; it closes the window -->
-	<button type="button" class="pager" id="keybinds-close">
+	<button type="button" class="pager" data-close>
 		Manual page keybinds(7) line 1 (press q to quit)
 	</button>
 </section>
+<Fastfetch />
+</div>
+</div>
 
 <!-- screenkey: the keys you press, at the bottom of the screen. Toggled with s -->
 <div id="screenkey" class="screenkey" aria-hidden="true" hidden></div>
@@ -153,6 +166,8 @@ const binds = [
 	}
 	.man-header {
 		display: flex;
+		/* Wraps in the narrow side window of |M| */
+		flex-wrap: wrap;
 		justify-content: space-between;
 		gap: 1em;
 		margin: 0 0 1em;
@@ -209,46 +224,120 @@ const binds = [
 
 <script>
 	const root = document.documentElement;
-	const keybinds = document.getElementById("keybinds") as HTMLElement;
+	const stack = document.getElementById("stack") as HTMLDivElement;
+	const windows = [...stack.querySelectorAll<HTMLElement>(":scope > section")];
 	const main = document.querySelector("main");
 
-	// The window lives next to the page so it can tile with it
-	main?.after(keybinds);
+	// The stack lives next to the page so it can tile with it
+	main?.after(document.getElementById("stack-area") as HTMLDivElement);
 
+	// The open windows, the newest on top of the stack, and the focused window.
+	// Kept in session storage (see the privacy policy), so they stay open on
+	// the next page; public/layout.js reads it too, so the page doesn't jump
+	let open: string[] = [];
+	let focused = "master";
+	try {
+		const saved = JSON.parse(sessionStorage.getItem("windows") ?? "{}");
+		if (Array.isArray(saved.open)) {
+			open = saved.open.filter((id: unknown) => windows.some((win) => win.id === id));
+		}
+		if (open.includes(saved.focused)) focused = saved.focused;
+	} catch {}
 
-	// Like dwm: the focused window has the blue border
-	function focus(window: "master" | "stack") {
-		root.dataset.focus = window;
+	function render() {
+		windows.forEach((win) => {
+			win.hidden = !open.includes(win.id);
+			// Its place in the stack, from the top: the order in tile, and the
+			// side in |M| (global.css)
+			win.style.order = String(open.indexOf(win.id));
+			win.dataset.slot = String(open.indexOf(win.id));
+			// Like dwm: the focused window has the blue border
+			win.classList.toggle("focused", win.id === focused);
+		});
+		stack.hidden = open.length === 0;
+		if (open.length > 0) {
+			root.dataset.stack = String(open.length);
+			root.dataset.focus = focused === "master" ? "master" : "stack";
+		} else {
+			delete root.dataset.stack;
+			delete root.dataset.focus;
+		}
+		try {
+			if (open.length > 0) sessionStorage.setItem("windows", JSON.stringify({ open, focused }));
+			else sessionStorage.removeItem("windows");
+		} catch {}
 	}
 
-	function openKeybinds() {
-		keybinds.hidden = false;
-		root.dataset.stack = "keybinds";
-		focus("stack");
-		keybinds.scrollTop = 0;
+	// The focused window also gets the browser's focus, so the arrow keys,
+	// space and page down scroll it. Clicking in a window does that by itself
+	if (main) main.tabIndex = -1;
+	function focusElement() {
+		const win = focused === "master" ? main : document.getElementById(focused);
+		if (win && !win.contains(document.activeElement)) win.focus({ preventScroll: true });
 	}
 
-	function closeKeybinds() {
-		keybinds.hidden = true;
-		delete root.dataset.stack;
-		delete root.dataset.focus;
+	function focus(id: string) {
+		focused = id;
+		render();
+		focusElement();
 	}
 
-	function toggleKeybinds() {
-		if (keybinds.hidden) openKeybinds();
-		else closeKeybinds();
+	function openWindow(id: string) {
+		open = [id, ...open.filter((other) => other !== id)];
+		focus(id);
+		document.getElementById(id)?.scrollTo({ top: 0 });
 	}
 
-	document.getElementById("keybinds-toggle")?.addEventListener("click", toggleKeybinds);
-	document.getElementById("keybinds-close")?.addEventListener("click", closeKeybinds);
-	main?.addEventListener("pointerdown", () => !keybinds.hidden && focus("master"));
-	keybinds.addEventListener("pointerdown", () => focus("stack"));
+	function closeWindow(id: string) {
+		open = open.filter((other) => other !== id);
+		// The focus goes to the window on top of the stack, or the page
+		if (focused === id || open.length === 0) focused = open[0] ?? "master";
+		render();
+		focusElement();
+	}
 
-	// j and k scroll the focused window: the keybinds when they are focused and
-	// long enough to scroll, otherwise the page
+	function toggleWindow(id: string) {
+		if (open.includes(id)) closeWindow(id);
+		else openWindow(id);
+	}
+
+	// l focuses the stack, and then the next window in it
+	function focusNext() {
+		const next = focused === "master" ? 0 : open.indexOf(focused) + 1;
+		focus(open[next % open.length]);
+	}
+
+	render();
+	if (document.activeElement === document.body) focusElement();
+
+	// On a desktop the page window scrolls rather than the page (global.css),
+	// and browsers only remember where you were on the page. So the page
+	// window keeps that in its history entry, for back and forward
+	if (main) {
+		const saved = history.state?.mainScroll;
+		if (typeof saved === "number") main.scrollTop = saved;
+		let saveTimer: ReturnType<typeof setTimeout> | undefined;
+		main.addEventListener("scroll", () => {
+			clearTimeout(saveTimer);
+			saveTimer = setTimeout(
+				() => history.replaceState({ ...history.state, mainScroll: main.scrollTop }, ""),
+				200,
+			);
+		});
+	}
+
+	document.getElementById("keybinds-toggle")?.addEventListener("click", () => toggleWindow("keybinds"));
+	main?.addEventListener("pointerdown", () => open.length > 0 && focus("master"));
+	windows.forEach((win) => {
+		win.addEventListener("pointerdown", () => focused !== win.id && focus(win.id));
+		win.querySelector("[data-close]")?.addEventListener("click", () => closeWindow(win.id));
+	});
+
+	// j and k scroll the focused window when it scrolls by itself (on a
+	// desktop all windows do), otherwise the page
 	function scroller(): { scrollBy(options: ScrollToOptions): void; scrollHeight: number; clientHeight: number } {
-		const stack = !keybinds.hidden && root.dataset.focus === "stack";
-		if (stack && keybinds.scrollHeight > keybinds.clientHeight) return keybinds;
+		const win = focused === "master" ? main : document.getElementById(focused);
+		if (win && getComputedStyle(win).overflowY !== "visible") return win;
 		return {
 			scrollBy: (options) => window.scrollBy(options),
 			scrollHeight: document.documentElement.scrollHeight,
@@ -267,8 +356,13 @@ const binds = [
 	const step = 120;
 	const behavior: ScrollBehavior = "instant";
 	let lastG = 0;
+	// Phones and tablets: the keys are off, there's no keyboard to use them
+	// with. Narrow windows on a computer keep them, like a browser tiled to
+	// half the screen
+	const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
 
 	document.addEventListener("keydown", (event) => {
+		if (touch.matches) return;
 		// Already handled by the page itself, like j and k on the posts page
 		if (event.defaultPrevented) return;
 		if (event.ctrlKey || event.metaKey || event.altKey) return;
@@ -306,22 +400,29 @@ const binds = [
 				document.getElementById("layout-toggle")?.click();
 				break;
 			case "h":
+				if (open.length === 0) return;
+				focus("master");
+				break;
 			case "l":
-				if (keybinds.hidden) return;
-				focus(event.key === "h" ? "master" : "stack");
+				if (open.length === 0) return;
+				focusNext();
 				break;
 			case "?":
-				toggleKeybinds();
+				toggleWindow("keybinds");
+				break;
+			case "f":
+				toggleWindow("fastfetch");
 				break;
 			case "q":
-				// q closes the keybinds window first; in a post it quits to the posts
-				if (!keybinds.hidden) closeKeybinds();
+				// q closes a window first (the focused one, or the top of the
+				// stack); in a post it quits to the posts
+				if (open.length > 0) closeWindow(focused === "master" ? open[0] : focused);
 				else if (/^\/blog\/./.test(window.location.pathname)) window.location.href = "/blog";
 				else return;
 				break;
 			case "Escape":
-				if (keybinds.hidden) return;
-				closeKeybinds();
+				if (open.length === 0) return;
+				closeWindow(focused === "master" ? open[0] : focused);
 				break;
 			default:
 				return;
@@ -376,7 +477,7 @@ const binds = [
 	window.addEventListener(
 		"keydown",
 		(event) => {
-			if (!screenkeyOn || ["Shift", "Control", "Meta", "Alt"].includes(event.key)) return;
+			if (!screenkeyOn || touch.matches || ["Shift", "Control", "Meta", "Alt"].includes(event.key)) return;
 			// The toggle shows its own message
 			if (event.key === "s" && !isTyping(event.target) && !document.querySelector("dialog[open]")) return;
 			const modifiers = [

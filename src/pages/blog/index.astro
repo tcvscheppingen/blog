@@ -279,19 +279,30 @@ const shortDate = (date: Date) =>
 			const noResults = document.getElementById("no-results") as HTMLParagraphElement;
 			let visible = items;
 			let focused = 0;
-			// Phones and tablets: no keyboard to move a focus line with, and the
-			// keyboard's enter/done key should only close the keyboard
+			// Phones and tablets: no keyboard to move a focus line with, so no
+			// newsboat keys, and the keyboard's enter/done key should only close
+			// the keyboard
 			const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
 
-			function focusArticle(index: number) {
+			// scroll: false when the page loads, so going back to the posts keeps
+			// where you were
+			function focusArticle(index: number, scroll = true) {
 				if (visible.length === 0) return;
 				focused = Math.max(0, Math.min(index, visible.length - 1));
 				items.forEach((item) => item.classList.remove("focus"));
 				visible[focused].classList.add("focus");
 				visible[focused].scrollIntoView({ block: "nearest" });
+				// The first and last post go to the top and bottom of the window,
+				// so the prompt and title above the posts show too. On a desktop
+				// the window scrolls, on a phone the page (see global.css)
+				if (!scroll || (focused > 0 && focused < visible.length - 1)) return;
+				const main = document.querySelector("main");
+				const scroller = main && getComputedStyle(main).overflowY !== "visible" ? main : window;
+				const bottom = Math.max(main?.scrollHeight ?? 0, document.documentElement.scrollHeight);
+				scroller.scrollTo({ top: focused === 0 ? 0 : bottom, behavior: "instant" });
 			}
 
-			if (!touch.matches) focusArticle(0);
+			if (!touch.matches) focusArticle(0, false);
 
 			input.addEventListener("input", () => {
 				const query = input.value.toLowerCase().trim();
@@ -323,7 +334,7 @@ const shortDate = (date: Date) =>
 			window.addEventListener(
 				"keydown",
 				(event) => {
-					if (event.ctrlKey || event.metaKey || event.altKey) return;
+					if (event.ctrlKey || event.metaKey || event.altKey || touch.matches) return;
 					if (event.target instanceof HTMLInputElement || document.querySelector("dialog[open]")) return;
 					// With the keybinds window focused, the keys are for that window
 					if (document.documentElement.dataset.focus === "stack") return;

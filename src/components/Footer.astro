@@ -5,7 +5,8 @@ const today = new Date();
 ---
 
 <footer>
-	&copy; {today.getFullYear()} Thymen van Scheppingen <br />
+	&copy; {today.getFullYear()} Thymen van Scheppingen<span class="one-line"> - </span>
+	<br />
 	<a href="/privacy-policy">Privacy Policy</a> - <a
 		href="https://github.com/tcvscheppingen"
 		class="icon-link"
@@ -26,6 +27,22 @@ const today = new Date();
 		font-size: 14px;
 		line-height: 1.7;
 		text-align: center;
+	}
+	/* On a desktop the footer is a bar at the bottom of the screen (see
+	   global.css), so it fits on one line */
+	.one-line {
+		display: none;
+	}
+	@media (min-width: 721px) {
+		footer {
+			padding: 0.4em var(--gap-x);
+		}
+		.one-line {
+			display: inline;
+		}
+		br {
+			display: none;
+		}
 	}
 	.icon-link {
 		display: inline-flex;
