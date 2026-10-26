@@ -204,8 +204,7 @@ const shortDate = (date: Date) =>
 				<p class="info">
 					newsboat - Articles in feed '{SITE_TITLE}' (<span id="count"
 						>{posts.length}</span
-					>
-					total) - {new URL("rss.xml", Astro.site)}
+					>{" "}total) - {new URL("rss.xml", Astro.site)}
 				</p>
 				<div class="search">
 					<label for="search">Search for:</label>

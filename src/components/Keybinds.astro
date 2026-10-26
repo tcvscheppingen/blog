@@ -34,6 +34,7 @@ const binds = [
 		section: "WINDOWS",
 		keys: [
 			{ keys: ["t"], action: "next layout: tile, monocle, centered master, floating" },
+			{ keys: ["s"], action: "show the keys you press (like screenkey)" },
 			{ keys: ["?"], action: "show or hide this window" },
 			{ keys: ["q", "esc"], action: "close this window" },
 			{ keys: ["h", "l"], action: "focus the page, this window" },
@@ -89,7 +90,34 @@ const binds = [
 	</button>
 </section>
 
+<!-- screenkey: the keys you press, at the bottom of the screen. Toggled with s -->
+<div id="screenkey" class="screenkey" aria-hidden="true" hidden></div>
+
 <style>
+	.screenkey {
+		position: fixed;
+		bottom: 24px;
+		left: 50%;
+		z-index: 30;
+		max-width: calc(100vw - 40px);
+		padding: 6px 18px;
+		box-sizing: border-box;
+		transform: translateX(-50%);
+		background: var(--bar-bg);
+		border: var(--term-border) solid var(--accent-line);
+		color: rgb(var(--black));
+		font-family:
+			ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas,
+			monospace;
+		font-size: 22px;
+		font-weight: 700;
+		white-space: pre;
+		overflow: hidden;
+		pointer-events: none;
+	}
+	.screenkey[hidden] {
+		display: none;
+	}
 	.keybinds {
 		display: flex;
 		flex-direction: column;
@@ -270,6 +298,9 @@ const binds = [
 					lastG = event.timeStamp;
 				}
 				break;
+			case "s":
+				toggleScreenkey();
+				break;
 			case "t":
 				// The layouts live in NavBar.astro; its []= button cycles them
 				document.getElementById("layout-toggle")?.click();
@@ -297,4 +328,67 @@ const binds = [
 		}
 		event.preventDefault();
 	});
+
+	// screenkey. On or off is kept in local storage (see the privacy policy),
+	// so it stays on while following links
+	const screenkey = document.getElementById("screenkey") as HTMLDivElement;
+	const keyNames: Record<string, string> = {
+		Enter: "⏎",
+		Escape: "esc",
+		ArrowDown: "↓",
+		ArrowUp: "↑",
+		ArrowLeft: "←",
+		ArrowRight: "→",
+		Backspace: "⌫",
+		Tab: "tab",
+		" ": "␣",
+	};
+	let screenkeyOn = false;
+	let lastKey = 0;
+	let screenkeyTimer: ReturnType<typeof setTimeout> | undefined;
+
+	function showKeys(text: string, append: boolean) {
+		const keys = append ? `${screenkey.textContent} ${text}`.split(" ").slice(-8).join(" ") : text;
+		screenkey.textContent = keys;
+		screenkey.hidden = false;
+		clearTimeout(screenkeyTimer);
+		screenkeyTimer = setTimeout(() => (screenkey.hidden = true), 1500);
+	}
+
+	function setScreenkey(on: boolean) {
+		screenkeyOn = on;
+		try {
+			if (on) localStorage.setItem("screenkey", "on");
+			else localStorage.removeItem("screenkey");
+		} catch {}
+	}
+
+	function toggleScreenkey() {
+		setScreenkey(!screenkeyOn);
+		showKeys(screenkeyOn ? "screenkey on" : "screenkey off", false);
+	}
+
+	try {
+		screenkeyOn = localStorage.getItem("screenkey") === "on";
+	} catch {}
+
+	// In the capture phase, so it also sees keys the page or the search handle
+	window.addEventListener(
+		"keydown",
+		(event) => {
+			if (!screenkeyOn || ["Shift", "Control", "Meta", "Alt"].includes(event.key)) return;
+			// The toggle shows its own message
+			if (event.key === "s" && !isTyping(event.target) && !document.querySelector("dialog[open]")) return;
+			const modifiers = [
+				event.ctrlKey && "ctrl",
+				event.metaKey && "cmd",
+				event.altKey && "alt",
+			].filter(Boolean);
+			const key = keyNames[event.key] ?? event.key;
+			// Keys pressed shortly after each other are shown together
+			showKeys([...modifiers, key].join("+"), event.timeStamp - lastKey < 700);
+			lastKey = event.timeStamp;
+		},
+		{ capture: true },
+	);
 </script>

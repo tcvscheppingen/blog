@@ -38,7 +38,9 @@ export default defineConfig({
   security: {
     csp: {
       directives: [
-        "default-src 'none'",
+        // 'self' rather than 'none': Firefox checks <link rel="prefetch"> (Astro's
+        // prefetch) against default-src, as there is no directive for it
+        "default-src 'self'",
         "object-src 'none'",
         "img-src 'self' https://i.ytimg.com",
         "frame-src https://www.youtube-nocookie.com",
