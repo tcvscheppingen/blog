@@ -1,0 +1,300 @@
+---
+// The site's keybinds, and a second terminal window that lists them. Like a
+// new window in dwm it tiles next to the page (the layout rules for that are
+// in global.css). Opens with ? or the "?" button in the bar.
+const binds = [
+	{
+		section: "SEARCH",
+		keys: [
+			{ keys: ["d"], action: "open the search (dmenu)" },
+			{ keys: ["↑", "↓"], action: "select a result (also ctrl+n, ctrl+p)" },
+			{ keys: ["enter"], action: "open the selected result" },
+			{ keys: ["esc"], action: "close the search" },
+		],
+	},
+	{
+		section: "SCROLL",
+		keys: [
+			{ keys: ["j", "k"], action: "scroll down, up" },
+			{ keys: ["gg", "G"], action: "jump to the top, bottom" },
+		],
+	},
+	{
+		section: "POSTS",
+		keys: [
+			{ keys: ["j", "k"], action: "focus the next, previous article (like newsboat)" },
+			{ keys: ["↓", "↑"], action: "the same as j and k" },
+			{ keys: ["gg", "G"], action: "focus the first, last article" },
+			{ keys: ["enter"], action: "open the focused article" },
+			{ keys: ["/"], action: "search the articles" },
+			{ keys: ["q"], action: "in a post: go back to the posts" },
+		],
+	},
+	{
+		section: "WINDOWS",
+		keys: [
+			{ keys: ["t"], action: "next layout: tile, monocle, centered master, floating" },
+			{ keys: ["?"], action: "show or hide this window" },
+			{ keys: ["q", "esc"], action: "close this window" },
+			{ keys: ["h", "l"], action: "focus the page, this window" },
+			{ keys: ["click"], action: "focus a window; j and k scroll the focused one" },
+		],
+	},
+];
+---
+
+<section
+	id="keybinds"
+	class="keybinds"
+	aria-labelledby="keybinds-title"
+	tabindex="-1"
+	hidden
+>
+	<p class="prompt" aria-hidden="true">
+		<span class="user">[thymen@thymen.dev ~]</span><span class="sign">$</span> man
+		keybinds
+	</p>
+	<div class="man">
+		<p class="man-header" aria-hidden="true">
+			<span>KEYBINDS(7)</span><span>thymen.dev</span><span>KEYBINDS(7)</span>
+		</p>
+		<h2 id="keybinds-title">NAME</h2>
+		<p class="indent">keybinds - move around this site without a mouse</p>
+		{
+			binds.map(({ section, keys }) => (
+				<>
+					<h2>{section}</h2>
+					<dl class="indent">
+						{keys.map(({ keys, action }) => (
+							<>
+								<dt>
+									{keys.map((key) => (
+										<kbd>{key}</kbd>
+									))}
+								</dt>
+								<dd>{action}</dd>
+							</>
+						))}
+					</dl>
+				</>
+			))
+		}
+		<p class="note indent">
+			The keys don't work while typing in a text field.
+		</p>
+	</div>
+	<!-- The prompt of less, which man pages open in; it closes the window -->
+	<button type="button" class="pager" id="keybinds-close">
+		Manual page keybinds(7) line 1 (press q to quit)
+	</button>
+</section>
+
+<style>
+	.keybinds {
+		display: flex;
+		flex-direction: column;
+		box-sizing: border-box;
+		background: var(--term-bg);
+		border: var(--term-border) solid var(--accent-line);
+		color: rgb(var(--gray-dark));
+		font-family:
+			ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas,
+			monospace;
+		font-size: 15px;
+		line-height: 1.5;
+		outline: none;
+		overflow-y: auto;
+	}
+	.keybinds[hidden] {
+		display: none;
+	}
+	.prompt {
+		margin: 0;
+		padding: 1em 1.4em 0;
+		overflow-wrap: anywhere;
+	}
+	.user {
+		color: var(--green);
+	}
+	.sign {
+		color: var(--accent);
+	}
+	.man {
+		flex: 1;
+		padding: 1em 1.4em;
+	}
+	.man-header {
+		display: flex;
+		justify-content: space-between;
+		gap: 1em;
+		margin: 0 0 1em;
+		color: rgb(var(--gray));
+	}
+	h2 {
+		margin: 1em 0 0.3em;
+		color: rgb(var(--black));
+		font-size: 1em;
+		font-weight: 700;
+	}
+	.indent {
+		margin: 0 0 0 3ch;
+	}
+	dl {
+		display: grid;
+		/* The same key column in every section, like a man page */
+		grid-template-columns: 8ch 1fr;
+		gap: 0.25em 2ch;
+	}
+	dt {
+		display: flex;
+		gap: 0.6ch;
+	}
+	dd {
+		margin: 0;
+	}
+	kbd {
+		color: var(--cyan);
+		font-family: inherit;
+	}
+	.note {
+		margin-top: 1.5em;
+		color: rgb(var(--gray));
+	}
+	.pager {
+		position: sticky;
+		bottom: 0;
+		padding: 0.1em 1.4em;
+		border: none;
+		background: rgb(var(--gray-dark));
+		color: var(--bg);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+	}
+	.pager:hover,
+	.pager:focus-visible {
+		background: var(--sel-bg);
+		color: var(--sel-fg);
+		outline: none;
+	}
+</style>
+
+<script>
+	const root = document.documentElement;
+	const keybinds = document.getElementById("keybinds") as HTMLElement;
+	const main = document.querySelector("main");
+
+	// The window lives next to the page so it can tile with it
+	main?.after(keybinds);
+
+
+	// Like dwm: the focused window has the blue border
+	function focus(window: "master" | "stack") {
+		root.dataset.focus = window;
+	}
+
+	function openKeybinds() {
+		keybinds.hidden = false;
+		root.dataset.stack = "keybinds";
+		focus("stack");
+		keybinds.scrollTop = 0;
+	}
+
+	function closeKeybinds() {
+		keybinds.hidden = true;
+		delete root.dataset.stack;
+		delete root.dataset.focus;
+	}
+
+	function toggleKeybinds() {
+		if (keybinds.hidden) openKeybinds();
+		else closeKeybinds();
+	}
+
+	document.getElementById("keybinds-toggle")?.addEventListener("click", toggleKeybinds);
+	document.getElementById("keybinds-close")?.addEventListener("click", closeKeybinds);
+	main?.addEventListener("pointerdown", () => !keybinds.hidden && focus("master"));
+	keybinds.addEventListener("pointerdown", () => focus("stack"));
+
+	// j and k scroll the focused window: the keybinds when they are focused and
+	// long enough to scroll, otherwise the page
+	function scroller(): { scrollBy(options: ScrollToOptions): void; scrollHeight: number; clientHeight: number } {
+		const stack = !keybinds.hidden && root.dataset.focus === "stack";
+		if (stack && keybinds.scrollHeight > keybinds.clientHeight) return keybinds;
+		return {
+			scrollBy: (options) => window.scrollBy(options),
+			scrollHeight: document.documentElement.scrollHeight,
+			clientHeight: window.innerHeight,
+		};
+	}
+
+	function isTyping(target: EventTarget | null) {
+		return (
+			target instanceof HTMLElement &&
+			(target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))
+		);
+	}
+
+	// No smooth scrolling: in dwm things just move
+	const step = 120;
+	const behavior: ScrollBehavior = "instant";
+	let lastG = 0;
+
+	document.addEventListener("keydown", (event) => {
+		// Already handled by the page itself, like j and k on the posts page
+		if (event.defaultPrevented) return;
+		if (event.ctrlKey || event.metaKey || event.altKey) return;
+		if (isTyping(event.target) || document.querySelector("dialog[open]")) return;
+
+		const target = scroller();
+		switch (event.key) {
+			case "j":
+				target.scrollBy({ top: step, behavior });
+				break;
+			case "k":
+				target.scrollBy({ top: -step, behavior });
+				break;
+			case "d":
+				// The search is in Dmenu.astro; its button in the bar opens it
+				document.getElementById("dmenu-open")?.click();
+				break;
+			case "G":
+				target.scrollBy({ top: target.scrollHeight, behavior });
+				break;
+			case "g":
+				// gg: two g's in a row
+				if (event.timeStamp - lastG < 500) {
+					target.scrollBy({ top: -target.scrollHeight, behavior });
+					lastG = 0;
+				} else {
+					lastG = event.timeStamp;
+				}
+				break;
+			case "t":
+				// The layouts live in NavBar.astro; its []= button cycles them
+				document.getElementById("layout-toggle")?.click();
+				break;
+			case "h":
+			case "l":
+				if (keybinds.hidden) return;
+				focus(event.key === "h" ? "master" : "stack");
+				break;
+			case "?":
+				toggleKeybinds();
+				break;
+			case "q":
+				// q closes the keybinds window first; in a post it quits to the posts
+				if (!keybinds.hidden) closeKeybinds();
+				else if (/^\/blog\/./.test(window.location.pathname)) window.location.href = "/blog";
+				else return;
+				break;
+			case "Escape":
+				if (keybinds.hidden) return;
+				closeKeybinds();
+				break;
+			default:
+				return;
+		}
+		event.preventDefault();
+	});
+</script>

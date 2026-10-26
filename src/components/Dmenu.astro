@@ -1,0 +1,412 @@
+---
+// Search the whole site, styled after dmenu -l in DARBS: a bar over the dwm
+// bar with the prompt in a blue block, and the matches listed below it.
+// Opens with d (see Keybinds.astro) or the "search" button in the bar.
+---
+
+<dialog id="dmenu" class="dmenu" aria-label="Search the site">
+	<div class="dmenu-bar">
+		<label for="dmenu-input" class="dmenu-prompt">search</label>
+		<input
+			id="dmenu-input"
+			type="text"
+			role="combobox"
+			aria-autocomplete="list"
+			aria-controls="dmenu-list"
+			aria-expanded="true"
+			autocomplete="off"
+			spellcheck="false"
+			enterkeyhint="search"
+			placeholder="pages, posts and everything in them"
+		/>
+		<span class="dmenu-count" id="dmenu-count" aria-live="polite"></span>
+		<!-- On a phone the results can fill the screen, leaving no backdrop to tap -->
+		<button type="button" class="dmenu-close" id="dmenu-close" aria-label="Close the search"
+			>esc</button
+		>
+	</div>
+	<ul id="dmenu-list" class="dmenu-list" role="listbox" aria-label="Results">
+	</ul>
+</dialog>
+
+<style>
+	.dmenu {
+		position: fixed;
+		inset: 0 0 auto;
+		width: 100%;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		padding: 0;
+		border: none;
+		background: var(--bar-bg);
+		color: var(--bar-fg);
+		font-family:
+			ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas,
+			monospace;
+		font-size: 15px;
+		line-height: 1;
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+	}
+	.dmenu::backdrop {
+		background: rgba(0, 0, 0, 0.35);
+	}
+
+	.dmenu-bar {
+		display: flex;
+		align-items: stretch;
+		height: var(--bar-height);
+		border-bottom: 1px solid var(--bar-line);
+	}
+	.dmenu-prompt {
+		display: flex;
+		align-items: center;
+		padding: 0 0.9em;
+		background: var(--sel-bg);
+		color: var(--sel-fg);
+	}
+	#dmenu-input {
+		flex: 1;
+		min-width: 0;
+		padding: 0 0.9em;
+		border: none;
+		outline: none;
+		background: none;
+		color: inherit;
+		font: inherit;
+		/* 16px keeps iOS from zooming in on focus */
+		font-size: 16px;
+	}
+	#dmenu-input::placeholder {
+		color: rgb(var(--gray));
+	}
+	.dmenu-count {
+		display: flex;
+		align-items: center;
+		padding: 0 0.9em;
+		color: rgb(var(--gray));
+		white-space: nowrap;
+	}
+
+	.dmenu-close {
+		padding: 0 0.9em;
+		border: none;
+		border-left: 1px solid var(--bar-line);
+		background: none;
+		color: var(--bar-fg);
+		font: inherit;
+		cursor: pointer;
+	}
+	.dmenu-close:hover {
+		background: rgba(var(--gray), 20%);
+	}
+	.dmenu-close:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
+	}
+
+	/* dmenu -l: one match per line */
+	.dmenu-list {
+		max-height: min(60vh, 15 * 2.4em);
+		margin: 0;
+		padding: 0;
+		overflow-y: auto;
+		list-style: none;
+	}
+	.dmenu-list :global(li) {
+		display: flex;
+		gap: 1.2em;
+		align-items: baseline;
+		padding: 0 0.9em;
+		line-height: 2.4em;
+		white-space: nowrap;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	.dmenu-list :global(li:hover) {
+		background: rgba(var(--gray), 20%);
+	}
+	.dmenu-list :global(li[aria-selected="true"]) {
+		background: var(--sel-bg);
+		color: var(--sel-fg);
+	}
+	.dmenu-list :global(a) {
+		flex: none;
+		max-width: 60%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color: inherit;
+		text-decoration: none;
+	}
+	.dmenu-list :global(.path) {
+		flex: none;
+		width: 7ch;
+		color: var(--cyan);
+	}
+	.dmenu-list :global(.snippet) {
+		flex: 1;
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		color: rgb(var(--gray));
+	}
+	.dmenu-list :global(li[aria-selected="true"] .path),
+	.dmenu-list :global(li[aria-selected="true"] .snippet) {
+		color: inherit;
+		opacity: 0.8;
+	}
+	.dmenu-list :global(mark) {
+		background: none;
+		color: var(--yellow);
+	}
+	.dmenu-list :global(li[aria-selected="true"] mark) {
+		color: inherit;
+		font-weight: 700;
+	}
+	.dmenu-list :global(.empty) {
+		color: rgb(var(--gray));
+		cursor: default;
+	}
+
+	/* Touch screens have no selection to move, so none is shown */
+	@media (hover: none) and (pointer: coarse) {
+		.dmenu-list :global(li[aria-selected="true"]) {
+			background: none;
+			color: inherit;
+		}
+		.dmenu-list :global(li[aria-selected="true"] :is(.path, .snippet)) {
+			opacity: 1;
+		}
+		.dmenu-list :global(li[aria-selected="true"] .path) {
+			color: var(--cyan);
+		}
+		.dmenu-list :global(li[aria-selected="true"] .snippet) {
+			color: rgb(var(--gray));
+		}
+		.dmenu-list :global(li[aria-selected="true"] mark) {
+			color: var(--yellow);
+			font-weight: inherit;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.dmenu-list {
+			max-height: calc(100dvh - var(--bar-height));
+		}
+		/* Too narrow for a snippet next to the title; it goes underneath */
+		.dmenu-list :global(li) {
+			flex-wrap: wrap;
+			gap: 0 0.8em;
+			padding: 0.5em 0.9em;
+			line-height: 1.5;
+		}
+		.dmenu-list :global(a) {
+			flex: 1;
+			max-width: none;
+		}
+		.dmenu-list :global(.snippet) {
+			flex-basis: 100%;
+		}
+	}
+</style>
+
+<script>
+	interface Entry {
+		path: string;
+		title: string;
+		description: string;
+		tags: string[];
+		text: string;
+	}
+	interface Indexed extends Entry {
+		haystack: { title: string; meta: string; text: string };
+	}
+	interface Match {
+		entry: Indexed;
+		score: number;
+	}
+
+	const dialog = document.getElementById("dmenu") as HTMLDialogElement;
+	const input = document.getElementById("dmenu-input") as HTMLInputElement;
+	const list = document.getElementById("dmenu-list") as HTMLUListElement;
+	const count = document.getElementById("dmenu-count") as HTMLSpanElement;
+
+	let index: Indexed[] | undefined;
+	let matches: Match[] = [];
+	let selected = 0;
+	// On phones and tablets the keyboard's enter/done key only closes the
+	// keyboard, so the results can be read and tapped
+	const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
+
+	async function loadIndex() {
+		if (index) return;
+		const entries: Entry[] = await (await fetch("/search.json")).json();
+		index = entries.map((entry) => ({
+			...entry,
+			haystack: {
+				title: entry.title.toLowerCase(),
+				meta: `${entry.path} ${entry.description} ${entry.tags.join(" ")}`.toLowerCase(),
+				text: entry.text.toLowerCase(),
+			},
+		}));
+	}
+
+	// Every word has to appear somewhere; a word in the title counts the most
+	function search(query: string): Match[] {
+		const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+		// Before anything is typed only the pages are listed; posts show up once
+		// they match something
+		if (terms.length === 0) {
+			return (index ?? [])
+				.filter((entry) => !entry.path.startsWith("/blog/"))
+				.map((entry) => ({ entry, score: 0 }));
+		}
+		const results: Match[] = [];
+		for (const entry of index ?? []) {
+			let score = 0;
+			for (const term of terms) {
+				const { title, meta, text } = entry.haystack;
+				if (title.includes(term)) score += 10;
+				else if (meta.includes(term)) score += 4;
+				else if (text.includes(term)) score += 1;
+				else {
+					score = -1;
+					break;
+				}
+			}
+			if (score >= 0) results.push({ entry, score });
+		}
+		// sort is stable, so equal scores keep the index order: pages, then posts by date
+		return results.sort((a, b) => b.score - a.score);
+	}
+
+	// A bit of text around the first word that is found in the body, or the
+	// description when the match is elsewhere
+	function snippet(entry: Indexed, terms: string[]) {
+		const term = terms.find((term) => entry.haystack.text.includes(term));
+		if (!term) return entry.description;
+		const at = entry.haystack.text.indexOf(term);
+		const start = Math.max(0, entry.text.lastIndexOf(" ", Math.max(0, at - 30)));
+		return (start > 0 ? "…" : "") + entry.text.slice(start, at + 120).trim();
+	}
+
+	// Text with the search words wrapped in <mark>
+	function highlight(text: string, terms: string[]) {
+		const fragment = document.createDocumentFragment();
+		if (terms.length === 0) {
+			fragment.append(text);
+			return fragment;
+		}
+		const escaped = terms.map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+		const pattern = new RegExp(`(${escaped.join("|")})`, "gi");
+		text.split(pattern).forEach((part, i) => {
+			if (i % 2 === 1) {
+				const mark = document.createElement("mark");
+				mark.textContent = part;
+				fragment.append(mark);
+			} else {
+				fragment.append(part);
+			}
+		});
+		return fragment;
+	}
+
+	function render() {
+		const terms = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+		count.textContent = index ? `${matches.length}/${index.length}` : "";
+		if (!index) {
+			list.replaceChildren(emptyLine("loading…"));
+			return;
+		}
+		if (matches.length === 0) {
+			list.replaceChildren(emptyLine("no matches"));
+			input.removeAttribute("aria-activedescendant");
+			return;
+		}
+		list.replaceChildren(
+			...matches.map(({ entry }, i) => {
+				const option = document.createElement("li");
+				option.id = `dmenu-option-${i}`;
+				option.setAttribute("role", "option");
+				option.setAttribute("aria-selected", String(i === selected));
+
+				const path = document.createElement("span");
+				path.className = "path";
+				path.textContent = entry.path.startsWith("/blog/") ? "post" : "page";
+
+				const link = document.createElement("a");
+				link.href = entry.path;
+				link.tabIndex = -1;
+				link.append(highlight(entry.title, terms));
+
+				const text = document.createElement("span");
+				text.className = "snippet";
+				text.append(highlight(snippet(entry, terms), terms));
+
+				option.append(path, link, text);
+				option.addEventListener("click", (event) => {
+					// Let the link handle clicks with a modifier (new tab, ...)
+					if (event.target instanceof Node && link.contains(event.target)) return;
+					window.location.href = entry.path;
+				});
+				return option;
+			}),
+		);
+		input.setAttribute("aria-activedescendant", `dmenu-option-${selected}`);
+		document
+			.getElementById(`dmenu-option-${selected}`)
+			?.scrollIntoView({ block: "nearest" });
+	}
+
+	function emptyLine(text: string) {
+		const line = document.createElement("li");
+		line.className = "empty";
+		line.textContent = text;
+		return line;
+	}
+
+	function update() {
+		matches = search(input.value);
+		selected = 0;
+		render();
+	}
+
+	async function open() {
+		if (dialog.open) return;
+		input.value = "";
+		dialog.showModal();
+		render();
+		await loadIndex();
+		update();
+	}
+
+	function move(step: number) {
+		if (matches.length === 0) return;
+		selected = (selected + step + matches.length) % matches.length;
+		render();
+	}
+
+	input.addEventListener("input", update);
+
+	// dmenu keys: up/down or Ctrl+n/Ctrl+p to select, Enter to open, Esc closes
+	// (the dialog does that by itself)
+	input.addEventListener("keydown", (event) => {
+		const ctrl = event.ctrlKey && !event.metaKey && !event.altKey;
+		if (event.key === "ArrowDown" || (ctrl && event.key === "n")) move(1);
+		else if (event.key === "ArrowUp" || (ctrl && event.key === "p")) move(-1);
+		else if (event.key === "Tab") move(event.shiftKey ? -1 : 1);
+		else if (event.key === "Enter" && touch.matches) input.blur();
+		else if (event.key === "Enter" && matches[selected]) {
+			window.location.href = matches[selected].entry.path;
+		} else return;
+		event.preventDefault();
+	});
+
+	// A click on the backdrop lands on the dialog itself
+	dialog.addEventListener("click", (event) => {
+		if (event.target === dialog) dialog.close();
+	});
+
+	document.getElementById("dmenu-open")?.addEventListener("click", open);
+	document.getElementById("dmenu-close")?.addEventListener("click", () => dialog.close());
+</script>

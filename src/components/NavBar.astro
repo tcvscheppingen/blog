@@ -2,6 +2,8 @@
 import { SITE_TITLE } from "../consts";
 import GithubIcon from "../assets/icons/github.svg";
 import HeaderLink from "./HeaderLink.astro";
+import Dmenu from "./Dmenu.astro";
+import Keybinds from "./Keybinds.astro";
 
 const pages = [
 	{ href: "/", label: "home" },
@@ -32,7 +34,7 @@ const pages = [
 			type="button"
 			class="layout"
 			id="layout-toggle"
-			title="Change layout"
+			title="Change layout (t)"
 			aria-label="Change layout">[]=</button
 		>
 		<div class="dwm-active-window">
@@ -62,15 +64,31 @@ const pages = [
 							rx="2"
 							fill="#5b8fc7"></rect>
 					</svg>
-					{SITE_TITLE}
+					<span class="site-name">{SITE_TITLE}</span>
 				</a>
 			</h2>
 		</div>
+		<!-- Each separator goes with the item after it, so hiding an item on a
+		     narrower screen hides its separator too -->
 		<div class="status">
-			<a href="/rss.xml" class="rss">rss</a><span class="status-separator"
-				>|
-			</span>
-			<a href="https://github.com/tcvscheppingen" class="rss"> GitHub </a>
+			<button
+				type="button"
+				class="status-button"
+				id="dmenu-open"
+				title="Search the site (d)">search<span class="key-hint"> [d]</span></button
+			><span class="status-separator keys">|</span><button
+				type="button"
+				class="status-button keys"
+				id="keybinds-toggle"
+				title="Keybinds (?)"
+				aria-label="Keybinds">?</button
+			><span class="status-separator external">|</span><a
+				href="/rss.xml"
+				class="rss external">rss</a
+			><span class="status-separator external">|</span><a
+				href="https://github.com/tcvscheppingen"
+				class="rss external">GitHub</a
+			>
 		</div>
 		<!-- On small screens the tags move into this dropdown, like a dmenu list -->
 		<ul id="menu">
@@ -88,6 +106,9 @@ const pages = [
 		<strong id="layout-notice-title"></strong>
 		<span id="layout-notice-body"></span>
 	</div>
+	<Dmenu />
+	<!-- Moved next to <main> by its script, so it can tile with the page -->
+	<Keybinds />
 </header>
 
 <style>
@@ -201,6 +222,32 @@ const pages = [
 	.site-icon {
 		flex: none;
 	}
+	/* The last resort when the bar is too narrow: the name gets cut off
+	   instead of running into the status text */
+	.site-name {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	/* Medium screens: no room for everything, so rss and GitHub (also in the
+	   footer) go first, then the key hints, then the name next to the icon.
+	   ".status" makes these win over the display rules further down */
+	@media (max-width: 1060px) {
+		.status .external {
+			display: none;
+		}
+	}
+	@media (max-width: 900px) {
+		.status :is(.key-hint, .keys) {
+			display: none;
+		}
+	}
+	@media (min-width: 721px) and (max-width: 820px) {
+		.site-name {
+			display: none;
+		}
+	}
 
 	.dwm-active-window {
 		display: flex;
@@ -222,8 +269,30 @@ const pages = [
 		display: flex;
 		align-items: center;
 	}
-	.rss {
+	.rss,
+	.status-button {
 		padding: 0 0.9em;
+	}
+	.status-button {
+		display: flex;
+		align-items: center;
+		background: none;
+		border: none;
+		color: var(--bar-fg);
+		font: inherit;
+		cursor: pointer;
+	}
+	/* The key for a button, so people find the keybinds */
+	.key-hint {
+		color: rgb(var(--gray));
+		white-space: pre;
+	}
+	.status-button:hover {
+		background: rgba(var(--gray), 20%);
+	}
+	.status-button:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: -2px;
 	}
 
 	/* Hamburger button and dropdown, hidden until small screens */
@@ -237,6 +306,9 @@ const pages = [
 	@media (max-width: 720px) {
 		.tags,
 		.layout,
+		.keys,
+		.key-hint,
+		.status-separator,
 		.rss {
 			display: none;
 		}
@@ -354,14 +426,24 @@ const pages = [
 	const notice = document.getElementById("layout-notice");
 	const noticeTitle = document.getElementById("layout-notice-title");
 	const noticeBody = document.getElementById("layout-notice-body");
-	let current = 0;
 	let hideTimer: ReturnType<typeof setTimeout> | undefined;
+
+	// BaseHead.astro already applied the layout saved in local storage
+	let current = Math.max(
+		0,
+		layouts.findIndex((layout) => layout.name === document.documentElement.dataset.layout),
+	);
+	if (toggle) toggle.textContent = layouts[current].symbol;
 
 	toggle?.addEventListener("click", () => {
 		current = (current + 1) % layouts.length;
 		const layout = layouts[current];
 		toggle.textContent = layout.symbol;
 		document.documentElement.dataset.layout = layout.name;
+		// Remembered for the next page; storage can be blocked, then it isn't
+		try {
+			localStorage.setItem("layout", layout.name);
+		} catch {}
 		if (notice && noticeTitle && noticeBody) {
 			noticeTitle.textContent = `dwm: ${layout.symbol} ${layout.name}`;
 			noticeBody.textContent = layout.body;

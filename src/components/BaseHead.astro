@@ -62,6 +62,10 @@ const pageTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 
 <Font cssVariable="--font-atkinson" preload />
 
+<!-- Restores the saved dwm layout before the page is drawn; it has to block
+     rendering, so no defer or module. The privacy policy mentions it -->
+<script is:inline src="/layout.js"></script>
+
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 

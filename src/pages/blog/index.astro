@@ -1,17 +1,29 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
+import FallbackImage from "../../assets/hero-images/fallback.jpg";
 import BaseHead from "../../components/BaseHead.astro";
 import Footer from "../../components/Footer.astro";
-import FormattedDate from "../../components/FormattedDate.astro";
 import NavBar from "../../components/NavBar.astro";
 import TerminalPrompt from "../../components/TerminalPrompt.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 
 // Retrieve only blogposts that are on or before the current date.
-const posts = (await getCollection("blog"))
-	.filter((post) => post.data.pubDate.valueOf() <= Date.now())
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await Promise.all(
+	(await getCollection("blog"))
+		.filter((post) => post.data.pubDate.valueOf() <= Date.now())
+		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+		.map(async (post) => {
+			const { remarkPluginFrontmatter } = await render(post);
+			// "3 min read" -> "3 min", where newsboat shows the length
+			const minutes = String(remarkPluginFrontmatter.minutesRead ?? "").replace(" read", "");
+			return { post, minutes };
+		}),
+);
+
+// newsboat's default date format: "%b %d"
+const shortDate = (date: Date) =>
+	date.toLocaleDateString("en-US", { month: "short", day: "2-digit" });
 ---
 
 <!doctype html>
@@ -19,168 +31,167 @@ const posts = (await getCollection("blog"))
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
+			/* The post list, styled after newsboat in a terminal: the info bar on
+			   top, one entry per article with the focused one highlighted, and the
+			   key help at the bottom. Unlike newsboat, every entry has a thumbnail
+			   and the search prompt sits on top, where it is easy to reach. */
 			main {
-				--content-width: 960px;
-			}
-			ul {
+				--content-width: 100%;
 				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
+				flex-direction: column;
+				padding-bottom: 1em;
 			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: var(--accent);
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			/* The search, styled after dmenu in DARBS: the prompt in a blue block,
-			   the input, then the matching posts side by side with the selected
-			   one highlighted */
-			.dmenu {
+			.newsboat {
 				display: flex;
-				align-items: stretch;
-				height: 40px;
-				margin-bottom: 1.5rem;
-				background: var(--bg);
-				border: 1px solid var(--bar-line);
-				color: var(--bar-fg);
-				font-family: ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+				flex: 1;
+				flex-direction: column;
+				width: 100%;
+				font-family:
+					ui-monospace, "JetBrains Mono", "SF Mono", Menlo, Consolas,
+					monospace;
 				font-size: 15px;
-				line-height: 1;
+				line-height: 1.6;
 			}
-			.dmenu:focus-within {
-				border-color: var(--accent-line);
-			}
-			.dmenu-prompt {
-				display: flex;
-				align-items: center;
-				padding: 0 0.9em;
+			.info,
+			.help {
+				margin: 0;
+				padding: 0 1ch;
 				background: var(--sel-bg);
 				color: var(--sel-fg);
+				font-weight: 700;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+			.help {
+				margin-top: 1em;
+			}
+			.help kbd {
+				font-family: inherit;
+			}
+			/* The prompt newsboat shows on / */
+			.search {
+				display: flex;
+				gap: 1ch;
+				margin-bottom: 0.5em;
+				padding: 0.2em 1ch;
+				border-bottom: 1px solid var(--bar-line);
 			}
 			#search {
-				flex: 0 1 18em;
-				min-width: 8em;
-				padding: 0 0.9em;
+				flex: 1;
+				min-width: 0;
+				padding: 0;
 				border: none;
 				outline: none;
 				background: none;
-				color: inherit;
+				color: rgb(var(--black));
 				font: inherit;
-				appearance: none;
+				font-size: 16px;
 			}
 			#search::placeholder {
 				color: rgb(var(--gray));
 			}
-			.dmenu-items {
-				display: flex;
+			.articles {
 				flex: 1;
-				min-width: 0;
-				overflow: hidden;
+				margin: 0;
+				padding: 0;
+				list-style: none;
 			}
-			/* The items are created by the script, so the scoped styles need :global */
-			/* Post titles are long; cut them off so several fit side by side */
-			.dmenu-items :global(a) {
-				display: block;
-				flex: none;
-				max-width: 24ch;
-				padding: 0 0.9em;
-				line-height: 38px;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				color: var(--bar-fg);
+			.articles a {
+				display: grid;
+				grid-template-columns: 3ch 1ch 176px minmax(0, 1fr);
+				gap: 2ch;
+				align-items: center;
+				padding: 0.5em 1ch;
+				color: rgb(var(--black));
 				text-decoration: none;
 			}
-			.dmenu-items :global(a:hover) {
+			.articles a:hover {
 				background: rgba(var(--gray), 20%);
 			}
-			.dmenu-items :global(a.selected) {
+			.articles li.focus a {
 				background: var(--sel-bg);
 				color: var(--sel-fg);
 			}
-			.tags {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.3rem;
-				margin-top: 0.4rem;
+			.index {
+				color: rgb(var(--gray));
+				text-align: right;
 			}
-			.tag {
-				font-size: 0.75rem;
-				padding: 0.15rem 0.5rem;
-				border-radius: 999px;
-				background: rgb(var(--gray-light));
+			/* Unread articles get an N, like in newsboat. Visited links can only
+			   change color, so a read article's N takes the color of the row */
+			.flag {
+				color: var(--yellow);
+				font-weight: 700;
+			}
+			.articles a:visited .flag {
+				color: var(--bg);
+			}
+			.articles li.focus a:visited .flag {
+				color: var(--sel-bg);
+			}
+			.thumb {
+				display: block;
+				width: 100%;
+				height: auto;
+				aspect-ratio: 2 / 1;
+				object-fit: cover;
+				border-radius: 4px;
+			}
+			.entry {
+				display: grid;
+				gap: 0.2em;
+				min-width: 0;
+			}
+			.title {
+				font-weight: 700;
+			}
+			.articles a:visited .title {
+				color: rgb(var(--gray));
+			}
+			.articles li.focus a:visited .title {
+				color: var(--sel-fg);
+			}
+			.meta,
+			.description {
+				color: rgb(var(--gray));
+			}
+			.description {
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 2;
+				line-clamp: 2;
+				overflow: hidden;
+			}
+			.tags {
 				color: var(--cyan);
 			}
+			.articles li.focus :is(.index, .meta, .description, .tags) {
+				color: inherit;
+			}
 			#no-results {
-				display: none;
+				margin: 0;
+				padding: 0 1ch;
 				color: rgb(var(--gray));
-				padding: 1rem 0;
 			}
 			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
+				/* The thumbnail on top, full width; the N and the title below it */
+				.articles a {
+					grid-template-columns: 1ch minmax(0, 1fr);
+					gap: 0.5em 1ch;
+					align-items: start;
+					padding: 0.6em 0 1em;
 				}
-				ul li {
-					width: 100%;
-					text-align: center;
+				.thumb {
+					grid-column: 1 / -1;
+					grid-row: 1;
 				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1em;
-				}
-				.tags {
+				.index,
+				.description,
+				.help {
 					display: none;
 				}
-				.dmenu-items {
-					display: none;
-				}
-				#search {
-					flex: 1;
-				}
-
-				.title {
-					font-size: 1em;
+				.info {
+					white-space: normal;
 				}
 			}
 		</style>
@@ -189,140 +200,165 @@ const posts = (await getCollection("blog"))
 		<NavBar />
 		<main>
 			<TerminalPrompt />
-			<section>
-				<div class="dmenu">
-					<label for="search" class="dmenu-prompt">search</label>
+			<section class="newsboat">
+				<p class="info">
+					newsboat - Articles in feed '{SITE_TITLE}' (<span id="count"
+						>{posts.length}</span
+					>
+					total) - {new URL("rss.xml", Astro.site)}
+				</p>
+				<div class="search">
+					<label for="search">Search for:</label>
 					<input
 						id="search"
 						type="search"
+						enterkeyhint="search"
 						placeholder="title, description or tag"
 						autocomplete="off"
 						spellcheck="false"
 					/>
-					<div class="dmenu-items" id="dmenu-items" aria-label="Matching posts"></div>
 				</div>
-				<p id="no-results">No posts match your search.</p>
-				<ul class="posts">
+				<ol class="articles">
 					{
-						posts.map((post, index) => (
+						posts.map(({ post, minutes }, index) => (
 							<li
-								data-title={post.data.title.toLowerCase()}
-								data-description={post.data.description.toLowerCase()}
-								data-tags={(post.data.tags ?? [])
+								data-search={[
+									post.data.title,
+									post.data.description,
+									...(post.data.tags ?? []),
+								]
 									.join(" ")
 									.toLowerCase()}
 							>
-								<a
-									href={`/blog/${post.id}/`}
-									data-astro-prefetch
-								>
-									{post.data.heroImage && (
-										<Image
-											width={720}
-											height={360}
-											widths={[480, 720, 960, 1440, 1920]}
-											sizes={
-												// The newest post's card spans the full width (928px)
-												index === 0
-													? "(max-width: 720px) 100vw, 928px"
-													: "(max-width: 720px) 100vw, 448px"
-											}
-											src={post.data.heroImage}
-											alt=""
-											class="hero-image"
-										/>
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate
-											date={post.data.pubDate}
-										/>
-									</p>
-									{post.data.tags &&
-										post.data.tags.length > 0 && (
-											<div class="tags">
-												{post.data.tags.map((tag) => (
-													<span class="tag">
-														{tag}
-													</span>
-												))}
-											</div>
-										)}
+								<a href={`/blog/${post.id}/`} data-astro-prefetch>
+									<span class="index">{index + 1}</span>
+									<span class="flag">N</span>
+									<Image
+										class="thumb"
+										src={post.data.heroImage ?? FallbackImage}
+										alt=""
+										width={352}
+										height={176}
+										widths={[352, 720, 1080]}
+										sizes="(max-width: 720px) calc(100vw - 60px), 176px"
+										loading={index < 4 ? "eager" : "lazy"}
+									/>
+									<span class="entry">
+										<span class="title">{post.data.title}</span>
+										<span class="meta">
+											<time datetime={post.data.pubDate.toISOString()}>
+												{shortDate(post.data.pubDate)}
+											</time>{" "}
+											· {minutes}
+											{post.data.tags && (
+												<span class="tags">
+													{" · "}
+													{post.data.tags.map((tag) => `#${tag}`).join(" ")}
+												</span>
+											)}
+										</span>
+										<span class="description">{post.data.description}</span>
+									</span>
 								</a>
 							</li>
 						))
 					}
-				</ul>
+				</ol>
+				<p id="no-results" hidden>No articles match your search.</p>
+				<p class="help" aria-hidden="true">
+					<kbd>ENTER</kbd>:Open <kbd>j</kbd>:Down <kbd>k</kbd>:Up <kbd>d</kbd>:Search site <kbd
+						>/</kbd
+					>:Search posts <kbd>?</kbd>:Help
+				</p>
 			</section>
 		</main>
 		<Footer />
 		<script>
 			const input = document.getElementById("search") as HTMLInputElement;
-			const menu = document.getElementById("dmenu-items") as HTMLDivElement;
-			// Only the posts: "ul li" would also match the phone menu in the navbar
-			const items = document.querySelectorAll<HTMLLIElement>("ul.posts > li");
-			const noResults = document.getElementById(
-				"no-results",
-			) as HTMLParagraphElement;
-			let matches: HTMLLIElement[] = [];
-			let selected = 0;
+			const items = [...document.querySelectorAll<HTMLLIElement>(".articles > li")];
+			const count = document.getElementById("count") as HTMLSpanElement;
+			const noResults = document.getElementById("no-results") as HTMLParagraphElement;
+			let visible = items;
+			let focused = 0;
+			// Phones and tablets: no keyboard to move a focus line with, and the
+			// keyboard's enter/done key should only close the keyboard
+			const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
 
-			// Like dmenu: the matching posts side by side, the selected one highlighted
-			function renderMenu() {
-				menu.replaceChildren(
-					...matches.map((item, index) => {
-						const link = item.querySelector("a") as HTMLAnchorElement;
-						const option = document.createElement("a");
-						option.href = link.href;
-						option.textContent = item.querySelector(".title")?.textContent ?? "";
-						option.title = option.textContent;
-						if (index === selected) option.className = "selected";
-						return option;
-					}),
-				);
-				menu.querySelector(".selected")?.scrollIntoView({ block: "nearest", inline: "nearest" });
+			function focusArticle(index: number) {
+				if (visible.length === 0) return;
+				focused = Math.max(0, Math.min(index, visible.length - 1));
+				items.forEach((item) => item.classList.remove("focus"));
+				visible[focused].classList.add("focus");
+				visible[focused].scrollIntoView({ block: "nearest" });
 			}
+
+			if (!touch.matches) focusArticle(0);
 
 			input.addEventListener("input", () => {
 				const query = input.value.toLowerCase().trim();
-				matches = [];
-
-				items.forEach((item) => {
-					const title = item.dataset.title ?? "";
-					const description = item.dataset.description ?? "";
-					const tags = item.dataset.tags ?? "";
-					const isMatch =
-						!query ||
-						title.includes(query) ||
-						description.includes(query) ||
-						tags.includes(query);
-					item.style.display = isMatch ? "" : "none";
-					if (isMatch) matches.push(item);
-				});
-
-				noResults.style.display = matches.length === 0 ? "block" : "none";
-				// No items while the input is empty, so the bar stays calm
-				if (!query) matches = [];
-				selected = 0;
-				renderMenu();
+				visible = items.filter((item) => (item.dataset.search ?? "").includes(query));
+				items.forEach((item) => (item.hidden = !visible.includes(item)));
+				count.textContent = String(visible.length);
+				noResults.hidden = visible.length > 0;
+				if (!touch.matches) focusArticle(0);
 			});
 
-			// dmenu keys: left/right (and up/down) to select, Enter to open
+			// Enter opens the focused article; Esc goes back to the list
 			input.addEventListener("keydown", (event) => {
-				if (matches.length === 0) return;
-				if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-					selected = (selected + 1) % matches.length;
-				} else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-					selected = (selected - 1 + matches.length) % matches.length;
-				} else if (event.key === "Enter") {
-					const link = matches[selected].querySelector("a");
-					if (link) window.location.href = link.href;
-				} else {
-					return;
+				if (event.key === "Enter") {
+					event.preventDefault();
+					if (touch.matches) input.blur();
+					else visible[focused]?.querySelector("a")?.click();
+				} else if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+					event.preventDefault();
+					focusArticle(focused + (event.key === "ArrowDown" ? 1 : -1));
+				} else if (event.key === "Escape") {
+					input.blur();
 				}
-				event.preventDefault();
-				renderMenu();
 			});
+
+			// newsboat's keys. They run before the site-wide keys (Keybinds.astro),
+			// which skip events that are handled here, so j and k move the focus
+			// instead of scrolling
+			let lastG = 0;
+			window.addEventListener(
+				"keydown",
+				(event) => {
+					if (event.ctrlKey || event.metaKey || event.altKey) return;
+					if (event.target instanceof HTMLInputElement || document.querySelector("dialog[open]")) return;
+					// With the keybinds window focused, the keys are for that window
+					if (document.documentElement.dataset.focus === "stack") return;
+					switch (event.key) {
+						case "j":
+						case "ArrowDown":
+							focusArticle(focused + 1);
+							break;
+						case "k":
+						case "ArrowUp":
+							focusArticle(focused - 1);
+							break;
+						case "G":
+							focusArticle(visible.length - 1);
+							break;
+						case "g":
+							if (event.timeStamp - lastG < 500) focusArticle(0);
+							lastG = event.timeStamp;
+							break;
+						case "Enter":
+							// A link focused with Tab opens itself
+							if (event.target !== document.body) return;
+							visible[focused]?.querySelector("a")?.click();
+							break;
+						case "/":
+							input.focus();
+							break;
+						default:
+							return;
+					}
+					event.preventDefault();
+				},
+				{ capture: true },
+			);
 		</script>
 	</body>
 </html>

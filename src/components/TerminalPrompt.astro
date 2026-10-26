@@ -1,17 +1,22 @@
 ---
 // The first line of the terminal window: the command that "shows" this page,
-// optionally followed by a line of output (like a message of the day)
+// followed by a line of output (like a message of the day). Unless a page has
+// its own, that is a tip about the keybinds
 interface Props {
 	output?: string;
 }
-const { output } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/$/, "");
+const {
+	output = path.startsWith("/blog/")
+		? "tip: j and k scroll, q goes back to the posts, ? shows all keybinds"
+		: "tip: press ? to see the keybinds, or d to search the site",
+} = Astro.props;
 let command: string;
 if (path === "") {
 	command = "cat index.md";
 } else if (path === "/blog") {
-	command = "ls blog/";
+	command = "newsboat";
 } else if (path.startsWith("/blog/")) {
 	command = `cat blog/${path.slice("/blog/".length)}.md`;
 } else {
@@ -47,7 +52,7 @@ if (path === "") {
 	.output {
 		color: rgb(var(--gray));
 	}
-	/* The output so far is the []= tip, and phones don't show []= */
+	/* The tips are about keys and []=, and phones have neither */
 	@media (max-width: 720px) {
 		.output {
 			display: none;

@@ -35,6 +35,8 @@
 	/* The terminal window: st at 85% opacity over the wallpaper */
 	--term-bg: rgba(21, 21, 21, 0.85);
 	--term-border: 3px;
+	/* dwm's border for windows without focus */
+	--term-border-unfocused: #444444;
 	/* dwm's gaps in DARBS: 10px top and bottom, 30px at the sides */
 	--gap-y: 10px;
 	--gap-x: 30px;
@@ -84,10 +86,15 @@ body::before {
 }
 
 /* Every page is one terminal window filling the screen. The window spans the
-   full width; its content keeps a readable width (--content-width, which a
-   page can change). The prompt line stays at the top left. */
+   full width; its content takes a share of it (--content-share, in cqi: % of
+   the window's width), so the text grows and shrinks with the window when the
+   layout changes. It never gets narrower than --content-width, unless the
+   window itself is. A page can change both. The prompt line stays at the top
+   left. */
 main {
-	--content-width: 720px;
+	--content-width: 480px;
+	--content-share: 55cqi;
+	container-type: inline-size;
 	min-height: calc(100vh - var(--bar-height) - 2 * var(--gap-y));
 	box-sizing: border-box;
 	margin: var(--gap-y) var(--gap-x);
@@ -97,7 +104,7 @@ main {
 }
 
 main > :not(.prompt) {
-	max-width: var(--content-width);
+	max-width: min(100%, max(var(--content-width), var(--content-share)));
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -137,6 +144,77 @@ main {
 	min-height: 0;
 	margin: 60px auto;
 	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
+/* A second window: pressing ? opens the keybinds in a new terminal (#keybinds,
+   in Keybinds.astro). Like in dwm the focused window gets the blue border */
+:root[data-stack][data-focus="stack"] main,
+:root[data-stack][data-focus="master"] #keybinds {
+	border-color: var(--term-border-unfocused);
+}
+
+/* The new window floats on phones and in ><>, where there is no room or no
+   tiling */
+#keybinds {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 15;
+	width: min(640px, calc(100vw - 2 * var(--gap-x)));
+	max-height: calc(100dvh - 2 * var(--bar-height));
+	transform: translate(-50%, -50%);
+	/* Opaque, or the page shows through the text */
+	background: var(--bg);
+	box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7);
+}
+
+@media (min-width: 721px) {
+	/* []= tile and |M| centered master (which with a single stack window is
+	   the same as tile): the page is the master on the left, taking 55% of
+	   the screen (dwm's mfact), the new window is the stack on the right */
+	:root[data-stack]:not([data-layout="floating"]) body {
+		display: grid;
+		grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+	}
+	:root[data-stack]:not([data-layout="floating"]) body > :is(header, footer) {
+		grid-column: 1 / -1;
+	}
+	:root[data-stack]:not([data-layout="floating"]) main {
+		margin-left: var(--gap-x);
+		margin-right: 0;
+	}
+	/* The stack stays on screen while the page scrolls */
+	:root[data-stack]:not([data-layout="floating"]) #keybinds {
+		position: sticky;
+		top: var(--gap-y);
+		left: auto;
+		z-index: auto;
+		align-self: start;
+		width: auto;
+		height: calc(100vh - var(--bar-height) - 2 * var(--gap-y));
+		max-height: none;
+		margin: var(--gap-y) var(--gap-x) var(--gap-y) var(--gap-y);
+		transform: none;
+		background: var(--term-bg);
+		box-shadow: none;
+	}
+
+	/* [M] monocle: only the focused window is shown, fullscreen */
+	:root[data-layout="monocle"][data-stack] body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	:root[data-layout="monocle"][data-stack][data-focus="stack"] main,
+	:root[data-layout="monocle"][data-stack][data-focus="master"] #keybinds {
+		display: none;
+	}
+	:root[data-layout="monocle"][data-stack] main {
+		margin: 0;
+	}
+	:root[data-layout="monocle"][data-stack] #keybinds {
+		height: calc(100vh - var(--bar-height));
+		margin: 0;
+		border-width: 0;
+	}
 }
 
 h1,
