@@ -1,8 +1,4 @@
 ---
-// fastfetch in a new terminal window: the favicon in ASCII and some facts
-// about the site. Opens with f; it goes in the stack like the keybinds (see
-// Keybinds.astro, which opens and closes the windows). Nothing here is
-// about the server: only what any visitor can already see on the site.
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { getCollection } from "astro:content";
@@ -12,10 +8,13 @@ const posts = (await getCollection("blog")).filter(
 );
 // The pages in src/pages, plus the posts page in src/pages/blog
 const pages =
-	(await readdir(join(process.cwd(), "src/pages"))).filter((file) => file.endsWith(".astro"))
-		.length + 1;
+	(await readdir(join(process.cwd(), "src/pages"))).filter((file) =>
+		file.endsWith(".astro"),
+	).length + 1;
 // Uptime counts from the first post
-const firstPost = new Date(Math.min(...posts.map((post) => post.data.pubDate.valueOf())));
+const firstPost = new Date(
+	Math.min(...posts.map((post) => post.data.pubDate.valueOf())),
+);
 
 // The favicon: a T and a blue cursor on a dark, rounded square
 const t = (text: string) => `<span class="logo-t">${text}</span>`;
@@ -64,19 +63,24 @@ const info: [string, string, string?][] = [
 	hidden
 >
 	<p class="prompt" aria-hidden="true">
-		<span class="user">[thymen@thymen.dev ~]</span><span class="sign">$</span> fastfetch
+		<span class="user">[thymen@thymen.dev ~]</span><span class="sign"
+			>$</span
+		> fastfetch
 	</p>
 	<div class="output">
 		<pre class="logo" aria-hidden="true" set:html={logo} />
 		<div class="info">
 			<h2 id="fastfetch-title">
-				<span class="key">thymen</span>@<span class="key">thymen.dev</span>
+				<span class="key">thymen</span>@<span class="key"
+					>thymen.dev</span
+				>
 			</h2>
 			<p aria-hidden="true">{"-".repeat("thymen@thymen.dev".length)}</p>
 			{
 				info.map(([key, value, id]) => (
 					<p>
-						<span class="key">{key}</span>: <span id={id}>{value}</span>
+						<span class="key">{key}</span>:{" "}
+						<span id={id}>{value}</span>
 					</p>
 				))
 			}
@@ -89,7 +93,7 @@ const info: [string, string, string?][] = [
 		<span class="user" aria-hidden="true">[thymen@thymen.dev ~]</span><span
 			class="sign"
 			aria-hidden="true">$</span
-		>{" "}<button type="button" data-close>exit</button>
+		>{" "}
 	</p>
 </section>
 
@@ -178,14 +182,30 @@ const info: [string, string, string?][] = [
 		width: 3ch;
 		height: 1.4em;
 	}
-	.colors span:nth-child(1) { background: var(--bg); }
-	.colors span:nth-child(2) { background: var(--red); }
-	.colors span:nth-child(3) { background: var(--green); }
-	.colors span:nth-child(4) { background: var(--yellow); }
-	.colors span:nth-child(5) { background: var(--accent); }
-	.colors span:nth-child(6) { background: var(--violet); }
-	.colors span:nth-child(7) { background: var(--cyan); }
-	.colors span:nth-child(8) { background: rgb(var(--gray-dark)); }
+	.colors span:nth-child(1) {
+		background: var(--bg);
+	}
+	.colors span:nth-child(2) {
+		background: var(--red);
+	}
+	.colors span:nth-child(3) {
+		background: var(--green);
+	}
+	.colors span:nth-child(4) {
+		background: var(--yellow);
+	}
+	.colors span:nth-child(5) {
+		background: var(--accent);
+	}
+	.colors span:nth-child(6) {
+		background: var(--violet);
+	}
+	.colors span:nth-child(7) {
+		background: var(--cyan);
+	}
+	.colors span:nth-child(8) {
+		background: rgb(var(--gray-dark));
+	}
 	button {
 		padding: 0;
 		border: none;
@@ -220,29 +240,39 @@ const info: [string, string, string?][] = [
 
 	// Like fastfetch: "12 days, 3 hours, 4 mins"
 	function since(date: Date) {
-		const mins = Math.max(0, Math.floor((Date.now() - date.valueOf()) / 60000));
+		const mins = Math.max(
+			0,
+			Math.floor((Date.now() - date.valueOf()) / 60000),
+		);
 		const parts = [
 			[Math.floor(mins / 1440), "day"],
 			[Math.floor(mins / 60) % 24, "hour"],
 			[mins % 60, "min"],
 		] as const;
-		return parts
-			.filter(([n]) => n > 0)
-			.map(([n, unit]) => `${n} ${unit}${n === 1 ? "" : "s"}`)
-			.join(", ") || "0 mins";
+		return (
+			parts
+				.filter(([n]) => n > 0)
+				.map(([n, unit]) => `${n} ${unit}${n === 1 ? "" : "s"}`)
+				.join(", ") || "0 mins"
+		);
 	}
 
 	function update() {
 		if (fastfetch.hidden) return;
 		if (uptime) uptime.textContent = since(firstPost);
-		if (display) display.textContent = `${window.innerWidth}x${window.innerHeight}`;
+		if (display)
+			display.textContent = `${window.innerWidth}x${window.innerHeight}`;
 		const layout = root.dataset.layout ?? "tile";
 		if (wm) wm.textContent = `dwm (${layouts[layout] ?? "[]="} ${layout})`;
 	}
 
 	update();
 	window.addEventListener("resize", update);
-	new MutationObserver(update).observe(root, { attributeFilter: ["data-layout"] });
-	new MutationObserver(update).observe(fastfetch, { attributeFilter: ["hidden"] });
+	new MutationObserver(update).observe(root, {
+		attributeFilter: ["data-layout"],
+	});
+	new MutationObserver(update).observe(fastfetch, {
+		attributeFilter: ["hidden"],
+	});
 	setInterval(update, 60000);
 </script>
