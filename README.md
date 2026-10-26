@@ -1,3 +1,6 @@
+
+![demo gif](.github/keyboard-demo.gif)
+
 # About this blog
 
 I started this website as a hobby project to learn about
